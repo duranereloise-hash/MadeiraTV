@@ -1,4 +1,4 @@
-# Generates MadeiraTV.xcodeproj for tvOS (Phase 1: portable Swift-only shell).
+﻿# Generates MadeiraTV.xcodeproj for tvOS (Phase 1: portable Swift-only shell).
 import os, uuid
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -366,6 +366,7 @@ proj.append('\t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";')
 proj.append('\t\t\t\tSUPPORTED_PLATFORMS = "appletvos appletvsimulator";')
 proj.append('\t\t\t\tSUPPORTS_MACCATALYST = NO;')
 proj.append('\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;')
+proj.append('\t\t\t\tSWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";')
 proj.append('\t\t\t\tSWIFT_VERSION = 5.0;')
 proj.append('\t\t\t\tTARGETED_DEVICE_FAMILY = 3;')
 proj.append('\t\t\t};')
@@ -389,6 +390,7 @@ proj.append('\t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";')
 proj.append('\t\t\t\tSUPPORTED_PLATFORMS = "appletvos appletvsimulator";')
 proj.append('\t\t\t\tSUPPORTS_MACCATALYST = NO;')
 proj.append('\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;')
+proj.append('\t\t\t\tSWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";')
 proj.append('\t\t\t\tSWIFT_VERSION = 5.0;')
 proj.append('\t\t\t\tTARGETED_DEVICE_FAMILY = 3;')
 proj.append('\t\t\t};')
