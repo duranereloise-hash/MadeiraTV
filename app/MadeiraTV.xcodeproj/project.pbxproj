@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A2D078F782DA6533A860851D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A3203F99F61D9533E9C0445E /* libz.tbd */; };
+		A9AB40FFD757E582B84B26AA /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A9141375DE2C25BAE83CC96D /* liblzma.tbd */; };
 		AC8712ADD340D5333B270881 /* SteamAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */; };
 		A3B781DB655FA5A80A04EA93 /* SteamCredentialAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */; };
 		AD6F4B2C56BBE502096D3918 /* SteamTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */; };
@@ -78,6 +79,7 @@
 		A70AAA1F1EE26514085DD238 /* Info-TVP.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info-TVP.plist; sourceTree = "<group>"; };
 		AC36204B8C1265819923D73A /* MadeiraTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3203F99F61D9533E9C0445E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A9141375DE2C25BAE83CC96D /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2D078F782DA6533A860851D /* libz.tbd in Frameworks */,
+				A9AB40FFD757E582B84B26AA /* liblzma.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
