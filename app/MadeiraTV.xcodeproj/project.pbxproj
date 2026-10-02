@@ -22,6 +22,8 @@
 		A777AEF650DAD5BB29E652B3 /* SteamProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B19860D21355015A68A2E5 /* SteamProtocol.swift */; };
 		A55769A7488A553558ECCCB2 /* SteamSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677E4211C2E57DA801A2CB /* SteamSession.swift */; };
 		AA5C5884082975F7089188D3 /* SteamLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AF4611B06F65D8A863EECA /* SteamLog.swift */; };
+		A78946D8CCFFD5D98BB32812 /* SteamDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD32B499EA2CE53DEBD48CF6 /* SteamDevice.swift */; };
+		A88BFDB5FBB155B67A227432 /* SteamQRAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A908BF31672525B3A9EC5D2D /* SteamQRAuth.swift */; };
 		A23EB1DEE1E7F5E678DAF32F /* AppManifestWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */; };
 		A4AAF6F20E40D5029951025B /* SteamAppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02A92890FDD7510CB506605 /* SteamAppInfo.swift */; };
 		A22D927646E8353AD83CAE9E /* SteamLibraryFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */; };
@@ -52,6 +54,8 @@
 		A5B19860D21355015A68A2E5 /* SteamProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtocol.swift"; path = "SwiftSteam/Core/SteamProtocol.swift"; sourceTree = "<group>"; };
 		AA677E4211C2E57DA801A2CB /* SteamSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamSession.swift"; path = "SwiftSteam/Core/SteamSession.swift"; sourceTree = "<group>"; };
 		A5AF4611B06F65D8A863EECA /* SteamLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLog.swift"; path = "SwiftSteam/Helpers/SteamLog.swift"; sourceTree = "<group>"; };
+		AD32B499EA2CE53DEBD48CF6 /* SteamDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamDevice.swift"; path = "SwiftSteam/Helpers/SteamDevice.swift"; sourceTree = "<group>"; };
+		A908BF31672525B3A9EC5D2D /* SteamQRAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamQRAuth.swift"; path = "SwiftSteam/Auth/SteamQRAuth.swift"; sourceTree = "<group>"; };
 		A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppManifestWriter.swift"; path = "SwiftSteam/Install/AppManifestWriter.swift"; sourceTree = "<group>"; };
 		A02A92890FDD7510CB506605 /* SteamAppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAppInfo.swift"; path = "SwiftSteam/Library/SteamAppInfo.swift"; sourceTree = "<group>"; };
 		AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLibraryFetcher.swift"; path = "SwiftSteam/Library/SteamLibraryFetcher.swift"; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 				A5B19860D21355015A68A2E5 /* SteamProtocol.swift */,
 				AA677E4211C2E57DA801A2CB /* SteamSession.swift */,
 				A5AF4611B06F65D8A863EECA /* SteamLog.swift */,
+				AD32B499EA2CE53DEBD48CF6 /* SteamDevice.swift */,
+				A908BF31672525B3A9EC5D2D /* SteamQRAuth.swift */,
 				A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */,
 				A02A92890FDD7510CB506605 /* SteamAppInfo.swift */,
 				AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */,
@@ -222,6 +228,8 @@
 				A777AEF650DAD5BB29E652B3 /* SteamProtocol.swift in Sources */,
 				A55769A7488A553558ECCCB2 /* SteamSession.swift in Sources */,
 				AA5C5884082975F7089188D3 /* SteamLog.swift in Sources */,
+				A78946D8CCFFD5D98BB32812 /* SteamDevice.swift in Sources */,
+				A88BFDB5FBB155B67A227432 /* SteamQRAuth.swift in Sources */,
 				A23EB1DEE1E7F5E678DAF32F /* AppManifestWriter.swift in Sources */,
 				A4AAF6F20E40D5029951025B /* SteamAppInfo.swift in Sources */,
 				A22D927646E8353AD83CAE9E /* SteamLibraryFetcher.swift in Sources */,

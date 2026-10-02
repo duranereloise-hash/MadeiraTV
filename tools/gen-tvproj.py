@@ -26,6 +26,8 @@ portable = [
     'SwiftSteam/Core/SteamProtocol.swift',
     'SwiftSteam/Core/SteamSession.swift',
     'SwiftSteam/Helpers/SteamLog.swift',
+    'SwiftSteam/Helpers/SteamDevice.swift',
+    'SwiftSteam/Auth/SteamQRAuth.swift',
     'SwiftSteam/Install/AppManifestWriter.swift',
     'SwiftSteam/Library/SteamAppInfo.swift',
     'SwiftSteam/Library/SteamLibraryFetcher.swift',
