@@ -38,6 +38,13 @@ portable = [
     'SteamInstall.swift',
 ]
 
+# C shims used by ContentDecryptor (chunk_zip/lzma/zstd). chunk_zip.c needs zlib.
+c_files = [
+    ('SwiftSteam/chunk_zip.c', 'sourcecode.c.c'),
+    ('SwiftSteam/lzma_shim.c', 'sourcecode.c.c'),
+    ('SwiftSteam/zstd_edu.c', 'sourcecode.c.c'),
+]
+
 tv_files = [
     'MadeiraTVApp.swift',
     'TVSessionModel.swift',
@@ -66,6 +73,9 @@ proj.append('\tobjects = {')
 proj.append('\n/* Begin PBXBuildFile section */')
 build_files = {}
 file_refs = {}
+libz_bf = uid('bf-libz')
+libz_fr = uid('fr-libz')
+proj.append(f'\t\t{libz_bf} /* libz.tbd in Frameworks */ = {{isa = PBXBuildFile; fileRef = {libz_fr} /* libz.tbd */; }};')
 for f in portable:
     name = os.path.basename(f)
     bf = uid('bf-' + f)
@@ -79,6 +89,13 @@ for f in tv_files:
     build_files[f] = bf
     file_refs[f] = fr
     proj.append(f'\t\t{bf} /* {f} in Sources */ = {{isa = PBXBuildFile; fileRef = {fr} /* {f} */; }};')
+for f, _ in c_files:
+    name = os.path.basename(f)
+    bf = uid('bf-c-' + f)
+    fr = uid('fr-c-' + f)
+    build_files[f] = bf
+    file_refs[f] = fr
+    proj.append(f'\t\t{bf} /* {name} in Sources */ = {{isa = PBXBuildFile; fileRef = {fr} /* {name} */; }};')
 assets_build = uid('bf-assets')
 assets_ref = uid('fr-assets')
 proj.append(f'\t\t{assets_build} /* Assets.xcassets in Resources */ = {{isa = PBXBuildFile; fileRef = {assets_ref} /* Assets.xcassets */; }};')
@@ -94,11 +111,16 @@ for f in portable:
 for f in tv_files:
     fr = file_refs[f]
     proj.append(f'\t\t{fr} /* {f} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{f}"; sourceTree = "<group>"; }};')
+for f, lft in c_files:
+    name = os.path.basename(f)
+    fr = file_refs[f]
+    proj.append(f'\t\t{fr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
 proj.append(f'\t\t{assets_ref} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; }};')
 info_ref = uid('fr-info')
 proj.append(f'\t\t{info_ref} /* Info-TVP.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info-TVP.plist; sourceTree = "<group>"; }};')
 product_ref = uid('fr-app')
 proj.append(f'\t\t{product_ref} /* MadeiraTV.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; }};')
+proj.append(f'\t\t{libz_fr} /* libz.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; }};')
 proj.append('/* End PBXFileReference section */')
 
 # --- PBXFrameworksBuildPhase ---
@@ -108,6 +130,7 @@ proj.append(f'\t\t{frameworks_phase} /* Frameworks */ = {{')
 proj.append('\t\t\tisa = PBXFrameworksBuildPhase;')
 proj.append('\t\t\tbuildActionMask = 2147483647;')
 proj.append('\t\t\tfiles = (')
+proj.append(f'\t\t\t\t{libz_bf} /* libz.tbd in Frameworks */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')
@@ -135,6 +158,9 @@ proj.append(f'\t\t{grp_madeira} /* Madeira */ = {{')
 proj.append('\t\t\tisa = PBXGroup;')
 proj.append('\t\t\tchildren = (')
 for f in portable:
+    name = os.path.basename(f)
+    proj.append(f'\t\t\t\t{file_refs[f]} /* {name} */,')
+for f, _ in c_files:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs[f]} /* {name} */,')
 proj.append('\t\t\t);')
@@ -246,6 +272,9 @@ for f in portable:
     proj.append(f'\t\t\t\t{build_files[f]} /* {name} in Sources */,')
 for f in tv_files:
     proj.append(f'\t\t\t\t{build_files[f]} /* {f} in Sources */,')
+for f, _ in c_files:
+    name = os.path.basename(f)
+    proj.append(f'\t\t\t\t{build_files[f]} /* {name} in Sources */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')
