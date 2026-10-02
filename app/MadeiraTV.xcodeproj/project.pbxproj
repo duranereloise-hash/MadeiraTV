@@ -35,32 +35,32 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAuthAPI.swift"; path = "Madeira/SwiftSteam/Auth/SteamAuthAPI.swift"; sourceTree = "<group>"; };
-		ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamCredentialAuth.swift"; path = "Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift"; sourceTree = "<group>"; };
-		AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamTokenStore.swift"; path = "Madeira/SwiftSteam/Auth/SteamTokenStore.swift"; sourceTree = "<group>"; };
-		AABB3C1D259EA560CB42BE72 /* ContentDecryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ContentDecryptor.swift"; path = "Madeira/SwiftSteam/Content/ContentDecryptor.swift"; sourceTree = "<group>"; };
-		A50713375F3E754508E79959 /* DepotDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DepotDownloader.swift"; path = "Madeira/SwiftSteam/Content/DepotDownloader.swift"; sourceTree = "<group>"; };
-		AAE3F29579CDB532E8E43DE9 /* DepotManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DepotManifest.swift"; path = "Madeira/SwiftSteam/Content/DepotManifest.swift"; sourceTree = "<group>"; };
-		A505349DCDDCB54B99E56EE8 /* CMServerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CMServerList.swift"; path = "Madeira/SwiftSteam/Core/CMServerList.swift"; sourceTree = "<group>"; };
-		AB7E77FE143755859A9EBCD2 /* LicenseListBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "LicenseListBox.swift"; path = "Madeira/SwiftSteam/Core/LicenseListBox.swift"; sourceTree = "<group>"; };
-		A9ED2C8232D0252DBAD3837F /* SteamCMSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamCMSession.swift"; path = "Madeira/SwiftSteam/Core/SteamCMSession.swift"; sourceTree = "<group>"; };
-		A377B69F0ECA55A47BE711DF /* SteamConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamConnection.swift"; path = "Madeira/SwiftSteam/Core/SteamConnection.swift"; sourceTree = "<group>"; };
-		A8B49EBD0C83B5940AE6DE3D /* SteamError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamError.swift"; path = "Madeira/SwiftSteam/Core/SteamError.swift"; sourceTree = "<group>"; };
-		A176C7FE34F735B508055F74 /* SteamMessageCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamMessageCodec.swift"; path = "Madeira/SwiftSteam/Core/SteamMessageCodec.swift"; sourceTree = "<group>"; };
-		A5B19860D21355015A68A2E5 /* SteamProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtocol.swift"; path = "Madeira/SwiftSteam/Core/SteamProtocol.swift"; sourceTree = "<group>"; };
-		AA677E4211C2E57DA801A2CB /* SteamSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamSession.swift"; path = "Madeira/SwiftSteam/Core/SteamSession.swift"; sourceTree = "<group>"; };
-		A5AF4611B06F65D8A863EECA /* SteamLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLog.swift"; path = "Madeira/SwiftSteam/Helpers/SteamLog.swift"; sourceTree = "<group>"; };
-		A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppManifestWriter.swift"; path = "Madeira/SwiftSteam/Install/AppManifestWriter.swift"; sourceTree = "<group>"; };
-		A02A92890FDD7510CB506605 /* SteamAppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAppInfo.swift"; path = "Madeira/SwiftSteam/Library/SteamAppInfo.swift"; sourceTree = "<group>"; };
-		AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLibraryFetcher.swift"; path = "Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift"; sourceTree = "<group>"; };
-		A3D2A0B9FA651532CA1925A1 /* SteamProtoMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtoMessages.swift"; path = "Madeira/SwiftSteam/Proto/SteamProtoMessages.swift"; sourceTree = "<group>"; };
-		AEA3C3144D3E35E878C90B51 /* MadeiraConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MadeiraConfig.swift"; path = "Madeira/MadeiraConfig.swift"; sourceTree = "<group>"; };
-		A4BB0B90BF49050E4B8C1891 /* SteamKeyValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamKeyValues.swift"; path = "Madeira/SteamKeyValues.swift"; sourceTree = "<group>"; };
-		A0E2BF15134515A59A17CEA8 /* SteamInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamInstall.swift"; path = "Madeira/SteamInstall.swift"; sourceTree = "<group>"; };
-		AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MadeiraTVApp.swift"; sourceTree = "<group>"; };
-		AAACD3DADEF6950309A10409 /* TVSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSessionModel.swift"; sourceTree = "<group>"; };
-		AB59B26BFB7B055559A3E722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Madeira/Assets.xcassets; sourceTree = "<group>"; };
-		A70AAA1F1EE26514085DD238 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Madeira/Info-TVP.plist; sourceTree = "<group>"; };
+		AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAuthAPI.swift"; path = "../Madeira/SwiftSteam/Auth/SteamAuthAPI.swift"; sourceTree = "<group>"; };
+		ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamCredentialAuth.swift"; path = "../Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift"; sourceTree = "<group>"; };
+		AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamTokenStore.swift"; path = "../Madeira/SwiftSteam/Auth/SteamTokenStore.swift"; sourceTree = "<group>"; };
+		AABB3C1D259EA560CB42BE72 /* ContentDecryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ContentDecryptor.swift"; path = "../Madeira/SwiftSteam/Content/ContentDecryptor.swift"; sourceTree = "<group>"; };
+		A50713375F3E754508E79959 /* DepotDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DepotDownloader.swift"; path = "../Madeira/SwiftSteam/Content/DepotDownloader.swift"; sourceTree = "<group>"; };
+		AAE3F29579CDB532E8E43DE9 /* DepotManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DepotManifest.swift"; path = "../Madeira/SwiftSteam/Content/DepotManifest.swift"; sourceTree = "<group>"; };
+		A505349DCDDCB54B99E56EE8 /* CMServerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CMServerList.swift"; path = "../Madeira/SwiftSteam/Core/CMServerList.swift"; sourceTree = "<group>"; };
+		AB7E77FE143755859A9EBCD2 /* LicenseListBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "LicenseListBox.swift"; path = "../Madeira/SwiftSteam/Core/LicenseListBox.swift"; sourceTree = "<group>"; };
+		A9ED2C8232D0252DBAD3837F /* SteamCMSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamCMSession.swift"; path = "../Madeira/SwiftSteam/Core/SteamCMSession.swift"; sourceTree = "<group>"; };
+		A377B69F0ECA55A47BE711DF /* SteamConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamConnection.swift"; path = "../Madeira/SwiftSteam/Core/SteamConnection.swift"; sourceTree = "<group>"; };
+		A8B49EBD0C83B5940AE6DE3D /* SteamError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamError.swift"; path = "../Madeira/SwiftSteam/Core/SteamError.swift"; sourceTree = "<group>"; };
+		A176C7FE34F735B508055F74 /* SteamMessageCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamMessageCodec.swift"; path = "../Madeira/SwiftSteam/Core/SteamMessageCodec.swift"; sourceTree = "<group>"; };
+		A5B19860D21355015A68A2E5 /* SteamProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtocol.swift"; path = "../Madeira/SwiftSteam/Core/SteamProtocol.swift"; sourceTree = "<group>"; };
+		AA677E4211C2E57DA801A2CB /* SteamSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamSession.swift"; path = "../Madeira/SwiftSteam/Core/SteamSession.swift"; sourceTree = "<group>"; };
+		A5AF4611B06F65D8A863EECA /* SteamLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLog.swift"; path = "../Madeira/SwiftSteam/Helpers/SteamLog.swift"; sourceTree = "<group>"; };
+		A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppManifestWriter.swift"; path = "../Madeira/SwiftSteam/Install/AppManifestWriter.swift"; sourceTree = "<group>"; };
+		A02A92890FDD7510CB506605 /* SteamAppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAppInfo.swift"; path = "../Madeira/SwiftSteam/Library/SteamAppInfo.swift"; sourceTree = "<group>"; };
+		AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLibraryFetcher.swift"; path = "../Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift"; sourceTree = "<group>"; };
+		A3D2A0B9FA651532CA1925A1 /* SteamProtoMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtoMessages.swift"; path = "../Madeira/SwiftSteam/Proto/SteamProtoMessages.swift"; sourceTree = "<group>"; };
+		AEA3C3144D3E35E878C90B51 /* MadeiraConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MadeiraConfig.swift"; path = "../Madeira/MadeiraConfig.swift"; sourceTree = "<group>"; };
+		A4BB0B90BF49050E4B8C1891 /* SteamKeyValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamKeyValues.swift"; path = "../Madeira/SteamKeyValues.swift"; sourceTree = "<group>"; };
+		A0E2BF15134515A59A17CEA8 /* SteamInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamInstall.swift"; path = "../Madeira/SteamInstall.swift"; sourceTree = "<group>"; };
+		AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MadeiraTVApp.swift"; path = "../MadeiraTV/MadeiraTVApp.swift"; sourceTree = "<group>"; };
+		AAACD3DADEF6950309A10409 /* TVSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "TVSessionModel.swift"; path = "../MadeiraTV/TVSessionModel.swift"; sourceTree = "<group>"; };
+		AB59B26BFB7B055559A3E722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "../MadeiraTV/Assets.xcassets"; sourceTree = "<group>"; };
+		A70AAA1F1EE26514085DD238 /* Info-TVP.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "../MadeiraTV/Info-TVP.plist"; sourceTree = "<group>"; };
 		AC36204B8C1265819923D73A /* MadeiraTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -110,7 +110,7 @@
 				A4BB0B90BF49050E4B8C1891 /* SteamKeyValues.swift */,
 				A0E2BF15134515A59A17CEA8 /* SteamInstall.swift */,
 			);
-			path = Madeira;
+			name = Madeira;
 			sourceTree = "<group>";
 		};
 		A20D8A23823735DDAB11BBA8 /* MadeiraTV */ = {
@@ -119,9 +119,9 @@
 				AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */,
 				AAACD3DADEF6950309A10409 /* TVSessionModel.swift */,
 				AB59B26BFB7B055559A3E722 /* Assets.xcassets */,
-				A70AAA1F1EE26514085DD238 /* Info.plist */,
+				A70AAA1F1EE26514085DD238 /* Info-TVP.plist */,
 			);
-			path = MadeiraTV;
+			name = MadeiraTV;
 			sourceTree = "<group>";
 		};
 		ACB359696DE1E5F549420D76 /* Products */ = {
