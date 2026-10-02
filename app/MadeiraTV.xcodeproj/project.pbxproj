@@ -1,0 +1,362 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AC8712ADD340D5333B270881 /* SteamAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */; };
+		A3B781DB655FA5A80A04EA93 /* SteamCredentialAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */; };
+		AD6F4B2C56BBE502096D3918 /* SteamTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */; };
+		A6951F5521CF759F2A299ED7 /* ContentDecryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB3C1D259EA560CB42BE72 /* ContentDecryptor.swift */; };
+		A562A135D04AE575B917722B /* DepotDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50713375F3E754508E79959 /* DepotDownloader.swift */; };
+		A79A562999A905E5781CF4D8 /* DepotManifest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE3F29579CDB532E8E43DE9 /* DepotManifest.swift */; };
+		A5D756DA5923A5CDC8B8190B /* CMServerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505349DCDDCB54B99E56EE8 /* CMServerList.swift */; };
+		A04AAAA1B0D615D979F7071E /* LicenseListBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7E77FE143755859A9EBCD2 /* LicenseListBox.swift */; };
+		AD4831421F214561B9AB677B /* SteamCMSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9ED2C8232D0252DBAD3837F /* SteamCMSession.swift */; };
+		A7E42A6FBF91657E08597EC6 /* SteamConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A377B69F0ECA55A47BE711DF /* SteamConnection.swift */; };
+		A59E0ECF616C65E80864A09C /* SteamError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B49EBD0C83B5940AE6DE3D /* SteamError.swift */; };
+		A592E4FF968BA5407A8D1BBB /* SteamMessageCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176C7FE34F735B508055F74 /* SteamMessageCodec.swift */; };
+		A777AEF650DAD5BB29E652B3 /* SteamProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B19860D21355015A68A2E5 /* SteamProtocol.swift */; };
+		A55769A7488A553558ECCCB2 /* SteamSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA677E4211C2E57DA801A2CB /* SteamSession.swift */; };
+		AA5C5884082975F7089188D3 /* SteamLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AF4611B06F65D8A863EECA /* SteamLog.swift */; };
+		A23EB1DEE1E7F5E678DAF32F /* AppManifestWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */; };
+		A4AAF6F20E40D5029951025B /* SteamAppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02A92890FDD7510CB506605 /* SteamAppInfo.swift */; };
+		A22D927646E8353AD83CAE9E /* SteamLibraryFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */; };
+		AA800EE49B03056C2A432733 /* SteamProtoMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D2A0B9FA651532CA1925A1 /* SteamProtoMessages.swift */; };
+		AD2B33E9FFA1751519E72E36 /* MadeiraConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3C3144D3E35E878C90B51 /* MadeiraConfig.swift */; };
+		A283DE28BC9BB582997278E3 /* SteamKeyValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB0B90BF49050E4B8C1891 /* SteamKeyValues.swift */; };
+		AB7BA39EC257C5408A02EDDA /* SteamInstall.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BF15134515A59A17CEA8 /* SteamInstall.swift */; };
+		A36994E037C9D550DAC47282 /* MadeiraTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */; };
+		AAAFD7142CCDF5BA393B412A /* TVSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAACD3DADEF6950309A10409 /* TVSessionModel.swift */; };
+		A11EB7776D34457CEAA46BFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB59B26BFB7B055559A3E722 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAuthAPI.swift"; path = "Madeira/SwiftSteam/Auth/SteamAuthAPI.swift"; sourceTree = "<group>"; };
+		ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamCredentialAuth.swift"; path = "Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift"; sourceTree = "<group>"; };
+		AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamTokenStore.swift"; path = "Madeira/SwiftSteam/Auth/SteamTokenStore.swift"; sourceTree = "<group>"; };
+		AABB3C1D259EA560CB42BE72 /* ContentDecryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ContentDecryptor.swift"; path = "Madeira/SwiftSteam/Content/ContentDecryptor.swift"; sourceTree = "<group>"; };
+		A50713375F3E754508E79959 /* DepotDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DepotDownloader.swift"; path = "Madeira/SwiftSteam/Content/DepotDownloader.swift"; sourceTree = "<group>"; };
+		AAE3F29579CDB532E8E43DE9 /* DepotManifest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DepotManifest.swift"; path = "Madeira/SwiftSteam/Content/DepotManifest.swift"; sourceTree = "<group>"; };
+		A505349DCDDCB54B99E56EE8 /* CMServerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CMServerList.swift"; path = "Madeira/SwiftSteam/Core/CMServerList.swift"; sourceTree = "<group>"; };
+		AB7E77FE143755859A9EBCD2 /* LicenseListBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "LicenseListBox.swift"; path = "Madeira/SwiftSteam/Core/LicenseListBox.swift"; sourceTree = "<group>"; };
+		A9ED2C8232D0252DBAD3837F /* SteamCMSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamCMSession.swift"; path = "Madeira/SwiftSteam/Core/SteamCMSession.swift"; sourceTree = "<group>"; };
+		A377B69F0ECA55A47BE711DF /* SteamConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamConnection.swift"; path = "Madeira/SwiftSteam/Core/SteamConnection.swift"; sourceTree = "<group>"; };
+		A8B49EBD0C83B5940AE6DE3D /* SteamError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamError.swift"; path = "Madeira/SwiftSteam/Core/SteamError.swift"; sourceTree = "<group>"; };
+		A176C7FE34F735B508055F74 /* SteamMessageCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamMessageCodec.swift"; path = "Madeira/SwiftSteam/Core/SteamMessageCodec.swift"; sourceTree = "<group>"; };
+		A5B19860D21355015A68A2E5 /* SteamProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtocol.swift"; path = "Madeira/SwiftSteam/Core/SteamProtocol.swift"; sourceTree = "<group>"; };
+		AA677E4211C2E57DA801A2CB /* SteamSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamSession.swift"; path = "Madeira/SwiftSteam/Core/SteamSession.swift"; sourceTree = "<group>"; };
+		A5AF4611B06F65D8A863EECA /* SteamLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLog.swift"; path = "Madeira/SwiftSteam/Helpers/SteamLog.swift"; sourceTree = "<group>"; };
+		A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppManifestWriter.swift"; path = "Madeira/SwiftSteam/Install/AppManifestWriter.swift"; sourceTree = "<group>"; };
+		A02A92890FDD7510CB506605 /* SteamAppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAppInfo.swift"; path = "Madeira/SwiftSteam/Library/SteamAppInfo.swift"; sourceTree = "<group>"; };
+		AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamLibraryFetcher.swift"; path = "Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift"; sourceTree = "<group>"; };
+		A3D2A0B9FA651532CA1925A1 /* SteamProtoMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamProtoMessages.swift"; path = "Madeira/SwiftSteam/Proto/SteamProtoMessages.swift"; sourceTree = "<group>"; };
+		AEA3C3144D3E35E878C90B51 /* MadeiraConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MadeiraConfig.swift"; path = "Madeira/MadeiraConfig.swift"; sourceTree = "<group>"; };
+		A4BB0B90BF49050E4B8C1891 /* SteamKeyValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamKeyValues.swift"; path = "Madeira/SteamKeyValues.swift"; sourceTree = "<group>"; };
+		A0E2BF15134515A59A17CEA8 /* SteamInstall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamInstall.swift"; path = "Madeira/SteamInstall.swift"; sourceTree = "<group>"; };
+		AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MadeiraTVApp.swift"; sourceTree = "<group>"; };
+		AAACD3DADEF6950309A10409 /* TVSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSessionModel.swift"; sourceTree = "<group>"; };
+		AB59B26BFB7B055559A3E722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Madeira/Assets.xcassets; sourceTree = "<group>"; };
+		A70AAA1F1EE26514085DD238 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Madeira/Info-TVP.plist; sourceTree = "<group>"; };
+		AC36204B8C1265819923D73A /* MadeiraTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AAAA0C1F2D7B459FD9C7271C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A0ECC494DC8B05A1E9F4CB01 = {
+			isa = PBXGroup;
+			children = (
+				A616EBFA03D6F5963913A9B4 /* Madeira */,
+				A20D8A23823735DDAB11BBA8 /* MadeiraTV */,
+				ACB359696DE1E5F549420D76 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A616EBFA03D6F5963913A9B4 /* Madeira */ = {
+			isa = PBXGroup;
+			children = (
+				AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */,
+				ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */,
+				AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */,
+				AABB3C1D259EA560CB42BE72 /* ContentDecryptor.swift */,
+				A50713375F3E754508E79959 /* DepotDownloader.swift */,
+				AAE3F29579CDB532E8E43DE9 /* DepotManifest.swift */,
+				A505349DCDDCB54B99E56EE8 /* CMServerList.swift */,
+				AB7E77FE143755859A9EBCD2 /* LicenseListBox.swift */,
+				A9ED2C8232D0252DBAD3837F /* SteamCMSession.swift */,
+				A377B69F0ECA55A47BE711DF /* SteamConnection.swift */,
+				A8B49EBD0C83B5940AE6DE3D /* SteamError.swift */,
+				A176C7FE34F735B508055F74 /* SteamMessageCodec.swift */,
+				A5B19860D21355015A68A2E5 /* SteamProtocol.swift */,
+				AA677E4211C2E57DA801A2CB /* SteamSession.swift */,
+				A5AF4611B06F65D8A863EECA /* SteamLog.swift */,
+				A054FA96C4E675998A71F1DA /* AppManifestWriter.swift */,
+				A02A92890FDD7510CB506605 /* SteamAppInfo.swift */,
+				AB5F9C8CEB16B5813A05BF03 /* SteamLibraryFetcher.swift */,
+				A3D2A0B9FA651532CA1925A1 /* SteamProtoMessages.swift */,
+				AEA3C3144D3E35E878C90B51 /* MadeiraConfig.swift */,
+				A4BB0B90BF49050E4B8C1891 /* SteamKeyValues.swift */,
+				A0E2BF15134515A59A17CEA8 /* SteamInstall.swift */,
+			);
+			path = Madeira;
+			sourceTree = "<group>";
+		};
+		A20D8A23823735DDAB11BBA8 /* MadeiraTV */ = {
+			isa = PBXGroup;
+			children = (
+				AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */,
+				AAACD3DADEF6950309A10409 /* TVSessionModel.swift */,
+				AB59B26BFB7B055559A3E722 /* Assets.xcassets */,
+				A70AAA1F1EE26514085DD238 /* Info.plist */,
+			);
+			path = MadeiraTV;
+			sourceTree = "<group>";
+		};
+		ACB359696DE1E5F549420D76 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC36204B8C1265819923D73A /* MadeiraTV.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A61CCE653B4C5566480A0A70 /* MadeiraTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFB0AA43EA4DA546ABFB6F22 /* Build configuration list for PBXNativeTarget "MadeiraTV" */;
+			buildPhases = (
+				A0CFB4942F65B515791D2F4A /* Sources */,
+				AAAA0C1F2D7B459FD9C7271C /* Frameworks */,
+				A4D2AFC6AB9E8557793DC0C9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MadeiraTV;
+			productName = MadeiraTV;
+			productReference = AC36204B8C1265819923D73A /* MadeiraTV.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A35EC0FB9AA8E5F82A360DFB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A61CCE653B4C5566480A0A70 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = AE5403DA9B6835467948BE23 /* Build configuration list for PBXProject "MadeiraTV" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A0ECC494DC8B05A1E9F4CB01;
+			productRefGroup = ACB359696DE1E5F549420D76 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A61CCE653B4C5566480A0A70 /* MadeiraTV */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A4D2AFC6AB9E8557793DC0C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A11EB7776D34457CEAA46BFD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A0CFB4942F65B515791D2F4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC8712ADD340D5333B270881 /* SteamAuthAPI.swift in Sources */,
+				A3B781DB655FA5A80A04EA93 /* SteamCredentialAuth.swift in Sources */,
+				AD6F4B2C56BBE502096D3918 /* SteamTokenStore.swift in Sources */,
+				A6951F5521CF759F2A299ED7 /* ContentDecryptor.swift in Sources */,
+				A562A135D04AE575B917722B /* DepotDownloader.swift in Sources */,
+				A79A562999A905E5781CF4D8 /* DepotManifest.swift in Sources */,
+				A5D756DA5923A5CDC8B8190B /* CMServerList.swift in Sources */,
+				A04AAAA1B0D615D979F7071E /* LicenseListBox.swift in Sources */,
+				AD4831421F214561B9AB677B /* SteamCMSession.swift in Sources */,
+				A7E42A6FBF91657E08597EC6 /* SteamConnection.swift in Sources */,
+				A59E0ECF616C65E80864A09C /* SteamError.swift in Sources */,
+				A592E4FF968BA5407A8D1BBB /* SteamMessageCodec.swift in Sources */,
+				A777AEF650DAD5BB29E652B3 /* SteamProtocol.swift in Sources */,
+				A55769A7488A553558ECCCB2 /* SteamSession.swift in Sources */,
+				AA5C5884082975F7089188D3 /* SteamLog.swift in Sources */,
+				A23EB1DEE1E7F5E678DAF32F /* AppManifestWriter.swift in Sources */,
+				A4AAF6F20E40D5029951025B /* SteamAppInfo.swift in Sources */,
+				A22D927646E8353AD83CAE9E /* SteamLibraryFetcher.swift in Sources */,
+				AA800EE49B03056C2A432733 /* SteamProtoMessages.swift in Sources */,
+				AD2B33E9FFA1751519E72E36 /* MadeiraConfig.swift in Sources */,
+				A283DE28BC9BB582997278E3 /* SteamKeyValues.swift in Sources */,
+				AB7BA39EC257C5408A02EDDA /* SteamInstall.swift in Sources */,
+				A36994E037C9D550DAC47282 /* MadeiraTVApp.swift in Sources */,
+				AAAFD7142CCDF5BA393B412A /* TVSessionModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A8D1254B94DF2513B82D3FC5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		A9F4B9A68F89858A99A4D1D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = appletvos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				TVOS_DEPLOYMENT_TARGET = 17.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A9B11244286EC5CD3BA9F8CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MadeiraTV/Info-TVP.plist;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		A8E6D8FE83C0E57FFAEFEC9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MadeiraTV/Info-TVP.plist;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AE5403DA9B6835467948BE23 /* Build configuration list for PBXProject "MadeiraTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8D1254B94DF2513B82D3FC5 /* Debug */,
+				A9F4B9A68F89858A99A4D1D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFB0AA43EA4DA546ABFB6F22 /* Build configuration list for PBXNativeTarget "MadeiraTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9B11244286EC5CD3BA9F8CC /* Debug */,
+				A8E6D8FE83C0E57FFAEFEC9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A35EC0FB9AA8E5F82A360DFB /* Project object */;
+}

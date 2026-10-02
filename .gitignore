@@ -1,0 +1,22 @@
+# Wine/DXMT/FEX binary blobs — Phase 2 rebuilds them for tvOS
+app/Madeira/aarch64-windows/
+app/Madeira/arm64ec-windows/
+app/Madeira/i386-windows/
+app/Madeira/x86_64-vcruntime/
+app/Madeira/d3d12/
+app/Madeira/lib*.a
+app/Madeira/legal/
+app/Madeira/licenses/
+app/Madeira/prefix-template.tar.gz
+app/Madeira/hello_x86.elf
+app/Madeira/madeira-jit.js
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Python
+__pycache__/
+*.pyc

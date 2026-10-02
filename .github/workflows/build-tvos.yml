@@ -1,0 +1,66 @@
+name: Build tvOS (Phase 1)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-tvos:
+    name: Build MadeiraTV.app for tvOS
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select Xcode
+        run: |
+          xcodebuild -version
+          xcrun --sdk appletvos --show-sdk-version 2>/dev/null || echo "no tvos sdk visible"
+
+      - name: List available SDKs
+        run: xcodebuild -showsdks
+
+      - name: Build (tvOS Simulator, debug)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project app/MadeiraTV.xcodeproj \
+            -scheme MadeiraTV \
+            -configuration Debug \
+            -destination 'generic/platform=tvOS Simulator' \
+            -derivedDataPath build/DerivedDataTV \
+            build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO | tee build/tvos-build.log
+
+      - name: Build (tvOS device, no signing)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project app/MadeiraTV.xcodeproj \
+            -scheme MadeiraTV \
+            -configuration Debug \
+            -destination 'generic/platform=tvOS' \
+            -derivedDataPath build/DerivedDataTV \
+            build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO | tee -a build/tvos-build.log
+
+      - name: Verify products
+        run: |
+          find build/DerivedDataTV/Build/Products -name "*.app" -maxdepth 4
+          filesize=$(du -sh build/DerivedDataTV/Build/Products/Debug-appletvos/MadeiraTV.app 2>/dev/null | cut -f1)
+          echo "app size: ${filesize:-unknown}"
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: MadeiraTV-app-tvos
+          path: |
+            build/DerivedDataTV/Build/Products/Debug-appletvos/MadeiraTV.app
+            build/tvos-build.log
+          if-no-files-found: error
