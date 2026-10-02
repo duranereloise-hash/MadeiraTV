@@ -1,0 +1,473 @@
+﻿ï»¿2026-10-02T22:47:08.9153930Z Current runner version: '2.337.0'
+2026-10-02T22:47:08.9169540Z ##[group]Runner Image Provisioner
+2026-10-02T22:47:08.9170120Z Hosted Compute Agent
+2026-10-02T22:47:08.9170500Z Version: 20260828.587
+2026-10-02T22:47:08.9170930Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-10-02T22:47:08.9171420Z Build Date: 2026-08-28T16:44:25Z
+2026-10-02T22:47:08.9171890Z Worker ID: {d4dbb855-f4e1-4632-911f-e57ac4628989}
+2026-10-02T22:47:08.9172360Z Azure Region: westus
+2026-10-02T22:47:08.9172780Z ##[endgroup]
+2026-10-02T22:47:08.9173760Z ##[group]Operating System
+2026-10-02T22:47:08.9174180Z macOS
+2026-10-02T22:47:08.9174520Z 15.7.9
+2026-10-02T22:47:08.9174870Z 24G830
+2026-10-02T22:47:08.9175230Z ##[endgroup]
+2026-10-02T22:47:08.9175600Z ##[group]Runner Image
+2026-10-02T22:47:08.9176010Z Image: macos-15-arm64
+2026-10-02T22:47:08.9176390Z Version: 20260907.0337.1
+2026-10-02T22:47:08.9177290Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260907.0337/images/macos/macos-15-arm64-Readme.md
+2026-10-02T22:47:08.9178360Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260907.0337
+2026-10-02T22:47:08.9179050Z ##[endgroup]
+2026-10-02T22:47:08.9179860Z ##[group]GITHUB_TOKEN Permissions
+2026-10-02T22:47:08.9181080Z Contents: read
+2026-10-02T22:47:08.9181450Z Metadata: read
+2026-10-02T22:47:08.9181830Z Packages: read
+2026-10-02T22:47:08.9182200Z ##[endgroup]
+2026-10-02T22:47:08.9183690Z Secret source: Actions
+2026-10-02T22:47:08.9184400Z Cache mode: write
+2026-10-02T22:47:08.9184870Z Prepare workflow directory
+2026-10-02T22:47:08.9425310Z Prepare all required actions
+2026-10-02T22:47:08.9511120Z Getting action download info
+2026-10-02T22:47:09.3790590Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-02T22:47:09.6679800Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-02T22:47:09.8969530Z Complete job name: Build MadeiraTV.app for tvOS
+2026-10-02T22:47:09.9487080Z ##[group]Run actions/checkout@v4
+2026-10-02T22:47:09.9488200Z with:
+2026-10-02T22:47:09.9488560Z   fetch-depth: 0
+2026-10-02T22:47:09.9488950Z   repository: duranereloise-hash/MadeiraTV
+2026-10-02T22:47:09.9492360Z   token: ***
+2026-10-02T22:47:09.9492740Z   ssh-strict: true
+2026-10-02T22:47:09.9493130Z   ssh-user: git
+2026-10-02T22:47:09.9493500Z   persist-credentials: true
+2026-10-02T22:47:09.9493920Z   clean: true
+2026-10-02T22:47:09.9494340Z   sparse-checkout-cone-mode: true
+2026-10-02T22:47:09.9494730Z   fetch-tags: false
+2026-10-02T22:47:09.9495060Z   show-progress: true
+2026-10-02T22:47:09.9495410Z   lfs: false
+2026-10-02T22:47:09.9495800Z   submodules: false
+2026-10-02T22:47:09.9496130Z   set-safe-directory: true
+2026-10-02T22:47:09.9496510Z   allow-unsafe-pr-checkout: false
+2026-10-02T22:47:09.9497230Z ##[endgroup]
+2026-10-02T22:47:10.3443990Z Syncing repository: duranereloise-hash/MadeiraTV
+2026-10-02T22:47:10.3445860Z ##[group]Getting Git version info
+2026-10-02T22:47:10.3447060Z Working directory is '/Users/runner/work/MadeiraTV/MadeiraTV'
+2026-10-02T22:47:10.3448090Z [command]/opt/homebrew/bin/git version
+2026-10-02T22:47:10.4008390Z git version 2.55.0
+2026-10-02T22:47:10.4021460Z ##[endgroup]
+2026-10-02T22:47:10.4033080Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/95f4196e-6b5a-418c-b262-c5e212b2408a/.gitconfig'
+2026-10-02T22:47:10.4043700Z Temporarily overriding HOME='/Users/runner/work/_temp/95f4196e-6b5a-418c-b262-c5e212b2408a' before making global git config changes
+2026-10-02T22:47:10.4044910Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T22:47:10.4047130Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-02T22:47:10.4181900Z Deleting the contents of '/Users/runner/work/MadeiraTV/MadeiraTV'
+2026-10-02T22:47:10.4186230Z ##[group]Initializing the repository
+2026-10-02T22:47:10.4190540Z [command]/opt/homebrew/bin/git init /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-02T22:47:10.4404290Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-02T22:47:10.4405400Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-02T22:47:10.4406400Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-02T22:47:10.4407150Z hint: call:
+2026-10-02T22:47:10.4407560Z hint:
+2026-10-02T22:47:10.4408030Z hint: 	git config --global init.defaultBranch <name>
+2026-10-02T22:47:10.4408540Z hint:
+2026-10-02T22:47:10.4409220Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-02T22:47:10.4410490Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-02T22:47:10.4411150Z hint:
+2026-10-02T22:47:10.4411600Z hint: 	git branch -m <name>
+2026-10-02T22:47:10.4412060Z hint:
+2026-10-02T22:47:10.4412600Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-02T22:47:10.4413570Z Initialized empty Git repository in /Users/runner/work/MadeiraTV/MadeiraTV/.git/
+2026-10-02T22:47:10.4432550Z [command]/opt/homebrew/bin/git remote add origin https://github.com/duranereloise-hash/MadeiraTV
+2026-10-02T22:47:10.4504340Z ##[endgroup]
+2026-10-02T22:47:10.4505220Z ##[group]Disabling automatic garbage collection
+2026-10-02T22:47:10.4506530Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-10-02T22:47:10.4578730Z ##[endgroup]
+2026-10-02T22:47:10.4580870Z ##[group]Setting up auth
+2026-10-02T22:47:10.4587380Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T22:47:10.4680180Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-02T22:47:10.5939810Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T22:47:10.6009480Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-02T22:47:10.7544050Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T22:47:10.7850960Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-02T22:47:10.8730790Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-02T22:47:10.8845470Z ##[endgroup]
+2026-10-02T22:47:10.8846400Z ##[group]Fetching the repository
+2026-10-02T22:47:10.8862270Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-02T22:47:11.5584440Z From https://github.com/duranereloise-hash/MadeiraTV
+2026-10-02T22:47:11.5587290Z  * [new branch]      main       -> origin/main
+2026-10-02T22:47:11.5607940Z [command]/opt/homebrew/bin/git branch --list --remote origin/main
+2026-10-02T22:47:11.5786180Z   origin/main
+2026-10-02T22:47:11.5828760Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/main
+2026-10-02T22:47:11.5925030Z c8798478c2dafe1024dec42708922eeb56847e03
+2026-10-02T22:47:11.5929000Z ##[endgroup]
+2026-10-02T22:47:11.5929960Z ##[group]Determining the checkout info
+2026-10-02T22:47:11.5931040Z ##[endgroup]
+2026-10-02T22:47:11.5933150Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-10-02T22:47:11.6051470Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-02T22:47:11.6341310Z ##[group]Checking out the ref
+2026-10-02T22:47:11.6442280Z [command]/opt/homebrew/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-02T22:47:11.6576180Z Switched to a new branch 'main'
+2026-10-02T22:47:11.6586710Z branch 'main' set up to track 'origin/main'.
+2026-10-02T22:47:11.6589950Z ##[endgroup]
+2026-10-02T22:47:11.6683510Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-10-02T22:47:11.6766450Z c8798478c2dafe1024dec42708922eeb56847e03
+2026-10-02T22:47:11.7031420Z ##[group]Run xcodebuild -version
+2026-10-02T22:47:11.7032150Z [36;1mxcodebuild -version[0m
+2026-10-02T22:47:11.7032910Z [36;1mxcrun --sdk appletvos --show-sdk-version 2>/dev/null || echo "no tvos sdk visible"[0m
+2026-10-02T22:47:11.7093100Z shell: /bin/bash -e {0}
+2026-10-02T22:47:11.7093620Z ##[endgroup]
+2026-10-02T22:47:12.0103010Z Xcode 16.4
+2026-10-02T22:47:12.0118110Z Build version 16F6
+2026-10-02T22:47:14.2647360Z 18.5
+2026-10-02T22:47:14.2741490Z ##[group]Run xcodebuild -showsdks
+2026-10-02T22:47:14.2741970Z [36;1mxcodebuild -showsdks[0m
+2026-10-02T22:47:14.2799210Z shell: /bin/bash -e {0}
+2026-10-02T22:47:14.2799560Z ##[endgroup]
+2026-10-02T22:47:14.8717300Z DriverKit SDKs:
+2026-10-02T22:47:14.9215730Z 	DriverKit 24.5                	-sdk driverkit24.5
+2026-10-02T22:47:14.9227120Z 
+2026-10-02T22:47:14.9782520Z iOS SDKs:
+2026-10-02T22:47:14.9884040Z 	iOS 18.5                      	-sdk iphoneos18.5
+2026-10-02T22:47:14.9884360Z 
+2026-10-02T22:47:14.9884420Z iOS Simulator SDKs:
+2026-10-02T22:47:14.9884830Z 	Simulator - iOS 18.5          	-sdk iphonesimulator18.5
+2026-10-02T22:47:14.9885250Z 
+2026-10-02T22:47:14.9885320Z macOS SDKs:
+2026-10-02T22:47:14.9885710Z 	macOS 15.5                    	-sdk macosx15.5
+2026-10-02T22:47:14.9886190Z 	macOS 15.5                    	-sdk macosx15.5
+2026-10-02T22:47:14.9987410Z 
+2026-10-02T22:47:15.0086510Z tvOS SDKs:
+2026-10-02T22:47:15.0192280Z 	tvOS 18.5                     	-sdk appletvos18.5
+2026-10-02T22:47:15.0292020Z 
+2026-10-02T22:47:15.0358560Z tvOS Simulator SDKs:
+2026-10-02T22:47:15.0365260Z 	Simulator - tvOS 18.5         	-sdk appletvsimulator18.5
+2026-10-02T22:47:15.0366590Z 
+2026-10-02T22:47:15.0367160Z visionOS SDKs:
+2026-10-02T22:47:15.0368410Z 	visionOS 2.5                  	-sdk xros2.5
+2026-10-02T22:47:15.0368790Z 
+2026-10-02T22:47:15.0369110Z visionOS Simulator SDKs:
+2026-10-02T22:47:15.0369640Z 	Simulator - visionOS 2.5      	-sdk xrsimulator2.5
+2026-10-02T22:47:15.0370200Z 
+2026-10-02T22:47:15.0370400Z watchOS SDKs:
+2026-10-02T22:47:15.0370720Z 	watchOS 11.5                  	-sdk watchos11.5
+2026-10-02T22:47:15.0371020Z 
+2026-10-02T22:47:15.0371290Z watchOS Simulator SDKs:
+2026-10-02T22:47:15.0371640Z 	Simulator - watchOS 11.5      	-sdk watchsimulator11.5
+2026-10-02T22:47:15.0371980Z 
+2026-10-02T22:47:15.0406610Z ##[group]Run set -o pipefail
+2026-10-02T22:47:15.0407040Z [36;1mset -o pipefail[0m
+2026-10-02T22:47:15.0407290Z [36;1mxcodebuild \[0m
+2026-10-02T22:47:15.0407620Z [36;1m  -project app/MadeiraTV.xcodeproj \[0m
+2026-10-02T22:47:15.0407960Z [36;1m  -scheme MadeiraTV \[0m
+2026-10-02T22:47:15.0408290Z [36;1m  -configuration Debug \[0m
+2026-10-02T22:47:15.0408680Z [36;1m  -destination 'generic/platform=tvOS Simulator' \[0m
+2026-10-02T22:47:15.0409110Z [36;1m  -derivedDataPath build/DerivedDataTV \[0m
+2026-10-02T22:47:15.0409440Z [36;1m  build \[0m
+2026-10-02T22:47:15.0409720Z [36;1m  CODE_SIGNING_ALLOWED=NO \[0m
+2026-10-02T22:47:15.0410120Z [36;1m  CODE_SIGNING_REQUIRED=NO | tee build/tvos-build.log[0m
+2026-10-02T22:47:15.0448980Z shell: /bin/bash -e {0}
+2026-10-02T22:47:15.0449210Z ##[endgroup]
+2026-10-02T22:47:15.0846510Z tee: build/tvos-build.log: No such file or directory
+2026-10-02T22:47:16.0530440Z Command line invocation:
+2026-10-02T22:47:16.0533900Z     /Applications/Xcode_16.4.app/Contents/Developer/usr/bin/xcodebuild -project app/MadeiraTV.xcodeproj -scheme MadeiraTV -configuration Debug -destination "generic/platform=tvOS Simulator" -derivedDataPath build/DerivedDataTV build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+2026-10-02T22:47:16.0535130Z 
+2026-10-02T22:47:16.0538470Z Build settings from command line:
+2026-10-02T22:47:16.0540260Z     CODE_SIGNING_ALLOWED = NO
+2026-10-02T22:47:16.0541150Z     CODE_SIGNING_REQUIRED = NO
+2026-10-02T22:47:16.0542720Z 
+2026-10-02T22:47:19.0460450Z ComputePackagePrebuildTargetDependencyGraph
+2026-10-02T22:47:19.1155390Z 
+2026-10-02T22:47:19.1257390Z Prepare packages
+2026-10-02T22:47:19.1309660Z 
+2026-10-02T22:47:19.1310210Z CreateBuildRequest
+2026-10-02T22:47:19.1310560Z 
+2026-10-02T22:47:19.1310730Z SendProjectDescription
+2026-10-02T22:47:19.1423020Z 
+2026-10-02T22:47:19.1424380Z CreateBuildOperation
+2026-10-02T22:47:19.1637300Z 
+2026-10-02T22:47:19.1776920Z ComputeTargetDependencyGraph
+2026-10-02T22:47:19.1967650Z note: Building targets in dependency order
+2026-10-02T22:47:19.1970220Z note: Target dependency graph (1 target)
+2026-10-02T22:47:19.1970780Z     Target 'MadeiraTV' in project 'MadeiraTV' (no dependencies)
+2026-10-02T22:47:19.2004750Z 
+2026-10-02T22:47:19.2012710Z GatherProvisioningInputs
+2026-10-02T22:47:19.2013430Z 
+2026-10-02T22:47:19.2156850Z CreateBuildDescription
+2026-10-02T22:47:19.2442610Z 
+2026-10-02T22:47:19.2446370Z ExecuteExternalTool /Applications/Xcode_16.4.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets
+2026-10-02T22:47:23.6267770Z 
+2026-10-02T22:47:23.6328550Z ExecuteExternalTool /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -x c -c /dev/null
+2026-10-02T22:47:23.6332720Z 
+2026-10-02T22:47:23.6365730Z ExecuteExternalTool /Applications/Xcode_16.4.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+2026-10-02T22:47:23.6437020Z 
+2026-10-02T22:47:23.6441450Z ExecuteExternalTool /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+2026-10-02T22:47:24.8301530Z 
+2026-10-02T22:47:24.8562950Z ExecuteExternalTool /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+2026-10-02T22:47:25.1008020Z 
+2026-10-02T22:47:25.1381300Z Build description signature: e39ddc4e77b05463891aba3738b26f32
+2026-10-02T22:47:25.1483390Z Build description path: /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/XCBuildData/e39ddc4e77b05463891aba3738b26f32.xcbuilddata
+2026-10-02T22:47:25.1965040Z ClangStatCache /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/SDKStatCaches.noindex/appletvsimulator18.5-22L572-45e3d637a49aeea14e0d712efcf6049d.sdkstatcache
+2026-10-02T22:47:25.2068630Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV.xcodeproj
+2026-10-02T22:47:25.2180530Z     /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -o /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/SDKStatCaches.noindex/appletvsimulator18.5-22L572-45e3d637a49aeea14e0d712efcf6049d.sdkstatcache
+2026-10-02T22:47:27.9412580Z 
+2026-10-02T22:47:27.9413880Z CreateBuildDirectory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products
+2026-10-02T22:47:27.9414830Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV.xcodeproj
+2026-10-02T22:47:27.9415530Z     builtin-create-build-directory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products
+2026-10-02T22:47:27.9416030Z 
+2026-10-02T22:47:27.9416440Z CreateBuildDirectory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex
+2026-10-02T22:47:27.9417290Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV.xcodeproj
+2026-10-02T22:47:27.9418000Z     builtin-create-build-directory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex
+2026-10-02T22:47:27.9420810Z 
+2026-10-02T22:47:27.9421220Z CreateBuildDirectory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator
+2026-10-02T22:47:27.9421860Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV.xcodeproj
+2026-10-02T22:47:27.9422480Z     builtin-create-build-directory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator
+2026-10-02T22:47:27.9423080Z 
+2026-10-02T22:47:27.9423910Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV-79035c24c7673ce3554df58e902533f5-VFS-appletvsimulator/all-product-headers.yaml
+2026-10-02T22:47:27.9424870Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV.xcodeproj
+2026-10-02T22:47:27.9425880Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV-79035c24c7673ce3554df58e902533f5-VFS-appletvsimulator/all-product-headers.yaml
+2026-10-02T22:47:27.9426680Z 
+2026-10-02T22:47:27.9427130Z CreateBuildDirectory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-appletvsimulator
+2026-10-02T22:47:27.9427790Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV.xcodeproj
+2026-10-02T22:47:27.9428550Z     builtin-create-build-directory /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-appletvsimulator
+2026-10-02T22:47:27.9429110Z 
+2026-10-02T22:47:27.9429840Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV_const_extract_protocols.json (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9430920Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9431840Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV_const_extract_protocols.json
+2026-10-02T22:47:27.9432520Z 
+2026-10-02T22:47:27.9433680Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.SwiftFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9434790Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9435560Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.SwiftFileList
+2026-10-02T22:47:27.9436250Z 
+2026-10-02T22:47:27.9437080Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.SwiftConstValuesFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9438170Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9438990Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.SwiftConstValuesFileList
+2026-10-02T22:47:27.9439790Z 
+2026-10-02T22:47:27.9440560Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.LinkFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9441490Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9442360Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.LinkFileList
+2026-10-02T22:47:27.9445180Z 
+2026-10-02T22:47:27.9446210Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-OutputFileMap.json (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9448660Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9449620Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-OutputFileMap.json
+2026-10-02T22:47:27.9450360Z 
+2026-10-02T22:47:27.9451160Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV_const_extract_protocols.json (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9452430Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9453630Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV_const_extract_protocols.json
+2026-10-02T22:47:27.9454380Z 
+2026-10-02T22:47:27.9455150Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.SwiftFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9456150Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9456960Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.SwiftFileList
+2026-10-02T22:47:27.9457710Z 
+2026-10-02T22:47:27.9458510Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.SwiftConstValuesFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9460010Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9461150Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.SwiftConstValuesFileList
+2026-10-02T22:47:27.9461930Z 
+2026-10-02T22:47:27.9462710Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.LinkFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9463700Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9464490Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.LinkFileList
+2026-10-02T22:47:27.9465350Z 
+2026-10-02T22:47:27.9466550Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-OutputFileMap.json (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9467580Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9468420Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-OutputFileMap.json
+2026-10-02T22:47:27.9469180Z 
+2026-10-02T22:47:27.9470360Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV.hmap (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9471470Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9472680Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV.hmap
+2026-10-02T22:47:27.9473280Z 
+2026-10-02T22:47:27.9473990Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV.DependencyStaticMetadataFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9475000Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9475820Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV.DependencyStaticMetadataFileList
+2026-10-02T22:47:27.9476450Z 
+2026-10-02T22:47:27.9477200Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV.DependencyMetadataFileList (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9478240Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9478970Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV.DependencyMetadataFileList
+2026-10-02T22:47:27.9479660Z 
+2026-10-02T22:47:27.9480380Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-project-headers.hmap (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9481340Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9482390Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-project-headers.hmap
+2026-10-02T22:47:27.9484150Z 
+2026-10-02T22:47:27.9484910Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-own-target-headers.hmap (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9485860Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9486840Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-own-target-headers.hmap
+2026-10-02T22:47:27.9488730Z 
+2026-10-02T22:47:27.9489510Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-generated-files.hmap (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9490480Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9491370Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-generated-files.hmap
+2026-10-02T22:47:27.9492030Z 
+2026-10-02T22:47:27.9492770Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-target-headers.hmap (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9493680Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9494550Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-target-headers.hmap
+2026-10-02T22:47:27.9495570Z 
+2026-10-02T22:47:27.9496660Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-non-framework-target-headers.hmap (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9497930Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9498850Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-non-framework-target-headers.hmap
+2026-10-02T22:47:27.9499590Z 
+2026-10-02T22:47:27.9500350Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibPath-normal-x86_64.txt (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9501280Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9502130Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibPath-normal-x86_64.txt
+2026-10-02T22:47:27.9502820Z 
+2026-10-02T22:47:27.9503510Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibPath-normal-arm64.txt (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9504500Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9505340Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibPath-normal-arm64.txt
+2026-10-02T22:47:27.9506030Z 
+2026-10-02T22:47:27.9506800Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibInstallName-normal-x86_64.txt (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9507700Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9508500Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibInstallName-normal-x86_64.txt
+2026-10-02T22:47:27.9509130Z 
+2026-10-02T22:47:27.9510090Z WriteAuxiliaryFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibInstallName-normal-arm64.txt (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9511050Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9511930Z     write-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-DebugDylibInstallName-normal-arm64.txt
+2026-10-02T22:47:27.9512760Z 
+2026-10-02T22:47:27.9513200Z MkDir /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9513830Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9514340Z     /bin/mkdir -p /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app
+2026-10-02T22:47:27.9514750Z 
+2026-10-02T22:47:27.9515430Z Ld /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/Binary/__preview.dylib normal x86_64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9554680Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9558100Z     /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target x86_64-apple-tvos17.0-simulator -dynamiclib -isysroot /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -O0 -L/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -F/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -install_name @rpath/MadeiraTV.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV_dependency_info.dat -o /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/Binary/__preview.dylib
+2026-10-02T22:47:27.9561990Z 
+2026-10-02T22:47:27.9562800Z Ld /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/Binary/__preview.dylib normal arm64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9563650Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9566890Z     /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-tvos17.0-simulator -dynamiclib -isysroot /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -O0 -L/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -F/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -install_name @rpath/MadeiraTV.debug.dylib -dead_strip -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -dependency_info -Xlinker /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV_dependency_info.dat -o /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/Binary/__preview.dylib
+2026-10-02T22:47:27.9570320Z 
+2026-10-02T22:47:27.9571300Z MkDir /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/unthinned (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9572190Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9572990Z     /bin/mkdir -p /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/unthinned
+2026-10-02T22:47:27.9573620Z 
+2026-10-02T22:47:27.9574290Z MkDir /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/thinned (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9575170Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9576010Z     /bin/mkdir -p /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/thinned
+2026-10-02T22:47:27.9576690Z 
+2026-10-02T22:47:27.9577150Z GenerateAssetSymbols /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9577820Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9583700Z     /Applications/Xcode_16.4.app/Contents/Developer/usr/bin/actool /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets --compile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_dependencies --output-partial-info-plist /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region en --leaderboard-identifier-prefix MadeiraTV.game-center.leaderboard. --leaderboard-set-identifier-prefix MadeiraTV.game-center.leaderboard-set. --target-device tv --minimum-deployment-target 17.0 --platform appletvsimulator --bundle-identifier com.madeira.tvos --generate-swift-asset-symbol-extensions NO --generate-swift-asset-symbols /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+2026-10-02T22:47:27.9589580Z /* com.apple.actool.document.warnings */
+2026-10-02T22:47:27.9590360Z /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets:./AppIcon.appiconset/[][tv][1280x768][][][1x][][][][][2d][(null)]: warning: The app icon set "AppIcon" has an unassigned child.
+2026-10-02T22:47:27.9591100Z /* com.apple.actool.compilation-results */
+2026-10-02T22:47:27.9591930Z /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+2026-10-02T22:47:27.9593100Z /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols.h
+2026-10-02T22:47:27.9594230Z /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols.swift
+2026-10-02T22:47:27.9594900Z 
+2026-10-02T22:47:27.9594900Z 
+2026-10-02T22:47:27.9595950Z CompileAssetCatalogVariant thinned /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9596850Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9600390Z     /Applications/Xcode_16.4.app/Contents/Developer/usr/bin/actool /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets --compile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --development-region en --leaderboard-identifier-prefix MadeiraTV.game-center.leaderboard. --leaderboard-set-identifier-prefix MadeiraTV.game-center.leaderboard-set. --target-device tv --minimum-deployment-target 17.0 --platform appletvsimulator
+2026-10-02T22:47:27.9604050Z /* com.apple.actool.notices */
+2026-10-02T22:47:27.9606410Z /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets: warning: Accent color âAccentColorâ is not present in any asset catalogs.
+2026-10-02T22:47:27.9607540Z /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets: warning: None of the input catalogs contained a matching App Icon & Top Shelf Image brand assets collection named "AppIcon"
+2026-10-02T22:47:27.9608320Z /* com.apple.actool.document.warnings */
+2026-10-02T22:47:27.9609060Z /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets:./AppIcon.appiconset/[][tv][1280x768][][][1x][][][][][2d][(null)]: warning: The app icon set "AppIcon" has an unassigned child.
+2026-10-02T22:47:27.9609750Z /* com.apple.actool.compilation-results */
+2026-10-02T22:47:27.9610500Z /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist_thinned
+2026-10-02T22:47:27.9611150Z 
+2026-10-02T22:47:27.9611150Z 
+2026-10-02T22:47:27.9611810Z CreateUniversalBinary /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app/__preview.dylib normal arm64\ x86_64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9612800Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9614980Z     /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/Binary/__preview.dylib /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/Binary/__preview.dylib -output /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app/__preview.dylib
+2026-10-02T22:47:27.9617510Z 
+2026-10-02T22:47:27.9617980Z LinkAssetCatalog /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Assets.xcassets (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9618600Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9624120Z     builtin-linkAssetCatalog --thinned /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/thinned --thinned-dependencies /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist_unthinned --output /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app --plist-output /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist
+2026-10-02T22:47:27.9629190Z 
+2026-10-02T22:47:27.9630010Z ProcessInfoPlistFile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app/Info.plist /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Info-TVP.plist (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9631250Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9633470Z     builtin-infoPlistUtility /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/Info-TVP.plist -producttype com.apple.product-type.application -genpkginfo /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app/PkgInfo -expandbuildsettings -format binary -platform appletvsimulator -additionalcontentfile /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/assetcatalog_generated_info.plist -o /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app/Info.plist
+2026-10-02T22:47:27.9635430Z 
+2026-10-02T22:47:27.9635790Z SwiftDriver MadeiraTV normal arm64 com.apple.xcode.tools.swift.compiler (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:27.9636410Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:27.9650050Z     builtin-SwiftDriver -- /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name MadeiraTV -Onone -enforce-exclusivity\=checked @/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -target arm64-apple-tvos17.0-simulator -g -module-cache-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Index.noindex/DataStore -swift-version 5 -I /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -F /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -emit-localized-strings -emit-localized-strings-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64 -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/SDKStatCaches.noindex/appletvsimulator18.5-22L572-45e3d637a49aeea14e0d712efcf6049d.sdkstatcache -output-file-map /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-generated-files.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-own-target-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-project-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/include -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/arm64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-Swift.h -working-directory /Users/runner/work/MadeiraTV/MadeiraTV/app -experimental-emit-module-separately -disable-cmo
+2026-10-02T22:47:28.0572190Z 
+2026-10-02T22:47:28.0572880Z SwiftDriver MadeiraTV normal x86_64 com.apple.xcode.tools.swift.compiler (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:28.0573770Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:28.0587690Z     builtin-SwiftDriver -- /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name MadeiraTV -Onone -enforce-exclusivity\=checked @/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -target x86_64-apple-tvos17.0-simulator -g -module-cache-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Index.noindex/DataStore -swift-version 5 -I /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -F /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -emit-localized-strings -emit-localized-strings-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64 -c -j3 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/SDKStatCaches.noindex/appletvsimulator18.5-22L572-45e3d637a49aeea14e0d712efcf6049d.sdkstatcache -output-file-map /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-generated-files.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-own-target-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-project-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/include -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources-normal/x86_64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/x86_64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-Swift.h -working-directory /Users/runner/work/MadeiraTV/MadeiraTV/app -experimental-emit-module-separately -disable-cmo
+2026-10-02T22:47:28.0610360Z 
+2026-10-02T22:47:28.0613050Z SwiftEmitModule normal x86_64 Emitting\ module\ for\ MadeiraTV (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:28.1344010Z 
+2026-10-02T22:47:28.1345400Z EmitSwiftModule normal x86_64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:28.1345950Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:28.1346400Z     
+2026-10-02T22:47:33.7101370Z /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Helpers/SteamLog.swift:17:26: error: cannot find 'SteamSignIn' in scope
+2026-10-02T22:47:33.7198130Z     static let tracing = SteamSignIn.flag("MADEIRA_STEAM_TRACE", default: false)
+2026-10-02T22:47:33.7198730Z                          ^~~~~~~~~~~
+2026-10-02T22:47:33.7199040Z 
+2026-10-02T22:47:33.7199210Z Failed frontend command:
+2026-10-02T22:47:33.7228250Z /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -emit-module -experimental-skip-non-inlinable-function-bodies-without-types /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/ContentDecryptor.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotDownloader.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotManifest.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/CMServerList.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/LicenseListBox.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamCMSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamConnection.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamError.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamProtocol.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Helpers/SteamLog.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Install/AppManifestWriter.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Library/SteamAppInfo.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Proto/SteamProtoMessages.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/MadeiraConfig.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SteamKeyValues.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SteamInstall.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/MadeiraTVApp.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/TVSessionModel.swift /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols.swift -target x86_64-apple-tvos17.0-simulator -enable-objc-interop -sdk /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -I /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -F /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -no-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/app -resource-dir /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift -enable-anonymous-context-mangled-names -file-compilation-dir /Users/runner/work/MadeiraTV/MadeiraTV/app -Xcc -ivfsstatcache -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/SDKStatCaches.noindex/appletvsimulator18.5-22L572-45e3d637a49aeea14e0d712efcf6049d.sdkstatcache -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-generated-files.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-own-target-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-project-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/include -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources-normal/x86_64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/x86_64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources -Xcc -DDEBUG\=1 -module-name MadeiraTV -frontend-parseable-output -disable-clang-spi -target-sdk-version 18.5 -target-sdk-name appletvsimulator18.5 -external-plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/lib/swift/host/plugins\#/Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/local/lib/swift/host/plugins\#/Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/bin/swift-plugin-server -in-process-plugin-server-path /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins -plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/lib/swift/host/plugins -emit-module-doc-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.swiftdoc -emit-module-source-info-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.swiftsourceinfo -emit-objc-header-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-Swift.h -serialize-diagnostics-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-master-emit-module.dia -emit-dependencies-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV-master-emit-module.d -o /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.swiftmodule -emit-abi-descriptor-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/x86_64/MadeiraTV.abi.json
+2026-10-02T22:47:33.7291220Z ** BUILD FAILED **
+2026-10-02T22:47:33.7300100Z 
+2026-10-02T22:47:33.7302920Z SwiftEmitModule normal arm64 Emitting\ module\ for\ MadeiraTV (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7303490Z 
+2026-10-02T22:47:33.7303700Z EmitSwiftModule normal arm64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7304370Z The following build commands failed:
+2026-10-02T22:47:33.7304710Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7306740Z 	EmitSwiftModule normal x86_64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7307610Z     
+2026-10-02T22:47:33.7308110Z 	SwiftEmitModule normal x86_64 Emitting\ module\ for\ MadeiraTV (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7309430Z /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Helpers/SteamLog.swift:17:26: error: cannot find 'SteamSignIn' in scope
+2026-10-02T22:47:33.7310170Z 	EmitSwiftModule normal arm64 (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7310580Z     static let tracing = SteamSignIn.flag("MADEIRA_STEAM_TRACE", default: false)
+2026-10-02T22:47:33.7318560Z 	SwiftEmitModule normal arm64 Emitting\ module\ for\ MadeiraTV (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7319390Z                          ^~~~~~~~~~~
+2026-10-02T22:47:33.7323070Z 	SwiftCompile normal x86_64 Compiling\ SteamConnection.swift,\ SteamError.swift,\ SteamMessageCodec.swift,\ SteamProtocol.swift,\ SteamSession.swift,\ SteamLog.swift,\ AppManifestWriter.swift,\ SteamAppInfo.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamConnection.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamError.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamProtocol.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Helpers/SteamLog.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Install/AppManifestWriter.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Library/SteamAppInfo.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7327110Z 
+2026-10-02T22:47:33.7331510Z 	Building project MadeiraTV with scheme MadeiraTV and configuration Debug
+2026-10-02T22:47:33.7331860Z Failed frontend command:
+2026-10-02T22:47:33.7332290Z (6 failures)
+2026-10-02T22:47:33.7363310Z /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -emit-module -experimental-skip-non-inlinable-function-bodies-without-types /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/ContentDecryptor.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotDownloader.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotManifest.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/CMServerList.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/LicenseListBox.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamCMSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamConnection.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamError.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamProtocol.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Helpers/SteamLog.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Install/AppManifestWriter.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Library/SteamAppInfo.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Library/SteamLibraryFetcher.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Proto/SteamProtoMessages.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/MadeiraConfig.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SteamKeyValues.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SteamInstall.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/MadeiraTVApp.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/MadeiraTV/TVSessionModel.swift /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/GeneratedAssetSymbols.swift -target arm64-apple-tvos17.0-simulator -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator18.5.sdk -I /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -F /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator -no-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/app -resource-dir /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift -enable-anonymous-context-mangled-names -file-compilation-dir /Users/runner/work/MadeiraTV/MadeiraTV/app -Xcc -ivfsstatcache -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/SDKStatCaches.noindex/appletvsimulator18.5-22L572-45e3d637a49aeea14e0d712efcf6049d.sdkstatcache -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-generated-files.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-own-target-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/MadeiraTV-project-headers.hmap -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Products/Debug-appletvsimulator/include -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources/arm64 -Xcc -I/Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/DerivedSources -Xcc -DDEBUG\=1 -module-name MadeiraTV -frontend-parseable-output -disable-clang-spi -target-sdk-version 18.5 -target-sdk-name appletvsimulator18.5 -external-plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/lib/swift/host/plugins\#/Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/local/lib/swift/host/plugins\#/Applications/Xcode_16.4.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/usr/bin/swift-plugin-server -in-process-plugin-server-path /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins -plugin-path /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/lib/swift/host/plugins -emit-module-doc-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.swiftdoc -emit-module-source-info-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.swiftsourceinfo -emit-objc-header-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-Swift.h -serialize-diagnostics-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-master-emit-module.dia -emit-dependencies-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV-master-emit-module.d -o /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.swiftmodule -emit-abi-descriptor-path /Users/runner/work/MadeiraTV/MadeiraTV/build/DerivedDataTV/Build/Intermediates.noindex/MadeiraTV.build/Debug-appletvsimulator/MadeiraTV.build/Objects-normal/arm64/MadeiraTV.abi.json
+2026-10-02T22:47:33.7421070Z SwiftCompile normal arm64 Compiling\ SteamAuthAPI.swift,\ SteamCredentialAuth.swift,\ SteamTokenStore.swift,\ ContentDecryptor.swift,\ DepotDownloader.swift,\ DepotManifest.swift,\ CMServerList.swift,\ LicenseListBox.swift,\ SteamCMSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/ContentDecryptor.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotDownloader.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotManifest.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/CMServerList.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/LicenseListBox.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamCMSession.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7425530Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamAuthAPI.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7426200Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7426410Z     
+2026-10-02T22:47:33.7426480Z 
+2026-10-02T22:47:33.7426990Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamCredentialAuth.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7427660Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7427980Z     
+2026-10-02T22:47:33.7428190Z 
+2026-10-02T22:47:33.7428660Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Auth/SteamTokenStore.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7429470Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7429830Z     
+2026-10-02T22:47:33.7429900Z 
+2026-10-02T22:47:33.7432900Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/ContentDecryptor.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7433700Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7433990Z     
+2026-10-02T22:47:33.7434130Z 
+2026-10-02T22:47:33.7434660Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotDownloader.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7435380Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7435850Z     
+2026-10-02T22:47:33.7435980Z 
+2026-10-02T22:47:33.7436530Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Content/DepotManifest.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7437180Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7438030Z     
+2026-10-02T22:47:33.7438130Z 
+2026-10-02T22:47:33.7438610Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/CMServerList.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7439290Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7439510Z     
+2026-10-02T22:47:33.7439590Z 
+2026-10-02T22:47:33.7440050Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/LicenseListBox.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7440740Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7441050Z     
+2026-10-02T22:47:33.7441140Z 
+2026-10-02T22:47:33.7441580Z SwiftCompile normal arm64 /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamCMSession.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7442160Z     cd /Users/runner/work/MadeiraTV/MadeiraTV/app
+2026-10-02T22:47:33.7442360Z     
+2026-10-02T22:47:33.7442430Z 
+2026-10-02T22:47:33.7445180Z SwiftCompile normal x86_64 Compiling\ SteamConnection.swift,\ SteamError.swift,\ SteamMessageCodec.swift,\ SteamProtocol.swift,\ SteamSession.swift,\ SteamLog.swift,\ AppManifestWriter.swift,\ SteamAppInfo.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamConnection.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamError.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamMessageCodec.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamProtocol.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Core/SteamSession.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Helpers/SteamLog.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Install/AppManifestWriter.swift /Users/runner/work/MadeiraTV/MadeiraTV/app/Madeira/SwiftSteam/Library/SteamAppInfo.swift (in target 'MadeiraTV' from project 'MadeiraTV')
+2026-10-02T22:47:33.7448110Z Command SwiftCompile failed with a nonzero exit code
+2026-10-02T22:47:33.7448610Z 
+2026-10-02T22:47:33.7665820Z ##[error]Process completed with exit code 1.
+2026-10-02T22:47:33.7890890Z Post job cleanup.
+2026-10-02T22:47:34.1729620Z [command]/opt/homebrew/bin/git version
+2026-10-02T22:47:34.2272500Z git version 2.55.0
+2026-10-02T22:47:34.2298700Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/e1550748-627e-49fc-9974-bcbba683ccb9/.gitconfig'
+2026-10-02T22:47:34.2305650Z Temporarily overriding HOME='/Users/runner/work/_temp/e1550748-627e-49fc-9974-bcbba683ccb9' before making global git config changes
+2026-10-02T22:47:34.2306440Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-02T22:47:34.2308770Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-02T22:47:34.2425950Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-02T22:47:34.2484040Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-02T22:47:34.3454310Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-02T22:47:34.3459210Z http.https://github.com/.extraheader
+2026-10-02T22:47:34.3460440Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-02T22:47:34.3565370Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-02T22:47:34.4280750Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-02T22:47:34.4380470Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-02T22:47:34.5303070Z Cleaning up orphan processes
+2026-10-02T22:47:34.5927940Z Terminate orphan process: pid (3904) (ibtoold)
+2026-10-02T22:47:35.1550410Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

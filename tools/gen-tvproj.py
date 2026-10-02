@@ -30,6 +30,7 @@ portable = [
     'SwiftSteam/Library/SteamAppInfo.swift',
     'SwiftSteam/Library/SteamLibraryFetcher.swift',
     'SwiftSteam/Proto/SteamProtoMessages.swift',
+    'SwiftSteam/SteamSignIn.swift',
     'MadeiraConfig.swift',
     'SteamKeyValues.swift',
     'SteamInstall.swift',
@@ -38,6 +39,7 @@ portable = [
 tv_files = [
     'MadeiraTVApp.swift',
     'TVSessionModel.swift',
+    'LogStore.swift',
 ]
 
 # Verify all referenced files exist.
@@ -85,15 +87,14 @@ proj.append('\n/* Begin PBXFileReference section */')
 for f in portable:
     name = os.path.basename(f)
     fr = file_refs[f]
-    # path is relative to the folder CONTAINING the .xcodeproj,
-    # and app/MadeiraTV.xcodeproj sits inside app/, so files are ../Madeira/...
-    proj.append(f'\t\t{fr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "{name}"; path = "../Madeira/{f}"; sourceTree = "<group>"; }};')
+    # Inside group Madeira (path=Madeira, i.e. app/Madeira), so relative to it.
+    proj.append(f'\t\t{fr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
 for f in tv_files:
     fr = file_refs[f]
-    proj.append(f'\t\t{fr} /* {f} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "{f}"; path = "../MadeiraTV/{f}"; sourceTree = "<group>"; }};')
-proj.append(f'\t\t{assets_ref} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "../MadeiraTV/Assets.xcassets"; sourceTree = "<group>"; }};')
+    proj.append(f'\t\t{fr} /* {f} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{f}"; sourceTree = "<group>"; }};')
+proj.append(f'\t\t{assets_ref} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; }};')
 info_ref = uid('fr-info')
-proj.append(f'\t\t{info_ref} /* Info-TVP.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "../MadeiraTV/Info-TVP.plist"; sourceTree = "<group>"; }};')
+proj.append(f'\t\t{info_ref} /* Info-TVP.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info-TVP.plist; sourceTree = "<group>"; }};')
 product_ref = uid('fr-app')
 proj.append(f'\t\t{product_ref} /* MadeiraTV.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; }};')
 proj.append('/* End PBXFileReference section */')
@@ -135,7 +136,7 @@ for f in portable:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs[f]} /* {name} */,')
 proj.append('\t\t\t);')
-proj.append('\t\t\tname = Madeira;')
+proj.append('\t\t\tpath = Madeira;')
 proj.append('\t\t\tsourceTree = "<group>";')
 proj.append('\t\t};')
 
@@ -147,7 +148,7 @@ for f in tv_files:
 proj.append(f'\t\t\t\t{assets_ref} /* Assets.xcassets */,')
 proj.append(f'\t\t\t\t{info_ref} /* Info-TVP.plist */,')
 proj.append('\t\t\t);')
-proj.append('\t\t\tname = MadeiraTV;')
+proj.append('\t\t\tpath = MadeiraTV;')
 proj.append('\t\t\tsourceTree = "<group>";')
 proj.append('\t\t};')
 
