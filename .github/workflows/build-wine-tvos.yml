@@ -1,0 +1,63 @@
+name: Build Wine unix for tvOS (Phase 2, step 2)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  wine-tvos:
+    name: Configure + build Wine unix libs for tvOS
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          submodule-depth: 1
+
+      - name: Show environment
+        run: |
+          xcodebuild -version
+          xcrun --sdk appletvos --show-sdk-version
+          xcrun --sdk appletvsimulator --show-sdk-version
+          python3 --version
+
+      - name: Configure wine build-macos for tvOS
+        run: |
+          set -o pipefail
+          mkdir -p build
+          SDK="$(xcrun --sdk appletvos --show-sdk-path)"
+          CC="$(xcrun --sdk appletvos --find clang)"
+          cd wine
+          mkdir -p build-macos
+          cd build-macos
+          # --host=arm64-apple-darwin21 makes configure treat us as Darwin arm64.
+          # CFLAGS point clang at the tvOS SDK; LDFLAGS too.
+          ../configure \
+            --host=arm64-apple-darwin21 \
+            --without-x \
+            --without-freetype \
+            --without-fontconfig \
+            --disable-tests \
+            --disable-win16 \
+            --without-vulkan \
+            --without-opengl \
+            --enable-wineandroid=no \
+            CC="$CC" \
+            CPPFLAGS="-isysroot $SDK -arch arm64 -mtvos-version-min=17.0 -DWINE_TVOS=1" \
+            CFLAGS="-isysroot $SDK -arch arm64 -mtvos-version-min=17.0 -O2" \
+            CXXFLAGS="-isysroot $SDK -arch arm64 -mtvos-version-min=17.0 -O2" \
+            LDFLAGS="-isysroot $SDK -arch arm64" 2>&1 | tee ../build-macos-config.log
+          echo "=== configure rc=${PIPESTATUS[0]} ==="
+          ls include/config.h >/dev/null && echo "config.h OK" || echo "NO config.h"
+
+      - name: Upload wine configure log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wine-tvos-configure-artifacts
+          path: |
+            wine/build-macos/include/config.h
+            wine/build-macos-config.log
+          if-no-files-found: warn
