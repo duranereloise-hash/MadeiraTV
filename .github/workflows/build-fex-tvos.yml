@@ -21,6 +21,7 @@ jobs:
           xcodebuild -version
           cmake --version | head -2
           xcrun --sdk appletvos --show-sdk-version
+          pip3 install --quiet packaging setuptools 2>&1 | tail -2 || true
 
       - name: Patch FEX CMake for tvOS
         run: |
@@ -52,6 +53,7 @@ jobs:
             -DCMAKE_C_COMPILER="$CC_BIN" \
             -DCMAKE_CXX_COMPILER="$CXX_BIN" \
             -DFEX_IOS_HOST_BUILD=ON \
+            -DTUNE_CPU=none \
             -DCMAKE_C_FLAGS="-DFEX_IOS_HOST" \
             -DCMAKE_CXX_FLAGS="-DFEX_IOS_HOST" \
             -DBUILD_TESTING=OFF -DBUILD_THUNKS=OFF -DBUILD_FEXCONFIG=OFF \
