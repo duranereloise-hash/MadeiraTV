@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Server-side request handling
  *
  * Copyright (C) 1998 Alexandre Julliard
@@ -20,6 +20,7 @@
 
 #include "config.h"
 
+#include <TargetConditionals.h>
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -157,7 +158,7 @@ void fatal_protocol_error( struct thread *thread, const char *err, ... )
 }
 
 /* die on a fatal error */
-/* fatal_error is provided by WineServerBridge.m — uses ws_log + pthread_exit
+/* fatal_error is provided by WineServerBridge.m вЂ” uses ws_log + pthread_exit
  * instead of exit(1) which would kill the entire app on iOS */
 
 /* allocate the reply data */
@@ -401,7 +402,7 @@ void read_request( struct thread *thread )
 error:
     if (!ret)  /* closed pipe */
     {
-        /* ml586: this kill was previously SILENT — the 0060-family autopsy
+        /* ml586: this kill was previously SILENT вЂ” the 0060-family autopsy
          * needs the fd number and tid on every request-channel death */
         fprintf( stderr, "[srv-own] read_request EOF tid=%04x pid=%04x request_unixfd=%d -> kill_thread rev=ml586\n",
                  thread->id, thread->process->id, get_unix_fd( thread->request_fd ) );
@@ -458,7 +459,7 @@ int receive_fd( struct process *process )
 
         if (!thread || thread->process != process || thread->state == TERMINATED)
         {
-            /* ml586: previously silent (debug_level off) — a misrouted send_fd
+            /* ml586: previously silent (debug_level off) вЂ” a misrouted send_fd
              * (client picked the wrong master socket) dies exactly here */
             fprintf( stderr, "[srv-own] receive_fd BAD tid=%04x on pid=%04x client_fd=%d server_dup=%d cause=%s rev=ml586\n",
                      data.tid, process->id, data.fd, fd,
@@ -471,7 +472,7 @@ int receive_fd( struct process *process )
             if (debug_level)
                 fprintf( stderr, "%04x: *fd* %d <- %d\n",
                          thread->id, data.fd, fd );
-            /* ml586: log pipe/socket receipts — these are thread comm fds; the
+            /* ml586: log pipe/socket receipts вЂ” these are thread comm fds; the
              * pid field catches deliveries arriving on the wrong master socket */
             if (fd != -1 && !fstat( fd, &fdt_st ) && (S_ISFIFO(fdt_st.st_mode) || S_ISSOCK(fdt_st.st_mode)))
                 fprintf( stderr, "[srv-own] receive_fd tid=%04x pid=%04x client_fd=%d server_dup=%d kind=%s rev=ml586\n",
@@ -515,7 +516,7 @@ int send_client_fd( struct process *process, int fd, obj_handle_t handle )
     struct cmsghdr *cmsg;
     int ret;
 
-    /* task #24: include requester identity — the settings-freeze loop
+    /* task #24: include requester identity вЂ” the settings-freeze loop
      * resends the same handle forever; tid names the retrying thread and
      * process id disambiguates which pseudo-process's msg socket this is. */
     ws_log("[wineserver] send_client_fd: fd=%d handle=0x%x msg_fd_unix=%d proc=%04x tid=%04x",
@@ -635,7 +636,7 @@ static void master_socket_poll_event( struct fd *fd, int event )
                        master_fd, errno, strerror(errno), accept_fail_count);
             return;
         }
-        /* Raw write to stderr — bypasses ws_log mutex in case of deadlock */
+        /* Raw write to stderr вЂ” bypasses ws_log mutex in case of deadlock */
         {
             char abuf[128];
             int alen = snprintf(abuf, sizeof(abuf), "[wineserver] RAW: ACCEPTED fd=%d\n", client);
@@ -986,7 +987,7 @@ void open_master_socket(void)
 
     server_dir = create_server_dir( 1 );
 
-    if (!foreground)
+    if (!foreground && !TARGET_OS_TV)
     {
         if (pipe( sync_pipe ) == -1) fatal_error( "pipe: %s\n", strerror( errno ));
         pid = fork();
@@ -1037,7 +1038,7 @@ void open_master_socket(void)
 /* master socket timer expiration handler */
 static void close_socket_timeout( void *arg )
 {
-    /* RAW write — this is our prime suspect for thread death */
+    /* RAW write вЂ” this is our prime suspect for thread death */
     {
         char buf[128];
         int len = snprintf(buf, sizeof(buf), "[wineserver] RAW: close_socket_timeout FIRED! pthread_exit coming\n");
@@ -1045,7 +1046,7 @@ static void close_socket_timeout( void *arg )
     }
     master_timeout = NULL;
     flush_registry();
-    ws_log("[wineserver] close_socket_timeout fired — calling pthread_exit");
+    ws_log("[wineserver] close_socket_timeout fired вЂ” calling pthread_exit");
 
 #ifdef DEBUG_OBJECTS
     close_objects();  /* shut down everything properly */
