@@ -40,6 +40,29 @@
 #include <dlfcn.h>
 #include <mach/mach.h>
 
+/* tvOS marks mach_msg unavailable, but the syscall exists in the kernel
+ * (StikDebug-style exception delivery needs it). Route through dlsym so the
+ * move to tvOS compiles; the symbol resolves at runtime on every Darwin OS. */
+#if TARGET_OS_TV
+#define mach_msg madeira_tvos_mach_msg
+static inline mach_msg_return_t madeira_tvos_mach_msg(mach_msg_header_t *msg,
+                                                      mach_msg_option_t option,
+                                                      mach_msg_size_t send_size,
+                                                      mach_msg_size_t rcv_size,
+                                                      mach_port_name_t rcv_name,
+                                                      mach_msg_timeout_t timeout,
+                                                      mach_port_name_t notify)
+{
+    typedef mach_msg_return_t (*mach_msg_fn)(mach_msg_header_t *, mach_msg_option_t,
+                                             mach_msg_size_t, mach_msg_size_t,
+                                             mach_port_name_t, mach_msg_timeout_t,
+                                             mach_port_name_t);
+    static mach_msg_fn fn = (mach_msg_fn)dlsym(RTLD_DEFAULT, "mach_msg");
+    if (!fn) return MACH_SEND_INVALID_DEST;
+    return fn(msg, option, send_size, rcv_size, rcv_name, timeout, notify);
+}
+#endif
+
 /* iOS-Madeira ml674: XZR/WZR AS A STORE SOURCE MUST READ ZERO.
  *
  * arm_thread_state64_t is  __uint64_t __x[29]  followed by __fp, __lr, __sp --

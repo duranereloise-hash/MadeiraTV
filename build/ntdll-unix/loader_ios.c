@@ -767,6 +767,7 @@ char *get_alternate_wineloader( WORD machine )
 
 static void preloader_exec( char **argv )
 {
+#if !TARGET_OS_TV
 #ifdef HAVE_WINE_PRELOADER
     asprintf( &argv[0], "%s-preloader", argv[1] );
 #ifdef __APPLE__
@@ -782,6 +783,12 @@ static void preloader_exec( char **argv )
     free( argv[0] );
 #endif
     execv( argv[1], argv + 1 );
+#else
+    /* tvOS cannot spawn processes (single-process model like iOS).
+     * This path is dead on tvOS: Wine nil-thunks process creation. */
+    (void)argv;
+    abort();
+#endif
 }
 
 /* exec the appropriate wine loader for the specified machine */
