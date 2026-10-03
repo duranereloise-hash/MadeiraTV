@@ -26,17 +26,27 @@ jobs:
           bash build/gnutls-ios/build-tvos.sh 2>&1 | tee build/gnutls-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
 
-      - name: List gnutls-tvos output
+      - name: Build FFmpeg for tvOS
         run: |
-          ls -la toolchains/gnutls-tvos/lib/*.a 2>/dev/null || echo "no libs"
+          set -o pipefail
+          chmod +x build/ffmpeg/build-tvos.sh
+          bash build/ffmpeg/build-tvos.sh 2>&1 | tee build/ffmpeg-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: List outputs
+        run: |
+          ls -la toolchains/gnutls-tvos/lib/*.a 2>/dev/null || echo "no gnutls libs"
+          ls -la toolchains/ffmpeg-tvos/lib/*.a 2>/dev/null || echo "no ffmpeg libs"
           ls toolchains/gnutls-tvos/include 2>/dev/null | head
 
-      - name: Upload GnuTLS artifacts
+      - name: Upload toolchain artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gnutls-tvos
+          name: toolchains-tvos
           path: |
             toolchains/gnutls-tvos/**
+            toolchains/ffmpeg-tvos/**
             build/gnutls-tvos.log
+            build/ffmpeg-tvos.log
           if-no-files-found: warn
