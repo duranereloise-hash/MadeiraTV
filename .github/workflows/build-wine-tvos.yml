@@ -69,12 +69,31 @@ jobs:
           make tools/winebuild/winebuild tools/widl/widl 2>&1 | tail -20
           ls -la tools/winebuild/winebuild tools/widl/widl 2>/dev/null || echo "tools missing"
 
+      - name: Configure wine build-arm64ec (PE headers for winegstreamer)
+        run: |
+          set -o pipefail
+          cd wine
+          export PATH="$PWD/../toolchains/llvm-mingw-20260421-ucrt-macos-universal/bin:$PATH"
+          mkdir -p build-arm64ec
+          cd build-arm64ec
+          if [ ! -f config.status ]; then
+            ../configure --enable-archs=arm64ec --without-x --disable-tests --without-freetype --without-vulkan --without-opengl 2>&1 | tail -20
+          fi
+          ls include/wtypes.h >/dev/null && echo "wtypes.h OK" || echo "no wtypes.h"
+
       - name: Build GnuTLS stack for tvOS
         run: |
           set -o pipefail
           chmod +x build/gnutls-ios/build-tvos.sh
           bash build/gnutls-ios/build-tvos.sh > build/gnutls-tvos.log 2>&1 || { tail -30 build/gnutls-tvos.log; exit 1; }
           echo "gnutls ok"
+
+      - name: Build freetype for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/freetype-ios/build-tvos.sh
+          bash build/freetype-ios/build-tvos.sh > build/freetype-tvos.log 2>&1 || { tail -30 build/freetype-tvos.log; exit 1; }
+          echo "freetype ok"
 
       - name: Build FFmpeg for tvOS
         run: |
@@ -96,6 +115,7 @@ jobs:
             -e 's|-miphoneos-version-min=| -mtvos-version-min=|g' \
             -e 's|toolchains/gnutls-ios|toolchains/gnutls-tvos|g' \
             -e 's|toolchains/ffmpeg-ios|toolchains/ffmpeg-tvos|g' \
+            -e 's|research/freetype/include|toolchains/freetype-tvos/include|g' \
             build/ntdll-unix/build.sh
           bash build/ntdll-unix/build.sh 2>&1 | tee build/ntdll-unix-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
