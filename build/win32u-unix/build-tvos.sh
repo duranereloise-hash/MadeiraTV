@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # Build Wine's win32u unix side as a static lib for iOS (aarch64).
 # Mirrors build/ntdll-unix/build.sh вЂ” compiles unpatched upstream .c files
 # with iOS clang, per-file overrides go in this dir.
