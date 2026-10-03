@@ -1,0 +1,60 @@
+name: Build DXMT for tvOS (Phase 2, step 4)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dxmt-tvos:
+    name: Build DXMT (D3D9/10/11 -> Metal) static libs for tvOS
+    runs-on: macos-15
+    timeout-minutes: 240
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch dxmt submodule
+        run: |
+          git submodule init dxmt
+          git config submodule.dxmt.url https://github.com/willfaust/dxmt.git
+          git -c protocol.version=2 submodule update --init --depth 1 dxmt
+          git -C dxmt log --oneline -1
+
+      - name: Show env
+        run: |
+          xcodebuild -version
+          xcrun --sdk appletvos --show-sdk-version
+
+      - name: Build LLVM for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/llvm-tvos/build.sh
+          bash build/llvm-tvos/build.sh 2>&1 | tee build/llvm-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: Build DXMT for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/dxmt-ios/build-tvos.sh
+          MADEIRA_ALLOW_NO_D3D12=1 bash build/dxmt-ios/build-tvos.sh 2>&1 | tee build/dxmt-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: List outputs
+        run: |
+          ls -la build/dxmt-ios/libdxmt_unix_tvos.a 2>/dev/null || echo "no dxmt unix lib"
+          find build/dxmt-ios/obj-tvos -name '*.o' | wc -l
+          tail -30 build/dxmt-tvos.log 2>/dev/null
+
+      - name: Upload DXMT artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dxmt-tvos
+          path: |
+            build/dxmt-ios/libdxmt_unix_tvos.a
+            build/dxmt-ios/libdxmt_combined_tvos.a
+            build/dxmt-ios/obj-tvos/*.err
+            build/dxmt-tvos.log
+            build/llvm-tvos.log
+          if-no-files-found: warn
