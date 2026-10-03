@@ -44,6 +44,7 @@ jobs:
           # Detect whether CMake accepts iOS system name + tvOS sysroot
           cmake -S "$R/FEX" -B "$B" \
             -DCMAKE_SYSTEM_NAME=tvOS \
+            -DCMAKE_SYSTEM_PROCESSOR=arm64 \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
             -DCMAKE_OSX_SYSROOT=appletvos \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \
