@@ -34,6 +34,33 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <time.h>
+#include <TargetConditionals.h>
+
+/* tvOS SDK marks some Mach IPC helpers unavailable although the kernel
+ * syscalls exist. Route through dlsym like signal_arm64_ios.c does. */
+#if TARGET_OS_TV
+#define task_get_bootstrap_port madeira_tvos_task_get_bootstrap_port
+static inline kern_return_t madeira_tvos_task_get_bootstrap_port(mach_port_t task,
+                                                                 mach_port_t *bootstrap_port)
+{
+    typedef kern_return_t (*fn_t)(mach_port_t, mach_port_t *);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "task_get_bootstrap_port");
+    if (!fn) return KERN_FAILURE;
+    return fn(task, bootstrap_port);
+}
+#define task_get_special_port madeira_tvos_task_get_special_port
+static inline kern_return_t madeira_tvos_task_get_special_port(mach_port_t task,
+                                                               int which_port,
+                                                               mach_port_t *port)
+{
+    typedef kern_return_t (*fn_t)(mach_port_t, int, mach_port_t *);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "task_get_special_port");
+    if (!fn) return KERN_FAILURE;
+    return fn(task, which_port, port);
+}
+#endif
 /* From signal_arm64_ios.c — written by __wine_syscall_dispatcher at entry */
 extern volatile uint64_t g_wine_dispatcher_x18;
 extern volatile uint64_t g_wine_dispatcher_count;

@@ -39,10 +39,12 @@
 #ifdef WINE_IOS
 #include <dlfcn.h>
 #include <mach/mach.h>
+#include <TargetConditionals.h>
 
-/* tvOS marks mach_msg unavailable, but the syscall exists in the kernel
- * (StikDebug-style exception delivery needs it). Route through dlsym so the
- * move to tvOS compiles; the symbol resolves at runtime on every Darwin OS. */
+/* tvOS marks mach_msg/task_swap_exception_ports unavailable, but the syscalls
+ * exist in the kernel (StikDebug-style exception delivery needs them). Route
+ * through dlsym so the move to tvOS compiles; symbols resolve at runtime on
+ * every Darwin OS. */
 #if TARGET_OS_TV
 #define mach_msg madeira_tvos_mach_msg
 static inline mach_msg_return_t madeira_tvos_mach_msg(mach_msg_header_t *msg,
@@ -57,9 +59,34 @@ static inline mach_msg_return_t madeira_tvos_mach_msg(mach_msg_header_t *msg,
                                              mach_msg_size_t, mach_msg_size_t,
                                              mach_port_name_t, mach_msg_timeout_t,
                                              mach_port_name_t);
-    static mach_msg_fn fn = (mach_msg_fn)dlsym(RTLD_DEFAULT, "mach_msg");
+    static mach_msg_fn fn;
+    if (!fn) fn = (mach_msg_fn)dlsym(RTLD_DEFAULT, "mach_msg");
     if (!fn) return MACH_SEND_INVALID_DEST;
     return fn(msg, option, send_size, rcv_size, rcv_name, timeout, notify);
+}
+
+#define task_swap_exception_ports madeira_tvos_task_swap_exception_ports
+static inline kern_return_t madeira_tvos_task_swap_exception_ports(mach_port_t task,
+                                                                   exception_mask_t exception_mask,
+                                                                   mach_port_t new_port,
+                                                                   exception_behavior_t behavior,
+                                                                   thread_state_flavor_t new_flavor,
+                                                                   exception_mask_array_t masks,
+                                                                   mach_msg_type_number_t *masks_count,
+                                                                   mach_port_array_t ports,
+                                                                   exception_behavior_array_t behaviors,
+                                                                   thread_state_flavor_array_t flavors)
+{
+    typedef kern_return_t (*fn_t)(mach_port_t, exception_mask_t, mach_port_t,
+                                  exception_behavior_t, thread_state_flavor_t,
+                                  exception_mask_array_t, mach_msg_type_number_t *,
+                                  mach_port_array_t, exception_behavior_array_t,
+                                  thread_state_flavor_array_t);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "task_swap_exception_ports");
+    if (!fn) return KERN_FAILURE;
+    return fn(task, exception_mask, new_port, behavior, new_flavor,
+              masks, masks_count, ports, behaviors, flavors);
 }
 #endif
 
