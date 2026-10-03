@@ -124,6 +124,21 @@ jobs:
           bash build/ntdll-unix/build.sh 2>&1 | tee build/ntdll-unix-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
 
+      - name: Build wineserver for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/wineserver/build-tvos-full.sh
+          bash build/wineserver/build-tvos-full.sh 2>&1 | tee build/wineserver-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: Build win32u-unix for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/win32u-unix/build-tvos.sh
+          # expose freetype prefix under the same layout win32u expects
+          bash build/win32u-unix/build-tvos.sh 2>&1 | tee build/win32u-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
       - name: Upload ntdll-unix artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -133,5 +148,11 @@ jobs:
             build/ntdll-unix/obj/*.a
             build/ntdll-unix/obj/*.err
             app/Madeira/libntdll_unix.a
+            app/Madeira/libwineserver.a
+            app/Madeira/libwin32u_unix.a
+            build/wineserver/obj-tvos/*.err
+            build/wineserver-tvos.log
+            build/win32u-unix/obj-tvos/*.err
+            build/win32u-tvos.log
             build/ntdll-unix-tvos.log
           if-no-files-found: warn
