@@ -987,7 +987,8 @@ void open_master_socket(void)
 
     server_dir = create_server_dir( 1 );
 
-    if (!foreground && !TARGET_OS_TV)
+    #if !TARGET_OS_TV
+    if (!foreground)
     {
         if (pipe( sync_pipe ) == -1) fatal_error( "pipe: %s\n", strerror( errno ));
         pid = fork();
@@ -1026,6 +1027,7 @@ void open_master_socket(void)
         }
     }
     else  /* remain in the foreground */
+#endif
     {
         acquire_lock();
     }
