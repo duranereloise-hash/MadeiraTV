@@ -33,16 +33,16 @@ cd "$LLVM_BUILD"
 cmake -S "$LLVM_SRC/llvm" -B . \
     -DCMAKE_SYSTEM_NAME=tvOS \
     -DCMAKE_OSX_ARCHITECTURES=arm64 \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \
     -DCMAKE_OSX_SYSROOT="$(xcrun --sdk appletvos --show-sdk-path)" \
     -DCMAKE_BUILD_TYPE=Release \
-    -DLLVM_HOST_TRIPLE=arm64-apple-tvos17.0 \
-    -DLLVM_DEFAULT_TARGET_TRIPLE=arm64-apple-tvos17.0 \
-    -DLLVM_TARGET_ARCH=host \
-    -DLLVM_TARGETS_TO_BUILD= \
-    -DLLVM_ENABLE_PROJECTS= \
+    -DLLVM_TARGETS_TO_BUILD="AArch64" \
+    -DLLVM_ENABLE_PROJECTS="" \
     -DLLVM_BUILD_TOOLS=Off \
     -DLLVM_INCLUDE_TESTS=Off \
-    -DLLVM_ENABLE_ZLIB=Off
+    -DLLVM_INCLUDE_BENCHMARKS=Off \
+    -DLLVM_ENABLE_ZLIB=Off \
+    -DLLVM_NATIVE_ARCH=AArch64 2>&1 | tail -30
 
 echo "=== building LLVM (tvOS) ==="
 cmake --build . -j$(sysctl -n hw.ncpu) 2>&1 | tail -20
