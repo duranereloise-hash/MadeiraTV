@@ -79,7 +79,9 @@ jobs:
           if [ ! -f config.status ]; then
             ../configure --enable-archs=arm64ec --without-x --disable-tests --without-freetype --without-vulkan --without-opengl 2>&1 | tail -20
           fi
-          ls include/wtypes.h >/dev/null && echo "wtypes.h OK" || echo "no wtypes.h"
+          # wtypes.h (and friends) are widl-generated in the build tree.
+          make -C include wtypes.h 2>&1 | tail -8 || true
+          ls include/wtypes.h >/dev/null 2>&1 && echo "wtypes.h OK" || echo "no wtypes.h"
 
       - name: Build GnuTLS stack for tvOS
         run: |

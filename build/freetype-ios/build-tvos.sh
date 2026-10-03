@@ -45,5 +45,10 @@ cmake -S "$SRC" -B "$BUILD_DIR/build-tvos" -G "Unix Makefiles" \
 
 cmake --build "$BUILD_DIR/build-tvos" -j8
 cmake --install "$BUILD_DIR/build-tvos"
+# FreeType installs ft2build.h under include/freetype2/; expose it at the
+# include root too so `-I$PREFIX/include` finds it (Wine does #include <ft2build.h>).
+if [ -f "$PREFIX/include/freetype2/ft2build.h" ] && [ ! -e "$PREFIX/include/ft2build.h" ]; then
+    ln -s freetype2/ft2build.h "$PREFIX/include/ft2build.h"
+fi
 echo "Done: $PREFIX/lib/libfreetype.a"
 ls -la "$PREFIX/lib/"*.a
