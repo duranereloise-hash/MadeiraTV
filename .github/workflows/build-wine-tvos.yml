@@ -25,6 +25,17 @@ jobs:
           echo "$(brew --prefix bison)/bin" >> $GITHUB_PATH
           echo "$(brew --prefix flex)/bin" >> $GITHUB_PATH
 
+      - name: Download llvm-mingw (PE cross compiler for aarch64)
+        run: |
+          set -e
+          mkdir -p toolchains
+          cd toolchains
+          curl -sSL -o llvm-mingw.tar.xz \
+            https://github.com/mstorsjo/llvm-mingw/releases/download/20260421/llvm-mingw-20260421-ucrt-macos-universal.tar.xz
+          tar -xJf llvm-mingw.tar.xz
+          ls -d llvm-mingw-*/
+          echo "$(pwd)/llvm-mingw-20260421-ucrt-macos-universal/bin" >> $GITHUB_PATH
+
       - name: Configure wine build-macos (HOST build for tools/config.h)
         run: |
           set -o pipefail
