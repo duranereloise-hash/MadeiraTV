@@ -29,11 +29,9 @@ if needle not in src:
     sys.exit(1)
 src = src.replace(needle, insert, 1)
 
-# After the end of the fork switch (find the closing brace of the switch,
-# right before the code resumes in the parent), insert #else return false.
-# The switch ends at the line "  }\n\n  // ... wait ..." - patch by anchoring
-# on the parent-wait block start.
-parent_anchor = "\n  // Parent process: Wait for the child to terminate."
+# After the end of the fork switch (find the parent-wait break), insert
+# the #else that keeps the fork code out of tvOS builds.
+parent_anchor = "\n  // Parent process: Break out of the switch to do our processing."
 if parent_anchor in src:
     src = src.replace(parent_anchor, "\n#else\n  MakeErrMsg(ErrMsg, \"fork unavailable on tvOS\");\n  return false;\n#endif" + parent_anchor, 1)
 else:
