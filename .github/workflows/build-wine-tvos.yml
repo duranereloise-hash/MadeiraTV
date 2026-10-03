@@ -79,9 +79,10 @@ jobs:
           if [ ! -f config.status ]; then
             ../configure --enable-archs=arm64ec --without-x --disable-tests --without-freetype --without-vulkan --without-opengl 2>&1 | tail -20
           fi
-          # wtypes.h (and friends) are widl-generated in the build tree.
-          make -C include wtypes.h 2>&1 | tail -8 || true
-          ls include/wtypes.h >/dev/null 2>&1 && echo "wtypes.h OK" || echo "no wtypes.h"
+          # widl-generated headers (wtypes.h, dwrite.h, objidlbase.h, ...)
+          # are produced by building the include dir.
+          make -C include 2>&1 | tail -8 || true
+          ls include/wtypes.h include/dwrite.h include/objidlbase.h >/dev/null 2>&1 && echo "widl headers OK" || echo "some widl headers missing"
 
       - name: Build GnuTLS stack for tvOS
         run: |
