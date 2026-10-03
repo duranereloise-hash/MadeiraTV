@@ -1,0 +1,42 @@
+name: Build toolchains for tvOS (GnuTLS + FFmpeg)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  toolchains-tvos:
+    name: Build GnuTLS + FFmpeg static libs for tvOS
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show env
+        run: |
+          xcodebuild -version
+          xcrun --sdk appletvos --show-sdk-version
+
+      - name: Build GnuTLS stack for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/gnutls-ios/build-tvos.sh
+          bash build/gnutls-ios/build-tvos.sh 2>&1 | tee build/gnutls-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: List gnutls-tvos output
+        run: |
+          ls -la toolchains/gnutls-tvos/lib/*.a 2>/dev/null || echo "no libs"
+          ls toolchains/gnutls-tvos/include 2>/dev/null | head
+
+      - name: Upload GnuTLS artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnutls-tvos
+          path: |
+            toolchains/gnutls-tvos/**
+            build/gnutls-tvos.log
+          if-no-files-found: warn
