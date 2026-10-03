@@ -28,6 +28,7 @@
 #include <os/log.h>
 #include <pthread.h>
 #include <dlfcn.h>
+#include <dispatch/dispatch.h>
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 #include <stdarg.h>
@@ -3594,10 +3595,12 @@ static int init_thread_pipe(void)
     int reply_pipe[2];
     stack_t ss;
 
+#if !TARGET_OS_TV
     ss.ss_sp    = get_signal_stack();
     ss.ss_size  = signal_stack_size;
     ss.ss_flags = 0;
     sigaltstack( &ss, NULL );
+#endif
 
     if (server_pipe( reply_pipe ) == -1) server_protocol_perror( "pipe" );
     if (server_pipe( ntdll_get_thread_data()->wait_fd ) == -1) server_protocol_perror( "pipe" );

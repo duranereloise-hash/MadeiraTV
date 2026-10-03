@@ -25,11 +25,11 @@ typedef char io_string_t[512];
 #define kIOMasterPortDefault ((mach_port_t)0)
 #define kIORegistryIterateRecursively 0x00000001UL
 
-#define kIOPlatformSerialNumberKey CFSTR("IOPlatformSerialNumber")
-#define kIOPlatformUUIDKey CFSTR("IOPlatformUUID")
-#define kIOPlatformExpertDeviceNameKey CFSTR("IOPlatformExpertDevice")
-#define kIOBundleIdentifierKey CFSTR("CFBundleIdentifier")
-#define kIOPropertyMatchKey CFSTR("IOPropertyMatch")
+#define kIOPlatformSerialNumberKey "IOPlatformSerialNumber"
+#define kIOPlatformUUIDKey "IOPlatformUUID"
+#define kIOPlatformExpertDeviceNameKey "IOPlatformExpertDevice"
+#define kIOBundleIdentifierKey "CFBundleIdentifier"
+#define kIOPropertyMatchKey "IOPropertyMatch"
 
 static inline io_service_t IOServiceGetMatchingService(mach_port_t master, CFDictionaryRef matching)
 {
