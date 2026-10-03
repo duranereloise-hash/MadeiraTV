@@ -72,6 +72,8 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p build
+          chmod +x build/ntdll-unix/build.sh build/crypto-unix/gen_gnutls_symtab.sh 2>/dev/null || true
+          chmod +x build/*/build.sh 2>/dev/null || true
           # Patch the build script in place (BSD sed needs `-i ''`):
           sed -i '' \
             -e 's|xcrun --sdk iphoneos|xcrun --sdk appletvos|g' \
