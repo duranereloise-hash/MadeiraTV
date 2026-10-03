@@ -1,0 +1,43 @@
+name: Build LLVM for tvOS (DXMT dependency)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  llvm-tvos:
+    name: Build LLVM static libs for tvOS
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Show env
+        run: |
+          xcodebuild -version
+          xcrun --sdk appletvos --show-sdk-version
+          cmake --version | head -1
+
+      - name: Build LLVM for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/llvm-tvos/build.sh
+          bash build/llvm-tvos/build.sh 2>&1 | tee build/llvm-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: List LLVM outputs
+        run: |
+          ls -la toolchains/llvm-tvos-build/lib/*.a 2>/dev/null | head -20 || echo "no .a"
+          ls toolchains/llvm-tvos-build/include 2>/dev/null | head
+
+      - name: Upload LLVM artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: llvm-tvos
+          path: |
+            toolchains/llvm-tvos-build/**
+            build/llvm-tvos.log
+          if-no-files-found: warn
