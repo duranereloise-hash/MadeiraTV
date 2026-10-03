@@ -1,4 +1,4 @@
-name: Build FEX for tvOS (Phase 2, step 1)
+﻿name: Build FEX for tvOS (Phase 2, step 1)
 
 on:
   workflow_dispatch:
@@ -14,7 +14,6 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-          submodule-depth: 1
 
       - name: Show environment
         run: |
