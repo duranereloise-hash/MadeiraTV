@@ -90,6 +90,7 @@ jobs:
           name: wine-tvos-ntdll-unix-artifacts
           path: |
             build/ntdll-unix/obj/*.a
+            build/ntdll-unix/obj/*.err
             app/Madeira/libntdll_unix.a
             build/ntdll-unix-tvos.log
           if-no-files-found: warn
