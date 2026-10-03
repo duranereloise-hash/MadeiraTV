@@ -152,12 +152,7 @@ jobs:
           ls -la libs/winecrt0/arm64ec-windows/libwinecrt0.a 2>/dev/null || echo "MISSING libwinecrt0.a"
           ls -la libs/musl/arm64ec-windows/libmusl.a 2>/dev/null || echo "MISSING libmusl.a"
           cd "$OLDPWD"
-          # Verbose build to surface winegcc's real error
-          export VERBOSE=1
-          cd wine/build-arm64ec && make -C dlls/ntdll V=1 > "$OLDPWD/build/ntdll-make.log" 2>&1; rc=$?
-          cd "$OLDPWD"
-          tail -40 build/ntdll-make.log
-          echo "=== ntdll make rc=$rc ==="
+          mkdir -p app/Madeira/arm64ec-windows
           bash build/wine-pe/build-ntdll.sh 2>&1 | tee build/wine-pe-ntdll.log
           echo "=== rc=${PIPESTATUS[0]} ==="
 
