@@ -50,7 +50,9 @@ cmake -S "$LLVM_SRC/llvm" -B . \
     -DLLVM_NATIVE_ARCH=AArch64 2>&1 | tail -30
 
 echo "=== building LLVM (tvOS) ==="
-cmake --build . --target llvm-libs -j$(sysctl -n hw.ncpu) 2>&1 | tail -20
+# 'llvm-libs' target does not exist in this configuration; the default target
+# builds every static library (tools/tests are off).
+cmake --build . -j$(sysctl -n hw.ncpu) 2>&1 | tail -25
 
 echo "=== result ==="
 ls -la lib/libLLVM* 2>/dev/null | head
