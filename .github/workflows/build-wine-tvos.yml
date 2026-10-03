@@ -117,7 +117,8 @@ jobs:
             -e 's|-miphoneos-version-min=| -mtvos-version-min=|g' \
             -e 's|toolchains/gnutls-ios|toolchains/gnutls-tvos|g' \
             -e 's|toolchains/ffmpeg-ios|toolchains/ffmpeg-tvos|g' \
-            -e 's|research/freetype/include|toolchains/freetype-tvos/include|g' \
+            -e 's|research/freetype/include|toolchains/freetype-tvos/include/freetype2|g' \
+            -e 's|-I"\$FFMPEG_PREFIX/include"|-I"$FFMPEG_PREFIX/include" -I"$REPO_ROOT/wine/build-arm64ec/include"|g' \
             build/ntdll-unix/build.sh
           bash build/ntdll-unix/build.sh 2>&1 | tee build/ntdll-unix-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
