@@ -16,9 +16,10 @@ jobs:
 
       - name: Fetch wine submodule
         run: |
-          git submodule init wine
-          git config submodule.wine.url https://github.com/willfaust/wine.git
-          git -c protocol.version=2 submodule update --init --depth 1 wine
+          # Clone MadeiraTV's patched wine fork directly (tvOS fixes live there).
+          git clone --depth 1 --branch madeira-lgpl \
+            https://github.com/duranereloise-hash/wine.git wine 2>&1 | tail -3
+          git -C wine log --oneline -1
 
       - name: Show environment
         run: |
