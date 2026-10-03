@@ -62,6 +62,15 @@ static inline kern_return_t madeira_tvos_task_get_special_port(mach_port_t task,
     if (!fn) return KERN_FAILURE;
     return fn(task, which_port, port);
 }
+#define mach_msg_send madeira_tvos_mach_msg_send
+static inline mach_msg_return_t madeira_tvos_mach_msg_send(mach_msg_header_t *msg)
+{
+    typedef mach_msg_return_t (*fn_t)(mach_msg_header_t *);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "mach_msg_send");
+    if (!fn) return MACH_SEND_INVALID_DEST;
+    return fn(msg);
+}
 #endif
 /* From signal_arm64_ios.c — written by __wine_syscall_dispatcher at entry */
 extern volatile uint64_t g_wine_dispatcher_x18;

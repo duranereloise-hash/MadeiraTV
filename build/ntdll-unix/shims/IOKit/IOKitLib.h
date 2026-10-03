@@ -23,14 +23,13 @@ typedef char io_string_t[512];
 
 #define IO_OBJECT_NULL ((io_object_t)0)
 #define kIOMasterPortDefault ((mach_port_t)0)
-#define MACH_PORT_NULL ((mach_port_t)0)
 #define kIORegistryIterateRecursively 0x00000001UL
 
-extern const CFStringRef kIOPlatformSerialNumberKey;
-extern const CFStringRef kIOPlatformUUIDKey;
-extern const CFStringRef kIOPlatformExpertDeviceNameKey;
-extern const CFStringRef kIOBundleIdentifierKey;
-extern const CFStringRef kIOPropertyMatchKey;
+#define kIOPlatformSerialNumberKey CFSTR("IOPlatformSerialNumber")
+#define kIOPlatformUUIDKey CFSTR("IOPlatformUUID")
+#define kIOPlatformExpertDeviceNameKey CFSTR("IOPlatformExpertDevice")
+#define kIOBundleIdentifierKey CFSTR("CFBundleIdentifier")
+#define kIOPropertyMatchKey CFSTR("IOPropertyMatch")
 
 static inline io_service_t IOServiceGetMatchingService(mach_port_t master, CFDictionaryRef matching)
 {
