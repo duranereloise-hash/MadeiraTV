@@ -49,6 +49,31 @@
 #include <mach/thread_act.h>
 #include <mach/mach_vm.h>
 #include <servers/bootstrap.h>
+#include <TargetConditionals.h>
+#include <dlfcn.h>
+
+/* tvOS SDK marks task_suspend/task_resume unavailable although the kernel
+ * syscalls exist — route through dlsym (same pattern as ntdll-unix). */
+#if TARGET_OS_TV
+#define task_suspend madeira_tvos_task_suspend
+static inline kern_return_t madeira_tvos_task_suspend(mach_port_t task)
+{
+    typedef kern_return_t (*fn_t)(mach_port_t);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "task_suspend");
+    if (!fn) return KERN_FAILURE;
+    return fn(task);
+}
+#define task_resume madeira_tvos_task_resume
+static inline kern_return_t madeira_tvos_task_resume(mach_port_t task)
+{
+    typedef kern_return_t (*fn_t)(mach_port_t);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "task_resume");
+    if (!fn) return KERN_FAILURE;
+    return fn(task);
+}
+#endif
 
 static mach_port_t server_mach_port;
 
