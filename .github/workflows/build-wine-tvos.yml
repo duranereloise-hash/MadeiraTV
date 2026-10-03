@@ -139,6 +139,27 @@ jobs:
           bash build/win32u-unix/build-tvos.sh 2>&1 | tee build/win32u-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
 
+      - name: Build Wine PE (ARM64EC) ntdll.dll
+        run: |
+          set -o pipefail
+          chmod +x build/wine-pe/build-ntdll.sh
+          bash build/wine-pe/build-ntdll.sh 2>&1 | tee build/wine-pe-ntdll.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: Build Wine PE - core DLLs
+        run: |
+          set -o pipefail
+          export PATH="$PWD/toolchains/llvm-mingw-20260421-ucrt-macos-universal/bin:$PATH"
+          cd wine/build-arm64ec
+          mkdir -p "$OLDPWD/app/Madeira/arm64ec-windows"
+          for dll in kernelbase kernel32 user32 gdi32 advapi32 ws2_32 ntdll wow64; do
+            echo "=== $dll ==="
+            make -C dlls/$dll 2>&1 | tail -3
+            f="dlls/$dll/arm64ec-windows/$dll.dll"
+            if [ -f "$f" ]; then cp "$f" "$OLDPWD/app/Madeira/arm64ec-windows/$dll.dll"; echo "staged $dll.dll"; fi
+          done
+          ls -la "$OLDPWD/app/Madeira/arm64ec-windows/" | head -20
+
       - name: Upload ntdll-unix artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -150,6 +171,8 @@ jobs:
             app/Madeira/libntdll_unix.a
             app/Madeira/libwineserver.a
             app/Madeira/libwin32u_unix.a
+            app/Madeira/arm64ec-windows/*.dll
+            build/wine-pe-ntdll.log
             build/wineserver/obj-tvos/*.err
             build/wineserver-tvos.log
             build/win32u-unix/obj-tvos/*.err
