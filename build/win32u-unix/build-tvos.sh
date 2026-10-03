@@ -39,6 +39,7 @@ compile_one() {
         -include "$REPO_ROOT/build/ntdll-unix/shims/wine_ios_exit.h" \
         -I"$BUILD_DIR" \
         -I"$WINE_BUILD/include" \
+        -I"$REPO_ROOT/wine/build-arm64ec/include" \
         -I"$NTDLL_SHIMS" \
         -I"$WINE_BUILD/dlls/win32u" -I"$WINE_SRC/dlls/win32u" \
         -I"$WINE_BUILD/include" -I"$WINE_SRC/include" \
