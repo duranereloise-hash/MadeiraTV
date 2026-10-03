@@ -39,6 +39,7 @@
 /* tvOS SDK marks some Mach IPC helpers unavailable although the kernel
  * syscalls exist. Route through dlsym like signal_arm64_ios.c does. */
 #if TARGET_OS_TV
+#undef task_get_bootstrap_port
 #define task_get_bootstrap_port madeira_tvos_task_get_bootstrap_port
 static inline kern_return_t madeira_tvos_task_get_bootstrap_port(mach_port_t task,
                                                                  mach_port_t *bootstrap_port)
@@ -49,6 +50,7 @@ static inline kern_return_t madeira_tvos_task_get_bootstrap_port(mach_port_t tas
     if (!fn) return KERN_FAILURE;
     return fn(task, bootstrap_port);
 }
+#undef task_get_special_port
 #define task_get_special_port madeira_tvos_task_get_special_port
 static inline kern_return_t madeira_tvos_task_get_special_port(mach_port_t task,
                                                                int which_port,

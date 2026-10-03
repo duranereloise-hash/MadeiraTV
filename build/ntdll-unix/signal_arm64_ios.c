@@ -88,6 +88,21 @@ static inline kern_return_t madeira_tvos_task_swap_exception_ports(mach_port_t t
     return fn(task, exception_mask, new_port, behavior, new_flavor,
               masks, masks_count, ports, behaviors, flavors);
 }
+
+#define thread_set_exception_ports madeira_tvos_thread_set_exception_ports
+static inline kern_return_t madeira_tvos_thread_set_exception_ports(thread_act_t thread,
+                                                                    exception_mask_t exception_mask,
+                                                                    mach_port_t new_port,
+                                                                    exception_behavior_t behavior,
+                                                                    thread_state_flavor_t new_flavor)
+{
+    typedef kern_return_t (*fn_t)(thread_act_t, exception_mask_t, mach_port_t,
+                                  exception_behavior_t, thread_state_flavor_t);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, "thread_set_exception_ports");
+    if (!fn) return KERN_FAILURE;
+    return fn(thread, exception_mask, new_port, behavior, new_flavor);
+}
 #endif
 
 /* iOS-Madeira ml674: XZR/WZR AS A STORE SOURCE MUST READ ZERO.
