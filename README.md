@@ -23,13 +23,14 @@ Mach-процессе. Этот репозиторий переносит тот
 |---|---|---|
 | **FEX-Emu** (x86→ARM64 JIT) | ✅ собран | `libFEXCore.a` + External (fmt/cephes/xxhash/softfloat) |
 | **Wine ntdll-unix** | ✅ **37/37 модулей** | полная `libntdll_unix.a` (2 МБ) под `appletvos` |
+| **Wine wineserver** | ✅ собран | `libwineserver.a` (1.3 МБ) |
+| **Wine win32u-unix** | ✅ **46/46 модулей** | `libwin32u_unix.a` (2.6 МБ) |
 | — GnuTLS-стек (bcrypt/secur32/crypt32) | ✅ | gmp+nettle+gnutls под tvOS |
 | — freetype (dwrite) | ✅ | freetype 2.13.3 из tracked tarball |
 | — FFmpeg (winegstreamer) | ✅ | LGPL-конфиг под tvOS |
 
 ### ⏳ Фаза 2 — остаток
 - Wine **PE-сторона** (ARM64EC DLL: ntdll.dll и др.) через llvm-mingw
-- `wineserver` и `win32u-unix` под tvOS
 - **DXMT** (D3D9/10/11 → Metal) под tvOS
 - Слинковать весь стек в `MadeiraTV.xcodeproj`
 - JIT-запуск на Apple TV (через отладчик / StikDebug-аналог)
