@@ -39,13 +39,15 @@ cmake -S "$LLVM_SRC/llvm" -B . \
     -DLLVM_TARGETS_TO_BUILD="AArch64" \
     -DLLVM_ENABLE_PROJECTS="" \
     -DLLVM_BUILD_TOOLS=Off \
+    -DLLVM_BUILD_LLVM_DYLIB=Off \
     -DLLVM_INCLUDE_TESTS=Off \
     -DLLVM_INCLUDE_BENCHMARKS=Off \
+    -DLLVM_INCLUDE_EXAMPLES=Off \
     -DLLVM_ENABLE_ZLIB=Off \
     -DLLVM_NATIVE_ARCH=AArch64 2>&1 | tail -30
 
 echo "=== building LLVM (tvOS) ==="
-cmake --build . -j$(sysctl -n hw.ncpu) 2>&1 | tail -20
+cmake --build . --target llvm-libs -j$(sysctl -n hw.ncpu) 2>&1 | tail -20
 
 echo "=== result ==="
 ls -la lib/libLLVM* 2>/dev/null | head
