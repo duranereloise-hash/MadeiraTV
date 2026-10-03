@@ -68,8 +68,8 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p build
-          # Patch the build script: iphoneos -> appletvos, miphoneos-version-min -> mtvos-version-min
-          sed -i.bak \
+          # Patch the build script in place (BSD sed needs `-i ''`):
+          sed -i '' \
             -e 's|xcrun --sdk iphoneos|xcrun --sdk appletvos|g' \
             -e 's|-miphoneos-version-min=17.0|-mtvos-version-min=17.0|g' \
             -e 's|-miphoneos-version-min=| -mtvos-version-min=|g' \
