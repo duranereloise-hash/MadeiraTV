@@ -39,10 +39,13 @@ jobs:
       - name: Configure wine build-macos (HOST build for tools/config.h)
         run: |
           set -o pipefail
+          ROOT="$(pwd)"
           cd wine
-          # Wine sources reference ../../../../build/madeira_cfg.h from inside
-          # wine/build-macos/dlls/*/ — make it resolve to the repo-root build/.
-          ln -sfn ../build build 2>/dev/null || true
+          # Wine's generated Makefiles reference ../../../../build/madeira_cfg.h
+          # from build-macos/dlls/*/ (i.e. $ROOT/wine/build). Make it resolve
+          # to the repo-root build/ via an absolute symlink.
+          ln -sfn "$ROOT/build" "$ROOT/wine/build"
+          ls -la "$ROOT/wine/build/madeira_cfg.h" || echo "SYMLINK TARGET MISSING"
           mkdir -p build-macos
           cd build-macos
           if [ ! -f config.status ]; then
