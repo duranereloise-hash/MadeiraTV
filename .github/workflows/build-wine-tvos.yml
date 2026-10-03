@@ -20,44 +20,50 @@ jobs:
         run: |
           xcodebuild -version
           xcrun --sdk appletvos --show-sdk-version
-          xcrun --sdk appletvsimulator --show-sdk-version
           python3 --version
 
-      - name: Configure wine build-macos for tvOS
+      - name: Configure wine build-macos (HOST build for tools/config.h)
         run: |
           set -o pipefail
-          mkdir -p build
-          SDK="$(xcrun --sdk appletvos --show-sdk-path)"
-          CC="$(xcrun --sdk appletvos --find clang)"
           cd wine
           mkdir -p build-macos
           cd build-macos
-          # --host=arm64-apple-darwin21 makes configure treat us as Darwin arm64.
-          # CFLAGS point clang at the tvOS SDK; LDFLAGS too.
-          ../configure \
-            --host=arm64-apple-darwin21 \
-            --without-x \
-            --without-freetype \
-            --without-fontconfig \
-            --disable-tests \
-            --disable-win16 \
-            --without-vulkan \
-            --without-opengl \
-            --enable-wineandroid=no \
-            CC="$CC" \
-            CPPFLAGS="-isysroot $SDK -arch arm64 -mtvos-version-min=17.0 -DWINE_TVOS=1" \
-            CFLAGS="-isysroot $SDK -arch arm64 -mtvos-version-min=17.0 -O2" \
-            CXXFLAGS="-isysroot $SDK -arch arm64 -mtvos-version-min=17.0 -O2" \
-            LDFLAGS="-isysroot $SDK -arch arm64" 2>&1 | tee ../build-macos-config.log
-          echo "=== configure rc=${PIPESTATUS[0]} ==="
-          ls include/config.h >/dev/null && echo "config.h OK" || echo "NO config.h"
+          if [ ! -f config.status ]; then
+            ../configure --without-x --without-freetype --without-fontconfig \
+              --without-vulkan --without-opengl \
+              --enable-wineandroid=no 2>&1 | tee ../../wine-build-macos-config.log
+            echo "=== configure rc=${PIPESTATUS[0]} ==="
+          fi
+          ls include/config.h >/dev/null && echo "config.h OK"
+          ls tools/winebuild/winebuild >/dev/null && echo "winebuild OK" || echo "winebuild not built yet"
 
-      - name: Upload wine configure log
+      - name: Generate tools
+        run: |
+          set -o pipefail
+          cd wine/build-macos
+          make tools/winebuild/winebuild tools/widl/widl 2>&1 | tail -20
+          ls -la tools/winebuild/winebuild tools/widl/widl 2>/dev/null || echo "tools missing"
+
+      - name: Build ntdll-unix for tvOS
+        run: |
+          set -o pipefail
+          mkdir -p build
+          # Patch the build script: iphoneos -> appletvos, miphoneos-version-min -> mtvos-version-min
+          sed -i.bak \
+            -e 's|xcrun --sdk iphoneos|xcrun --sdk appletvos|g' \
+            -e 's|-miphoneos-version-min=17.0|-mtvos-version-min=17.0|g' \
+            -e 's|-miphoneos-version-min=| -mtvos-version-min=|g' \
+            build/ntdll-unix/build.sh
+          bash build/ntdll-unix/build.sh 2>&1 | tee build/ntdll-unix-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: Upload ntdll-unix artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: wine-tvos-configure-artifacts
+          name: wine-tvos-ntdll-unix-artifacts
           path: |
-            wine/build-macos/include/config.h
-            wine/build-macos-config.log
+            build/ntdll-unix/obj/*.a
+            app/Madeira/libntdll_unix.a
+            build/ntdll-unix-tvos.log
           if-no-files-found: warn
