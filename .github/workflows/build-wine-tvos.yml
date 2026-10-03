@@ -40,6 +40,9 @@ jobs:
         run: |
           set -o pipefail
           cd wine
+          # Wine sources reference ../../../../build/madeira_cfg.h from inside
+          # wine/build-macos/dlls/*/ — make it resolve to the repo-root build/.
+          ln -sfn ../build build 2>/dev/null || true
           mkdir -p build-macos
           cd build-macos
           if [ ! -f config.status ]; then
@@ -48,7 +51,7 @@ jobs:
               --enable-wineandroid=no 2>&1 | tee ../../wine-build-macos-config.log
             echo "=== configure rc=${PIPESTATUS[0]} ==="
           fi
-          ls include/config.h >/dev/null && echo "config.h OK"
+          ls include/config.h >/dev/null && echo "config.h OK" || echo "NO config.h"
           ls tools/winebuild/winebuild >/dev/null && echo "winebuild OK" || echo "winebuild not built yet"
 
       - name: Generate tools
