@@ -31,3 +31,5 @@ xcuserdata/
 __pycache__/
 *.pyc
 tvos-build*.log
+
+*.log
