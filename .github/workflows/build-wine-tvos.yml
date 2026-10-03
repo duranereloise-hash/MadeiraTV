@@ -143,6 +143,11 @@ jobs:
         run: |
           set -o pipefail
           chmod +x build/wine-pe/build-ntdll.sh
+          export PATH="$PWD/toolchains/llvm-mingw-20260421-ucrt-macos-universal/bin:$PATH"
+          # Prereq: the PE-side support libs winegcc links against.
+          cd wine/build-arm64ec
+          make -C libs/winecrt0 libs/musl libs/compiler-rt 2>&1 | tail -5
+          cd "$OLDPWD"
           bash build/wine-pe/build-ntdll.sh 2>&1 | tee build/wine-pe-ntdll.log
           echo "=== rc=${PIPESTATUS[0]} ==="
 
