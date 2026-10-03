@@ -1,0 +1,68 @@
+name: Build FEX for tvOS (Phase 2, step 1)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fex-tvos:
+    name: Build FEXCore static libs for tvOS
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Show environment
+        run: |
+          xcodebuild -version
+          cmake --version | head -2
+          xcrun --sdk appletvos --show-sdk-version
+
+      - name: FEX build-ios for tvOS
+        run: |
+          set -o pipefail
+          mkdir -p build
+          R="$(pwd)"
+          B="$R/FEX/build-ios"
+          # Detect whether CMake accepts iOS system name + tvOS sysroot
+          cmake -S "$R/FEX" -B "$B" \
+            -DCMAKE_SYSTEM_NAME=iOS \
+            -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DCMAKE_OSX_SYSROOT=appletvos \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTING=OFF -DBUILD_THUNKS=OFF -DBUILD_FEXCONFIG=OFF \
+            -DBUILD_FEX_LINUX_TESTS=OFF -DENABLE_FEX_ALLOCATOR=OFF \
+            -DENABLE_ASSERTIONS=OFF -DENABLE_CLANG_THUNKS=ON \
+            -DENABLE_CCACHE=ON 2>&1 | tee build/fex-config.log
+        env:
+          CC: $(xcrun --sdk appletvos --find clang)
+          CXX: $(xcrun --sdk appletvos --find clang++)
+
+      - name: Build FEXCore
+        run: |
+          set -o pipefail
+          cmake --build "build/../FEX/build-ios" --target FEXCore FEXCore_Base 2>&1 | tee build/fex-build.log
+        env:
+          CC: $(xcrun --sdk appletvos --find clang)
+          CXX: $(xcrun --sdk appletvos --find clang++)
+
+      - name: Show output
+        if: always()
+        run: |
+          ls -la FEX/build-ios/FEXCore/Source/*.a 2>/dev/null || echo "no .a produced"
+          tail -40 build/fex-config.log build/fex-build.log 2>/dev/null
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fex-tvos-build-artifacts
+          path: |
+            FEX/build-ios/FEXCore/Source/*.a
+            build/fex-config.log
+            build/fex-build.log
+          if-no-files-found: warn
