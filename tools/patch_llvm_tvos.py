@@ -4,11 +4,11 @@
 On Apple TV, fork()/execv()/execve() are marked unavailable and LLVM's
 Unix Program.inc still compiles the fork-fallback branch even when
 HAVE_POSIX_SPAWN is set (the posix_spawn path returns early, but the fork
-code is not inside #else). Wrap it in !TARGET_OS_TV and return failure.
-Usages in LLVM are all "run program in subprocess" (for tools like clang -cc1
-or the test runner) -- dead on tvOS, where nothing can spawn processes.
+code is not inside #else). Wrap the fork/switch block in !TARGET_OS_TV and
+return failure on tvOS instead (LLVM never spawns subprocesses embedded on
+Apple TV).
 """
-import re, sys
+import sys
 
 path = sys.argv[1]
 with open(path, "r", encoding="utf-8") as f:
@@ -18,8 +18,9 @@ if "TARGET_OS_TV" in src:
     print("already patched")
     sys.exit(0)
 
+# Open the guard right before declaring the child process.
 needle = "  // Create a child process.\n  int child = fork();"
-insert = (
+repl = (
     "#if !defined(TARGET_OS_TV) || !TARGET_OS_TV\n"
     "  // Create a child process.\n"
     "  int child = fork();"
@@ -27,16 +28,23 @@ insert = (
 if needle not in src:
     print("ERROR: cannot find fork block")
     sys.exit(1)
-src = src.replace(needle, insert, 1)
+src = src.replace(needle, repl, 1)
 
-# After the end of the fork switch (find the parent-wait break), insert
-# the #else that keeps the fork code out of tvOS builds.
-parent_anchor = "\n  // Parent process: Break out of the switch to do our processing."
-if parent_anchor in src:
-    src = src.replace(parent_anchor, "\n#else\n  MakeErrMsg(ErrMsg, \"fork unavailable on tvOS\");\n  return false;\n#endif" + parent_anchor, 1)
-else:
-    print("ERROR: cannot find parent anchor")
+# Close the guard after the child PID is recorded, so the whole
+# fork/switch/PI code is excluded on tvOS and the function returns false there.
+after = "  PI.Pid = child;\n  PI.Process = child;\n"
+close = (
+    "  PI.Pid = child;\n"
+    "  PI.Process = child;\n"
+    "#else\n"
+    "  MakeErrMsg(ErrMsg, \"fork unavailable on tvOS\");\n"
+    "  return false;\n"
+    "#endif\n"
+)
+if after not in src:
+    print("ERROR: cannot find PI.Pid anchor")
     sys.exit(1)
+src = src.replace(after, close, 1)
 
 with open(path, "w", encoding="utf-8") as f:
     f.write(src)
