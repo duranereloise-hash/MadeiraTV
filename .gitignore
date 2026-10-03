@@ -11,8 +11,18 @@ app/Madeira/prefix-template.tar.gz
 app/Madeira/hello_x86.elf
 app/Madeira/madeira-jit.js
 
-# Xcode
-build/
+# Xcode derived output (build/tvos-*.log etc). The build/ tree also holds
+# the original Madeira build scripts/sources which ARE tracked — only ignore
+# derived output artifacts, not the sources.
+
+# ci output dir: if you build locally into ./build, ignore it except the source tree
+build/DerivedData*/
+build/tvos-*.log
+build/fex-*.log
+build/wine-*.log
+build/*-config.log
+build/*-build.log
+build/DerivedData/
 DerivedData/
 *.xcuserstate
 xcuserdata/
