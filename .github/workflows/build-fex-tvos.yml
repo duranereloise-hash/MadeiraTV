@@ -61,6 +61,7 @@ jobs:
         if: always()
         run: |
           ls -la FEX/build-ios/FEXCore/Source/*.a 2>/dev/null || echo "no .a produced"
+          find FEX/build-ios/External -name "*.a" 2>/dev/null | head -20
           tail -40 build/fex-config.log build/fex-build.log 2>/dev/null
 
       - name: Upload logs
@@ -70,6 +71,8 @@ jobs:
           name: fex-tvos-build-artifacts
           path: |
             FEX/build-ios/FEXCore/Source/*.a
+            FEX/build-ios/External/*/*.a
+            FEX/build-ios/External/*/cmake_unofficial/*.a
             build/fex-config.log
             build/fex-build.log
           if-no-files-found: warn
