@@ -67,7 +67,8 @@ compile_one "$BUILD_DIR/wine_log_ios.c" "wine_log_ios" || true
 compile_one "$BUILD_DIR/wineserver_ios_kill.c" "wineserver_ios_kill" || true
 
 # Fail if any object is missing.
-mapfile -t objs < <(find "$OBJ_DIR" -name "*.o" ! -name "err-*" | sort)
+objs=()
+while IFS= read -r f; do objs+=("$f"); done < <(find "$OBJ_DIR" -maxdepth 1 -name "*.o" | sort)
 echo "=== objects: ${#objs[@]} ==="
 
 echo "=== Building libwineserver.a ==="
