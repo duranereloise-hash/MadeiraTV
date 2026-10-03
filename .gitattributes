@@ -1,0 +1,24 @@
+# Shell scripts MUST stay LF — CRLF breaks bash shebang and $'\r' commands
+*.sh text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.swift text eol=lf
+*.mm text eol=lf
+*.m text eol=lf
+*.metal text eol=lf
+Makefile text eol=lf
+project.pbxproj text eol=lf
+*.pbxproj text eol=lf
+
+# Binaries must never be normalized
+*.a binary
+*.dll binary
+*.dylib binary
+*.ipa binary
+*.png binary
+*.tar.gz binary
+*.elf binary
+*.exe binary

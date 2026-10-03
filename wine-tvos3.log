@@ -1,0 +1,601 @@
+﻿ï»¿2026-10-03T07:48:13.8326710Z Current runner version: '2.337.0'
+2026-10-03T07:48:13.8340560Z ##[group]Runner Image Provisioner
+2026-10-03T07:48:13.8341080Z Hosted Compute Agent
+2026-10-03T07:48:13.8341450Z Version: 20260828.587
+2026-10-03T07:48:13.8341850Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-10-03T07:48:13.8342310Z Build Date: 2026-08-28T16:44:25Z
+2026-10-03T07:48:13.8342740Z Worker ID: {b3b382f5-c94a-459d-9e5a-00a3609c9782}
+2026-10-03T07:48:13.8343190Z Azure Region: westus
+2026-10-03T07:48:13.8343550Z ##[endgroup]
+2026-10-03T07:48:13.8344360Z ##[group]Operating System
+2026-10-03T07:48:13.8344740Z macOS
+2026-10-03T07:48:13.8345060Z 15.7.9
+2026-10-03T07:48:13.8345370Z 24G830
+2026-10-03T07:48:13.8345690Z ##[endgroup]
+2026-10-03T07:48:13.8346030Z ##[group]Runner Image
+2026-10-03T07:48:13.8346400Z Image: macos-15-arm64
+2026-10-03T07:48:13.8346760Z Version: 20260907.0337.1
+2026-10-03T07:48:13.8347550Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260907.0337/images/macos/macos-15-arm64-Readme.md
+2026-10-03T07:48:13.8348570Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260907.0337
+2026-10-03T07:48:13.8349210Z ##[endgroup]
+2026-10-03T07:48:13.8349960Z ##[group]GITHUB_TOKEN Permissions
+2026-10-03T07:48:13.8351000Z Contents: read
+2026-10-03T07:48:13.8351350Z Metadata: read
+2026-10-03T07:48:13.8351700Z Packages: read
+2026-10-03T07:48:13.8352050Z ##[endgroup]
+2026-10-03T07:48:13.8353780Z Secret source: Actions
+2026-10-03T07:48:13.8354350Z Cache mode: write
+2026-10-03T07:48:13.8354790Z Prepare workflow directory
+2026-10-03T07:48:13.8560130Z Prepare all required actions
+2026-10-03T07:48:13.8593110Z Getting action download info
+2026-10-03T07:48:14.2948070Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-03T07:48:14.4899750Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-03T07:48:14.6572550Z Complete job name: Configure + build Wine unix libs for tvOS
+2026-10-03T07:48:14.6924750Z ##[warning]Unexpected input(s) 'submodule-depth', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url', 'allow-unsafe-pr-checkout']
+2026-10-03T07:48:14.6969060Z ##[group]Run actions/checkout@v4
+2026-10-03T07:48:14.6969510Z with:
+2026-10-03T07:48:14.6969800Z   fetch-depth: 0
+2026-10-03T07:48:14.6970100Z   submodules: recursive
+2026-10-03T07:48:14.6970430Z   submodule-depth: 1
+2026-10-03T07:48:14.6970760Z   repository: duranereloise-hash/MadeiraTV
+2026-10-03T07:48:14.6973100Z   token: ***
+2026-10-03T07:48:14.6973390Z   ssh-strict: true
+2026-10-03T07:48:14.6973690Z   ssh-user: git
+2026-10-03T07:48:14.6973990Z   persist-credentials: true
+2026-10-03T07:48:14.6974320Z   clean: true
+2026-10-03T07:48:14.6974650Z   sparse-checkout-cone-mode: true
+2026-10-03T07:48:14.6975010Z   fetch-tags: false
+2026-10-03T07:48:14.6975310Z   show-progress: true
+2026-10-03T07:48:14.6975620Z   lfs: false
+2026-10-03T07:48:14.6975910Z   set-safe-directory: true
+2026-10-03T07:48:14.6976250Z   allow-unsafe-pr-checkout: false
+2026-10-03T07:48:14.6976690Z ##[endgroup]
+2026-10-03T07:48:14.9708300Z Syncing repository: duranereloise-hash/MadeiraTV
+2026-10-03T07:48:14.9709660Z ##[group]Getting Git version info
+2026-10-03T07:48:14.9710180Z Working directory is '/Users/runner/work/MadeiraTV/MadeiraTV'
+2026-10-03T07:48:14.9711150Z [command]/opt/homebrew/bin/git version
+2026-10-03T07:48:15.0184020Z git version 2.55.0
+2026-10-03T07:48:15.0197530Z ##[endgroup]
+2026-10-03T07:48:15.0202860Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/9d3d9028-458c-4579-84ba-045ca1aec191/.gitconfig'
+2026-10-03T07:48:15.0208760Z Temporarily overriding HOME='/Users/runner/work/_temp/9d3d9028-458c-4579-84ba-045ca1aec191' before making global git config changes
+2026-10-03T07:48:15.0210370Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-03T07:48:15.0212170Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-03T07:48:15.0303510Z Deleting the contents of '/Users/runner/work/MadeiraTV/MadeiraTV'
+2026-10-03T07:48:15.0305510Z ##[group]Initializing the repository
+2026-10-03T07:48:15.0309320Z [command]/opt/homebrew/bin/git init /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-03T07:48:15.0487190Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-03T07:48:15.0487990Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-03T07:48:15.0488710Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-03T07:48:15.0489360Z hint: call:
+2026-10-03T07:48:15.0489670Z hint:
+2026-10-03T07:48:15.0490100Z hint: 	git config --global init.defaultBranch <name>
+2026-10-03T07:48:15.0490560Z hint:
+2026-10-03T07:48:15.0491130Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-03T07:48:15.0491900Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-03T07:48:15.0492600Z hint:
+2026-10-03T07:48:15.0492920Z hint: 	git branch -m <name>
+2026-10-03T07:48:15.0493290Z hint:
+2026-10-03T07:48:15.0493780Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-03T07:48:15.0494500Z Initialized empty Git repository in /Users/runner/work/MadeiraTV/MadeiraTV/.git/
+2026-10-03T07:48:15.0497340Z [command]/opt/homebrew/bin/git remote add origin https://github.com/duranereloise-hash/MadeiraTV
+2026-10-03T07:48:15.0571540Z ##[endgroup]
+2026-10-03T07:48:15.0572150Z ##[group]Disabling automatic garbage collection
+2026-10-03T07:48:15.0572700Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-10-03T07:48:15.0612530Z ##[endgroup]
+2026-10-03T07:48:15.0613110Z ##[group]Setting up auth
+2026-10-03T07:48:15.0617750Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T07:48:15.0663900Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T07:48:15.1409070Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T07:48:15.1464890Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T07:48:15.2085320Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:48:15.2152920Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T07:48:15.2745790Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-03T07:48:15.2798200Z ##[endgroup]
+2026-10-03T07:48:15.2798930Z ##[group]Fetching the repository
+2026-10-03T07:48:15.2803820Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-03T07:48:15.8514760Z From https://github.com/duranereloise-hash/MadeiraTV
+2026-10-03T07:48:15.8515910Z  * [new branch]      main       -> origin/main
+2026-10-03T07:48:15.8523100Z [command]/opt/homebrew/bin/git branch --list --remote origin/main
+2026-10-03T07:48:15.8604530Z   origin/main
+2026-10-03T07:48:15.8610240Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/main
+2026-10-03T07:48:15.8665350Z 53814a68e54cd6dfeb18d9c0331ef10e07c8905b
+2026-10-03T07:48:15.8669370Z ##[endgroup]
+2026-10-03T07:48:15.8670210Z ##[group]Determining the checkout info
+2026-10-03T07:48:15.8671030Z ##[endgroup]
+2026-10-03T07:48:15.8672020Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-10-03T07:48:15.8741580Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-03T07:48:15.8794840Z ##[group]Checking out the ref
+2026-10-03T07:48:15.8796810Z [command]/opt/homebrew/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-03T07:48:15.9041330Z Switched to a new branch 'main'
+2026-10-03T07:48:15.9043260Z branch 'main' set up to track 'origin/main'.
+2026-10-03T07:48:15.9047430Z ##[endgroup]
+2026-10-03T07:48:15.9048200Z ##[group]Setting up auth for fetching submodules
+2026-10-03T07:48:15.9051330Z [command]/opt/homebrew/bin/git config --global http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-03T07:48:15.9112480Z [command]/opt/homebrew/bin/git config --global --unset-all url.https://github.com/.insteadOf
+2026-10-03T07:48:15.9164880Z [command]/opt/homebrew/bin/git config --global --add url.https://github.com/.insteadOf git@github.com:
+2026-10-03T07:48:15.9221030Z [command]/opt/homebrew/bin/git config --global --add url.https://github.com/.insteadOf org-309539288@github.com:
+2026-10-03T07:48:15.9275340Z ##[endgroup]
+2026-10-03T07:48:15.9276090Z ##[group]Fetching submodules
+2026-10-03T07:48:15.9276820Z [command]/opt/homebrew/bin/git submodule sync --recursive
+2026-10-03T07:48:15.9899280Z [command]/opt/homebrew/bin/git -c protocol.version=2 submodule update --init --force --recursive
+2026-10-03T07:48:16.0579890Z Submodule 'FEX' (https://github.com/duranereloise-hash/FEX.git) registered for path 'FEX'
+2026-10-03T07:48:16.0584460Z Submodule 'dxmt' (https://github.com/willfaust/dxmt.git) registered for path 'dxmt'
+2026-10-03T07:48:16.0592600Z Submodule 'madeira-dock' (https://github.com/willfaust/madeira-dock.git) registered for path 'madeira-dock'
+2026-10-03T07:48:16.0601010Z Submodule 'wine' (https://github.com/willfaust/wine.git) registered for path 'wine'
+2026-10-03T07:48:16.0722220Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX'...
+2026-10-03T07:48:19.3678460Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/dxmt'...
+2026-10-03T07:48:20.7652410Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/madeira-dock'...
+2026-10-03T07:48:21.3177410Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/wine'...
+2026-10-03T07:49:55.4853130Z Submodule path 'FEX': checked out '48e05a249e2b25614cd3fcb8134ad5dc8b57f7ec'
+2026-10-03T07:49:55.4898410Z Submodule 'External/Catch2' (https://github.com/catchorg/Catch2.git) registered for path 'FEX/External/Catch2'
+2026-10-03T07:49:55.4900620Z Submodule 'External/Vulkan-Headers' (https://github.com/KhronosGroup/Vulkan-Headers.git) registered for path 'FEX/External/Vulkan-Headers'
+2026-10-03T07:49:55.4902820Z Submodule 'External/drm-headers' (https://github.com/FEX-Emu/drm-headers.git) registered for path 'FEX/External/drm-headers'
+2026-10-03T07:49:55.4904220Z Submodule 'External/fex-gcc-target-tests-bins' (https://github.com/FEX-Emu/fex-gcc-target-tests-bins.git) registered for path 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:49:55.4906130Z Submodule 'External/fex-gvisor-tests-bins' (https://github.com/FEX-Emu/fex-gvisor-tests-bins.git) registered for path 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:49:55.4907480Z Submodule 'External/fex-posixtest-bins' (https://github.com/FEX-Emu/fex-posixtest-bins.git) registered for path 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:49:55.4908960Z Submodule 'External/fmt' (https://github.com/fmtlib/fmt.git) registered for path 'FEX/External/fmt'
+2026-10-03T07:49:55.4910020Z Submodule 'External/jemalloc_glibc' (https://github.com/FEX-Emu/jemalloc.git) registered for path 'FEX/External/jemalloc_glibc'
+2026-10-03T07:49:55.4911390Z Submodule 'External/range-v3' (https://github.com/ericniebler/range-v3.git) registered for path 'FEX/External/range-v3'
+2026-10-03T07:49:55.4912470Z Submodule 'External/rpmalloc' (https://github.com/willfaust/rpmalloc.git) registered for path 'FEX/External/rpmalloc'
+2026-10-03T07:49:55.4919330Z Submodule 'External/tracy' (https://github.com/wolfpld/tracy) registered for path 'FEX/External/tracy'
+2026-10-03T07:49:55.4938700Z Submodule 'External/unordered_dense' (https://github.com/martinus/unordered_dense.git) registered for path 'FEX/External/unordered_dense'
+2026-10-03T07:49:55.4940580Z Submodule 'External/vixl' (https://github.com/FEX-Emu/vixl.git) registered for path 'FEX/External/vixl'
+2026-10-03T07:49:55.4966930Z Submodule 'External/xxhash' (https://github.com/Cyan4973/xxHash.git) registered for path 'FEX/External/xxhash'
+2026-10-03T07:49:55.4968030Z Submodule 'External/zydis' (https://github.com/zyantific/zydis.git) registered for path 'FEX/External/zydis'
+2026-10-03T07:49:55.4969810Z Submodule 'External/cpp-optparse' (https://github.com/Sonicadvance1/cpp-optparse) registered for path 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:49:55.5331350Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/Catch2'...
+2026-10-03T07:49:58.7961440Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/Vulkan-Headers'...
+2026-10-03T07:49:59.4006430Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/drm-headers'...
+2026-10-03T07:49:59.8821880Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fex-gcc-target-tests-bins'...
+2026-10-03T07:50:00.4993010Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fex-gvisor-tests-bins'...
+2026-10-03T07:50:04.1573600Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fex-posixtest-bins'...
+2026-10-03T07:50:04.7575690Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fmt'...
+2026-10-03T07:50:06.2179410Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/jemalloc_glibc'...
+2026-10-03T07:50:07.4147850Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/range-v3'...
+2026-10-03T07:50:10.1329510Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/rpmalloc'...
+2026-10-03T07:50:10.8054860Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/tracy'...
+2026-10-03T07:50:14.6899080Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/unordered_dense'...
+2026-10-03T07:50:15.7227860Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/vixl'...
+2026-10-03T07:50:18.0168070Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/xxhash'...
+2026-10-03T07:50:18.8263270Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/zydis'...
+2026-10-03T07:50:19.6153800Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/Source/Common/cpp-optparse'...
+2026-10-03T07:50:20.2573010Z Submodule path 'FEX/External/Catch2': checked out 'b3fb4b9feafcd8d91c5cb510a4775143fdbef02f'
+2026-10-03T07:50:39.8482370Z From https://github.com/KhronosGroup/Vulkan-Headers
+2026-10-03T07:50:39.8549630Z  * branch            450bd2232225d6c7728a4108055ac2e37cef6475 -> FETCH_HEAD
+2026-10-03T07:50:40.0599440Z Submodule path 'FEX/External/Vulkan-Headers': checked out '450bd2232225d6c7728a4108055ac2e37cef6475'
+2026-10-03T07:50:40.1794930Z Submodule path 'FEX/External/drm-headers': checked out '3e49836995c1dcb3df709440ad2f270b569c6a5f'
+2026-10-03T07:50:40.6127410Z Submodule path 'FEX/External/fex-gcc-target-tests-bins': checked out '442678a134e2d25e759c430cca32e06e9e142f1f'
+2026-10-03T07:50:43.2420360Z Submodule path 'FEX/External/fex-gvisor-tests-bins': checked out '71349ae6d14ac2e3e792730e240aecd8076cee6c'
+2026-10-03T07:50:43.9272860Z Submodule path 'FEX/External/fex-posixtest-bins': checked out '9ae29638f8000c1603f16385ed1cf6c4c23ee414'
+2026-10-03T07:50:44.0255400Z Submodule path 'FEX/External/fmt': checked out '407c905e45ad75fc29bf0f9bb7c5c2fd3475976f'
+2026-10-03T07:50:44.1471880Z Submodule path 'FEX/External/jemalloc_glibc': checked out '8436195ad5e1bc347d9b39743af3d29abee59f06'
+2026-10-03T07:50:44.2798940Z Submodule path 'FEX/External/range-v3': checked out 'ca1388fb9da8e69314dda222dc7b139ca84e092f'
+2026-10-03T07:50:44.2863520Z Submodule 'doc/gh-pages' (https://github.com/ericniebler/range-v3.git) registered for path 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:50:44.2985090Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/range-v3/doc/gh-pages'...
+2026-10-03T07:50:46.6505150Z Submodule path 'FEX/External/range-v3/doc/gh-pages': checked out '2dae74bb693e42d850fb0adcc9045c5b71fbdeae'
+2026-10-03T07:50:46.7349800Z Submodule path 'FEX/External/rpmalloc': checked out '812c2b9cf4310ffacf14e6b64066e78ab0c394b5'
+2026-10-03T07:50:46.9357340Z Submodule path 'FEX/External/tracy': checked out '650c98ece70da9e155e7ba1c2b3ee16004aae118'
+2026-10-03T07:50:47.4228180Z Submodule path 'FEX/External/unordered_dense': checked out '3234af2c03549bc85656bfd3a86993bf1cd8aef1'
+2026-10-03T07:50:54.7307930Z From https://github.com/FEX-Emu/vixl
+2026-10-03T07:50:54.7309460Z  * branch              5f418449c48f6ca3ad37c47ec632f17a561c0580 -> FETCH_HEAD
+2026-10-03T07:50:56.3716570Z Submodule path 'FEX/External/vixl': checked out '5f418449c48f6ca3ad37c47ec632f17a561c0580'
+2026-10-03T07:50:56.4628460Z Submodule path 'FEX/External/xxhash': checked out 'e626a72bc2321cd320e953a0ccf1584cad60f363'
+2026-10-03T07:51:03.6612840Z From https://github.com/zyantific/zydis
+2026-10-03T07:51:03.6615780Z  * branch            9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f -> FETCH_HEAD
+2026-10-03T07:51:03.7900570Z Submodule path 'FEX/External/zydis': checked out '9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f'
+2026-10-03T07:51:03.7959060Z Submodule 'dependencies/zycore' (https://github.com/zyantific/zycore-c) registered for path 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:03.8071260Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/zydis/dependencies/zycore'...
+2026-10-03T07:51:04.3775040Z Submodule path 'FEX/External/zydis/dependencies/zycore': checked out '75a36c45ae1ad382b0f4e0ede0af84c11ee69928'
+2026-10-03T07:51:04.4132700Z Submodule path 'FEX/Source/Common/cpp-optparse': checked out '9f94388a339fcbb0bc95c17768eb786c85988f6e'
+2026-10-03T07:51:04.5301890Z Submodule path 'dxmt': checked out 'a5e0cd3d41bf248fd1c030a2e1c515ba3522f4ef'
+2026-10-03T07:51:04.5374160Z Submodule 'external/nvapi' (https://github.com/NVIDIA/nvapi.git) registered for path 'dxmt/external/nvapi'
+2026-10-03T07:51:04.5376880Z Submodule 'include/native/directx' (https://github.com/misyltoad/mingw-directx-headers) registered for path 'dxmt/include/native/directx'
+2026-10-03T07:51:04.5492000Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/dxmt/external/nvapi'...
+2026-10-03T07:51:11.3674180Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/dxmt/include/native/directx'...
+2026-10-03T07:51:11.8785980Z Submodule path 'dxmt/external/nvapi': checked out 'd08488fcc82eef313b0464db37d2955709691e94'
+2026-10-03T07:51:11.9265140Z Submodule path 'dxmt/include/native/directx': checked out '9df86f2341616ef1888ae59919feaa6d4fad693d'
+2026-10-03T07:51:11.9749840Z Submodule path 'madeira-dock': checked out '3cadfbea700e4da4b04e331dd7ef1ba633dfacef'
+2026-10-03T07:51:14.5682360Z Submodule path 'wine': checked out '4f5b19718f4de88ecc5cb0dc08b119497a67ba8f'
+2026-10-03T07:51:14.5833840Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local gc.auto 0
+2026-10-03T07:51:14.6620780Z Entering 'FEX'
+2026-10-03T07:51:14.6793760Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:14.6957990Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:14.7115710Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:14.7271520Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:14.7423790Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:14.7573740Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:14.7745180Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:14.7912290Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:14.8076130Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:14.8227510Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:14.8377280Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:14.8513490Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:14.8655970Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:14.8804100Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:14.8969650Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:14.9125970Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:14.9278260Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:14.9438550Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:14.9597200Z Entering 'dxmt'
+2026-10-03T07:51:14.9749340Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:14.9897480Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:15.0058970Z Entering 'madeira-dock'
+2026-10-03T07:51:15.0206600Z Entering 'wine'
+2026-10-03T07:51:15.0368930Z ##[endgroup]
+2026-10-03T07:51:15.0369490Z ##[group]Persisting credentials for submodules
+2026-10-03T07:51:15.0383970Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'url\.https\:\/\/github\.com\/\.insteadOf' && git config --local --unset-all 'url.https://github.com/.insteadOf' || :"
+2026-10-03T07:51:15.1098180Z Entering 'FEX'
+2026-10-03T07:51:15.1305580Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:15.1481120Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:15.1664320Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:15.1855710Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:15.2040910Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:15.2227290Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:15.2426400Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:15.2636390Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:15.2888510Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:15.3091730Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:15.3291050Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:15.3491840Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:15.3689090Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:15.3886870Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:15.4078050Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:15.4263500Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:15.4454580Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:15.4637490Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:15.4841740Z Entering 'dxmt'
+2026-10-03T07:51:15.5034000Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:15.5232140Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:15.5417320Z Entering 'madeira-dock'
+2026-10-03T07:51:15.5596410Z Entering 'wine'
+2026-10-03T07:51:15.5801770Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local 'http.https://github.com/.extraheader' 'AUTHORIZATION: basic ***' && git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-03T07:51:15.6707530Z Entering 'FEX'
+2026-10-03T07:51:15.6945030Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/config	remote.origin.url
+2026-10-03T07:51:15.7022520Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:15.7235070Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Catch2/config	remote.origin.url
+2026-10-03T07:51:15.7308650Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:15.7549890Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Vulkan-Headers/config	remote.origin.url
+2026-10-03T07:51:15.7618430Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:15.7818280Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/drm-headers/config	remote.origin.url
+2026-10-03T07:51:15.7879960Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:15.8066690Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gcc-target-tests-bins/config	remote.origin.url
+2026-10-03T07:51:15.8134850Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:15.8327170Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gvisor-tests-bins/config	remote.origin.url
+2026-10-03T07:51:15.8385910Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:15.8562430Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-posixtest-bins/config	remote.origin.url
+2026-10-03T07:51:15.8625010Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:15.8799640Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fmt/config	remote.origin.url
+2026-10-03T07:51:15.8858270Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:15.9050600Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/jemalloc_glibc/config	remote.origin.url
+2026-10-03T07:51:15.9111240Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:15.9325520Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/config	remote.origin.url
+2026-10-03T07:51:15.9388890Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:15.9594430Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/modules/doc/gh-pages/config	remote.origin.url
+2026-10-03T07:51:15.9659940Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:15.9852490Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/rpmalloc/config	remote.origin.url
+2026-10-03T07:51:15.9918240Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:16.0108480Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/tracy/config	remote.origin.url
+2026-10-03T07:51:16.0161570Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:16.0322310Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/unordered_dense/config	remote.origin.url
+2026-10-03T07:51:16.0371720Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:16.0549560Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/vixl/config	remote.origin.url
+2026-10-03T07:51:16.0615480Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:16.0810800Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/xxhash/config	remote.origin.url
+2026-10-03T07:51:16.0871010Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:16.1067230Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/config	remote.origin.url
+2026-10-03T07:51:16.1145610Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:16.1443130Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/modules/dependencies/zycore/config	remote.origin.url
+2026-10-03T07:51:16.1576730Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:16.1824540Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/cpp-optparse/config	remote.origin.url
+2026-10-03T07:51:16.1886990Z Entering 'dxmt'
+2026-10-03T07:51:16.2073000Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/config	remote.origin.url
+2026-10-03T07:51:16.2130420Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:16.2315930Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/external/nvapi/config	remote.origin.url
+2026-10-03T07:51:16.2379080Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:16.2582010Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/include/native/directx/config	remote.origin.url
+2026-10-03T07:51:16.2647120Z Entering 'madeira-dock'
+2026-10-03T07:51:16.2836490Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/madeira-dock/config	remote.origin.url
+2026-10-03T07:51:16.2896590Z Entering 'wine'
+2026-10-03T07:51:16.3086220Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/wine/config	remote.origin.url
+2026-10-03T07:51:16.3280950Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --add 'url.https://github.com/.insteadOf' 'git@github.com:'
+2026-10-03T07:51:16.3942950Z Entering 'FEX'
+2026-10-03T07:51:16.4077770Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:16.4213450Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:16.4356960Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:16.4493760Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:16.4631420Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:16.4779580Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:16.4928410Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:16.5092740Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:16.5258420Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:16.5411940Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:16.5578590Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:16.5733750Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:16.5879890Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:16.6031600Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:16.6180420Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:16.6335320Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:16.6491900Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:16.6645400Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:16.6811060Z Entering 'dxmt'
+2026-10-03T07:51:16.6965240Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:16.7112670Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:16.7268820Z Entering 'madeira-dock'
+2026-10-03T07:51:16.7420690Z Entering 'wine'
+2026-10-03T07:51:16.7591500Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --add 'url.https://github.com/.insteadOf' 'org-309539288@github.com:'
+2026-10-03T07:51:16.8288490Z Entering 'FEX'
+2026-10-03T07:51:16.8433520Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:16.8588750Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:16.8727660Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:16.8884380Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:16.9052390Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:16.9208820Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:16.9367810Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:16.9536210Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:16.9704320Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:16.9866140Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:17.0030660Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:17.0188290Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:17.0348290Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:17.0516950Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:17.0669660Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:17.0826630Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:17.0976360Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:17.1115340Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:17.1261640Z Entering 'dxmt'
+2026-10-03T07:51:17.1402670Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:17.1538290Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:17.1681440Z Entering 'madeira-dock'
+2026-10-03T07:51:17.1829510Z Entering 'wine'
+2026-10-03T07:51:17.1999040Z ##[endgroup]
+2026-10-03T07:51:17.2088850Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-10-03T07:51:17.2147690Z 53814a68e54cd6dfeb18d9c0331ef10e07c8905b
+2026-10-03T07:51:17.2551290Z ##[group]Run xcodebuild -version
+2026-10-03T07:51:17.2551670Z [36;1mxcodebuild -version[0m
+2026-10-03T07:51:17.2551910Z [36;1mxcrun --sdk appletvos --show-sdk-version[0m
+2026-10-03T07:51:17.2552200Z [36;1mpython3 --version[0m
+2026-10-03T07:51:17.2552410Z [36;1mbrew install bison flex 2>&1 | tail -3[0m
+2026-10-03T07:51:17.2552710Z [36;1mecho "$(brew --prefix bison)/bin" >> $GITHUB_PATH[0m
+2026-10-03T07:51:17.2553170Z [36;1mecho "$(brew --prefix flex)/bin" >> $GITHUB_PATH[0m
+2026-10-03T07:51:17.2776110Z shell: /bin/bash -e {0}
+2026-10-03T07:51:17.2776370Z ##[endgroup]
+2026-10-03T07:51:17.6143200Z Xcode 16.4
+2026-10-03T07:51:17.6158850Z Build version 16F6
+2026-10-03T07:51:19.5297140Z 18.5
+2026-10-03T07:51:19.6289900Z Python 3.14.7
+2026-10-03T07:51:21.7937370Z For compilers to find flex you may need to set:
+2026-10-03T07:51:21.7937950Z   export LDFLAGS="-L/opt/homebrew/opt/flex/lib"
+2026-10-03T07:51:21.7938860Z   export CPPFLAGS="-I/opt/homebrew/opt/flex/include"
+2026-10-03T07:51:21.8271910Z ##[group]Run set -o pipefail
+2026-10-03T07:51:21.8272180Z [36;1mset -o pipefail[0m
+2026-10-03T07:51:21.8272640Z [36;1mcd wine[0m
+2026-10-03T07:51:21.8272800Z [36;1mmkdir -p build-macos[0m
+2026-10-03T07:51:21.8272990Z [36;1mcd build-macos[0m
+2026-10-03T07:51:21.8273180Z [36;1mif [ ! -f config.status ]; then[0m
+2026-10-03T07:51:21.8273510Z [36;1m  ../configure --without-x --without-freetype --without-fontconfig \[0m
+2026-10-03T07:51:21.8273880Z [36;1m    --without-vulkan --without-opengl \[0m
+2026-10-03T07:51:21.8274320Z [36;1m    --enable-wineandroid=no 2>&1 | tee ../../wine-build-macos-config.log[0m
+2026-10-03T07:51:21.8274700Z [36;1m  echo "=== configure rc=${PIPESTATUS[0]} ==="[0m
+2026-10-03T07:51:21.8274930Z [36;1mfi[0m
+2026-10-03T07:51:21.8275170Z [36;1mls include/config.h >/dev/null && echo "config.h OK"[0m
+2026-10-03T07:51:21.8275630Z [36;1mls tools/winebuild/winebuild >/dev/null && echo "winebuild OK" || echo "winebuild not built yet"[0m
+2026-10-03T07:51:21.8311410Z shell: /bin/bash -e {0}
+2026-10-03T07:51:21.8311640Z ##[endgroup]
+2026-10-03T07:51:21.9847370Z configure: WARNING: unrecognized options: --enable-wineandroid
+2026-10-03T07:51:22.0802720Z checking build system type... aarch64-apple-darwin24.6.0
+2026-10-03T07:51:22.0804210Z checking host system type... aarch64-apple-darwin24.6.0
+2026-10-03T07:51:22.0810360Z checking for gcc... gcc
+2026-10-03T07:51:23.1527620Z checking whether the C compiler works... yes
+2026-10-03T07:51:23.1528270Z checking for C compiler default output file name... a.out
+2026-10-03T07:51:23.2142490Z checking for suffix of executables... 
+2026-10-03T07:51:23.3319260Z checking whether we are cross compiling... no
+2026-10-03T07:51:23.3785340Z checking for suffix of object files... o
+2026-10-03T07:51:23.4176440Z checking whether the compiler supports GNU C... yes
+2026-10-03T07:51:23.4580470Z checking whether gcc accepts -g... yes
+2026-10-03T07:51:23.5534250Z checking for gcc option to enable C11 features... none needed
+2026-10-03T07:51:23.5539990Z checking for g++... g++
+2026-10-03T07:51:24.5341570Z checking whether the compiler supports GNU C++... yes
+2026-10-03T07:51:24.5757790Z checking whether g++ accepts -g... yes
+2026-10-03T07:51:24.8193460Z checking for g++ option to enable C++11 features... none needed
+2026-10-03T07:51:24.8199230Z checking for cpp... cpp
+2026-10-03T07:51:24.8268210Z checking for ld... ld
+2026-10-03T07:51:24.8271700Z checking for the directory containing the Wine tools... none needed
+2026-10-03T07:51:24.8272560Z checking for flex... flex
+2026-10-03T07:51:25.3184530Z checking whether flex is recent enough... yes
+2026-10-03T07:51:25.3186630Z checking for bison... bison
+2026-10-03T07:51:25.7625640Z checking whether bison is recent enough... yes
+2026-10-03T07:51:25.7631240Z checking for strip... strip
+2026-10-03T07:51:25.7631510Z checking whether ln -s works... yes
+2026-10-03T07:51:25.7633940Z checking for pkg-config... pkg-config
+2026-10-03T07:51:25.7641220Z checking for msgfmt... msgfmt
+2026-10-03T07:51:25.8180400Z checking whether msgfmt supports contexts... yes
+2026-10-03T07:51:25.8208380Z checking for aarch64-w64-mingw32-clang... no
+2026-10-03T07:51:25.8211850Z checking for aarch64-w64-mingw32-gcc... no
+2026-10-03T07:51:25.8215260Z checking for clang... clang
+2026-10-03T07:51:25.8678970Z checking whether clang supports -target aarch64-windows -fuse-ld=lld -Wl,-subsystem:console -Wl,-WX --no-default-config... no
+2026-10-03T07:51:25.9247810Z checking whether clang supports -target aarch64-windows -fuse-ld=lld -Wl,-subsystem:console -Wl,-WX... no
+2026-10-03T07:51:25.9731960Z checking whether clang works... yes
+2026-10-03T07:51:25.9735240Z configure: error: PE cross-compilation is required for aarch64, please install clang/llvm-dlltool/lld, or llvm-mingw.
+2026-10-03T07:51:26.0148950Z ##[error]Process completed with exit code 1.
+2026-10-03T07:51:26.0502280Z ##[group]Run actions/upload-artifact@v4
+2026-10-03T07:51:26.0502560Z with:
+2026-10-03T07:51:26.0502720Z   name: wine-tvos-ntdll-unix-artifacts
+2026-10-03T07:51:26.0503110Z   path: build/ntdll-unix/obj/*.a
+app/Madeira/libntdll_unix.a
+build/ntdll-unix-tvos.log
+
+2026-10-03T07:51:26.0504660Z   if-no-files-found: warn
+2026-10-03T07:51:26.0504980Z   compression-level: 6
+2026-10-03T07:51:26.0505160Z   overwrite: false
+2026-10-03T07:51:26.0505380Z   include-hidden-files: false
+2026-10-03T07:51:26.0505640Z ##[endgroup]
+2026-10-03T07:51:26.2254280Z (node:4710) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-03T07:51:26.2254990Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-03T07:51:26.2289270Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-03T07:51:26.2291850Z The least common ancestor is /Users/runner/work/MadeiraTV/MadeiraTV. This will be the root directory of the artifact
+2026-10-03T07:51:26.2305440Z ##[warning]No files were found with the provided path: build/ntdll-unix/obj/*.a
+app/Madeira/libntdll_unix.a
+build/ntdll-unix-tvos.log. No artifacts will be uploaded.
+2026-10-03T07:51:26.2426200Z ##[warning]Unexpected input(s) 'submodule-depth', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url', 'allow-unsafe-pr-checkout']
+2026-10-03T07:51:26.2432540Z Post job cleanup.
+2026-10-03T07:51:26.3397270Z [command]/opt/homebrew/bin/git version
+2026-10-03T07:51:26.3464940Z git version 2.55.0
+2026-10-03T07:51:26.3485120Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/c2e13fec-7e88-4311-968d-6dde4710b7b4/.gitconfig'
+2026-10-03T07:51:26.3492120Z Temporarily overriding HOME='/Users/runner/work/_temp/c2e13fec-7e88-4311-968d-6dde4710b7b4' before making global git config changes
+2026-10-03T07:51:26.3493980Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-03T07:51:26.3495550Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-03T07:51:26.3565480Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T07:51:26.3633670Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T07:51:26.4666750Z Entering 'FEX'
+2026-10-03T07:51:26.4979100Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:26.5196490Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:26.5411790Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:26.5696770Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:26.5932580Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:26.6163770Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:26.6386850Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:26.6584910Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:26.6796170Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:26.7008330Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:26.7228350Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:26.7419140Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:26.7593740Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:26.7775600Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:26.7977490Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:26.8158770Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:26.8358610Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:26.8578020Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:26.8763850Z Entering 'dxmt'
+2026-10-03T07:51:26.8983290Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:26.9193850Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:26.9425740Z Entering 'madeira-dock'
+2026-10-03T07:51:26.9655910Z Entering 'wine'
+2026-10-03T07:51:26.9922140Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T07:51:26.9984060Z http.https://github.com/.extraheader
+2026-10-03T07:51:26.9991540Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-03T07:51:27.0060630Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T07:51:27.0791020Z Entering 'FEX'
+2026-10-03T07:51:27.0941290Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.1062970Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:27.1212290Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.1336770Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:27.1466200Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.1569500Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:27.1685500Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.1792890Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:27.1904680Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.2034120Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:27.2179160Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.2303770Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:27.2455040Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.2584540Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:27.2712070Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.2828160Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:27.2946500Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.3056350Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:27.3187600Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.3311750Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:27.3448250Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.3578680Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:27.3721060Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.3846890Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:27.3987920Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.4095560Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:27.4243390Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.4359020Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:27.4497330Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.4623010Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:27.4824800Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.4950960Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:27.5078870Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.5182570Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:27.5294810Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.5404310Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:27.5524870Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.5656130Z Entering 'dxmt'
+2026-10-03T07:51:27.5791580Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.5914230Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:27.6059260Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.6187370Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:27.6311150Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.6426710Z Entering 'madeira-dock'
+2026-10-03T07:51:27.6546100Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.6652460Z Entering 'wine'
+2026-10-03T07:51:27.6780280Z http.https://github.com/.extraheader
+2026-10-03T07:51:27.6926630Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:27.6998480Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T07:51:27.7757660Z Entering 'FEX'
+2026-10-03T07:51:27.7849140Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/config	remote.origin.url
+2026-10-03T07:51:27.7906930Z Entering 'FEX/External/Catch2'
+2026-10-03T07:51:27.8002800Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Catch2/config	remote.origin.url
+2026-10-03T07:51:27.8060020Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T07:51:27.8154900Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Vulkan-Headers/config	remote.origin.url
+2026-10-03T07:51:27.8225580Z Entering 'FEX/External/drm-headers'
+2026-10-03T07:51:27.8345440Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/drm-headers/config	remote.origin.url
+2026-10-03T07:51:27.8407430Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T07:51:27.8499410Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gcc-target-tests-bins/config	remote.origin.url
+2026-10-03T07:51:27.8556120Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T07:51:27.8637970Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gvisor-tests-bins/config	remote.origin.url
+2026-10-03T07:51:27.8696180Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T07:51:27.8780030Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-posixtest-bins/config	remote.origin.url
+2026-10-03T07:51:27.8832690Z Entering 'FEX/External/fmt'
+2026-10-03T07:51:27.8921770Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fmt/config	remote.origin.url
+2026-10-03T07:51:27.8983730Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T07:51:27.9091880Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/jemalloc_glibc/config	remote.origin.url
+2026-10-03T07:51:27.9159440Z Entering 'FEX/External/range-v3'
+2026-10-03T07:51:27.9255530Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/config	remote.origin.url
+2026-10-03T07:51:27.9311470Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T07:51:27.9412960Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/modules/doc/gh-pages/config	remote.origin.url
+2026-10-03T07:51:27.9476240Z Entering 'FEX/External/rpmalloc'
+2026-10-03T07:51:27.9572120Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/rpmalloc/config	remote.origin.url
+2026-10-03T07:51:27.9637410Z Entering 'FEX/External/tracy'
+2026-10-03T07:51:27.9758250Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/tracy/config	remote.origin.url
+2026-10-03T07:51:27.9832820Z Entering 'FEX/External/unordered_dense'
+2026-10-03T07:51:27.9938930Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/unordered_dense/config	remote.origin.url
+2026-10-03T07:51:28.0012820Z Entering 'FEX/External/vixl'
+2026-10-03T07:51:28.0117820Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/vixl/config	remote.origin.url
+2026-10-03T07:51:28.0183160Z Entering 'FEX/External/xxhash'
+2026-10-03T07:51:28.0287210Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/xxhash/config	remote.origin.url
+2026-10-03T07:51:28.0355500Z Entering 'FEX/External/zydis'
+2026-10-03T07:51:28.0465600Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/config	remote.origin.url
+2026-10-03T07:51:28.0527840Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T07:51:28.0635690Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/modules/dependencies/zycore/config	remote.origin.url
+2026-10-03T07:51:28.0714730Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T07:51:28.0817730Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/cpp-optparse/config	remote.origin.url
+2026-10-03T07:51:28.0893510Z Entering 'dxmt'
+2026-10-03T07:51:28.1017580Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/config	remote.origin.url
+2026-10-03T07:51:28.1089040Z Entering 'dxmt/external/nvapi'
+2026-10-03T07:51:28.1207230Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/external/nvapi/config	remote.origin.url
+2026-10-03T07:51:28.1275940Z Entering 'dxmt/include/native/directx'
+2026-10-03T07:51:28.1385910Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/include/native/directx/config	remote.origin.url
+2026-10-03T07:51:28.1454220Z Entering 'madeira-dock'
+2026-10-03T07:51:28.1565280Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/madeira-dock/config	remote.origin.url
+2026-10-03T07:51:28.1640990Z Entering 'wine'
+2026-10-03T07:51:28.1746380Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/wine/config	remote.origin.url
+2026-10-03T07:51:28.1839100Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.1935360Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Catch2/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2017460Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Vulkan-Headers/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2098030Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/drm-headers/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2169770Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gcc-target-tests-bins/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2254650Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gvisor-tests-bins/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2322240Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-posixtest-bins/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2425570Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fmt/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2517020Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/jemalloc_glibc/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2621260Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2698930Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/modules/doc/gh-pages/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2764690Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/rpmalloc/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2842580Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/tracy/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2919850Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/unordered_dense/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.2986320Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/vixl/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3055780Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/xxhash/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3146020Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3230080Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/modules/dependencies/zycore/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3301840Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/cpp-optparse/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3383920Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3470960Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/external/nvapi/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3586970Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/include/native/directx/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3675760Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/madeira-dock/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.3779320Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/wine/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T07:51:28.4043240Z Cleaning up orphan processes
+2026-10-03T07:51:29.0918250Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

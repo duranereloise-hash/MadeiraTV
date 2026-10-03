@@ -1,0 +1,1007 @@
+﻿ï»¿2026-10-03T03:47:52.3086140Z Current runner version: '2.337.0'
+2026-10-03T03:47:52.3102450Z ##[group]Runner Image Provisioner
+2026-10-03T03:47:52.3103050Z Hosted Compute Agent
+2026-10-03T03:47:52.3103420Z Version: 20260828.587
+2026-10-03T03:47:52.3103980Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-10-03T03:47:52.3104450Z Build Date: 2026-08-28T16:44:25Z
+2026-10-03T03:47:52.3105040Z Worker ID: {c77ef1fa-243e-4f83-b91e-b01c7d53f94f}
+2026-10-03T03:47:52.3105510Z Azure Region: westus
+2026-10-03T03:47:52.3105890Z ##[endgroup]
+2026-10-03T03:47:52.3106970Z ##[group]Operating System
+2026-10-03T03:47:52.3107370Z macOS
+2026-10-03T03:47:52.3107690Z 15.7.9
+2026-10-03T03:47:52.3108010Z 24G830
+2026-10-03T03:47:52.3108350Z ##[endgroup]
+2026-10-03T03:47:52.3108720Z ##[group]Runner Image
+2026-10-03T03:47:52.3109110Z Image: macos-15-arm64
+2026-10-03T03:47:52.3109480Z Version: 20260907.0337.1
+2026-10-03T03:47:52.3110330Z Included Software: https://github.com/actions/runner-images/blob/macos-15-arm64/20260907.0337/images/macos/macos-15-arm64-Readme.md
+2026-10-03T03:47:52.3111360Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-15-arm64%2F20260907.0337
+2026-10-03T03:47:52.3112040Z ##[endgroup]
+2026-10-03T03:47:52.3112880Z ##[group]GITHUB_TOKEN Permissions
+2026-10-03T03:47:52.3114240Z Contents: read
+2026-10-03T03:47:52.3114600Z Metadata: read
+2026-10-03T03:47:52.3114970Z Packages: read
+2026-10-03T03:47:52.3115350Z ##[endgroup]
+2026-10-03T03:47:52.3116750Z Secret source: Actions
+2026-10-03T03:47:52.3117350Z Cache mode: write
+2026-10-03T03:47:52.3117800Z Prepare workflow directory
+2026-10-03T03:47:52.3358600Z Prepare all required actions
+2026-10-03T03:47:52.3394240Z Getting action download info
+2026-10-03T03:47:52.4988200Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-03T03:47:52.6909080Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-03T03:47:52.9123770Z Complete job name: Build FEXCore static libs for tvOS
+2026-10-03T03:47:52.9603100Z ##[warning]Unexpected input(s) 'submodule-depth', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url', 'allow-unsafe-pr-checkout']
+2026-10-03T03:47:52.9655550Z ##[group]Run actions/checkout@v4
+2026-10-03T03:47:52.9656070Z with:
+2026-10-03T03:47:52.9656400Z   fetch-depth: 0
+2026-10-03T03:47:52.9656740Z   submodules: recursive
+2026-10-03T03:47:52.9657080Z   submodule-depth: 1
+2026-10-03T03:47:52.9657450Z   repository: duranereloise-hash/MadeiraTV
+2026-10-03T03:47:52.9660370Z   token: ***
+2026-10-03T03:47:52.9660680Z   ssh-strict: true
+2026-10-03T03:47:52.9661000Z   ssh-user: git
+2026-10-03T03:47:52.9661330Z   persist-credentials: true
+2026-10-03T03:47:52.9661700Z   clean: true
+2026-10-03T03:47:52.9662070Z   sparse-checkout-cone-mode: true
+2026-10-03T03:47:52.9662470Z   fetch-tags: false
+2026-10-03T03:47:52.9662820Z   show-progress: true
+2026-10-03T03:47:52.9663240Z   lfs: false
+2026-10-03T03:47:52.9663580Z   set-safe-directory: true
+2026-10-03T03:47:52.9663960Z   allow-unsafe-pr-checkout: false
+2026-10-03T03:47:52.9664580Z ##[endgroup]
+2026-10-03T03:47:53.4006480Z Syncing repository: duranereloise-hash/MadeiraTV
+2026-10-03T03:47:53.4008740Z ##[group]Getting Git version info
+2026-10-03T03:47:53.4012980Z Working directory is '/Users/runner/work/MadeiraTV/MadeiraTV'
+2026-10-03T03:47:53.4014210Z [command]/opt/homebrew/bin/git version
+2026-10-03T03:47:53.4546820Z git version 2.55.0
+2026-10-03T03:47:53.4678470Z ##[endgroup]
+2026-10-03T03:47:53.4746930Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/73e98702-d1f8-4a30-8a33-04149a2beede/.gitconfig'
+2026-10-03T03:47:53.4748560Z Temporarily overriding HOME='/Users/runner/work/_temp/73e98702-d1f8-4a30-8a33-04149a2beede' before making global git config changes
+2026-10-03T03:47:53.4754160Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-03T03:47:53.4755210Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-03T03:47:53.4819470Z Deleting the contents of '/Users/runner/work/MadeiraTV/MadeiraTV'
+2026-10-03T03:47:53.4821940Z ##[group]Initializing the repository
+2026-10-03T03:47:53.4825690Z [command]/opt/homebrew/bin/git init /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-03T03:47:53.5145220Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-03T03:47:53.5146470Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-03T03:47:53.5147390Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-03T03:47:53.5148010Z hint: call:
+2026-10-03T03:47:53.5148560Z hint:
+2026-10-03T03:47:53.5149110Z hint: 	git config --global init.defaultBranch <name>
+2026-10-03T03:47:53.5149780Z hint:
+2026-10-03T03:47:53.5150540Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-03T03:47:53.5151480Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-03T03:47:53.5152220Z hint:
+2026-10-03T03:47:53.5152640Z hint: 	git branch -m <name>
+2026-10-03T03:47:53.5153050Z hint:
+2026-10-03T03:47:53.5153680Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-03T03:47:53.5157740Z Initialized empty Git repository in /Users/runner/work/MadeiraTV/MadeiraTV/.git/
+2026-10-03T03:47:53.5166120Z [command]/opt/homebrew/bin/git remote add origin https://github.com/duranereloise-hash/MadeiraTV
+2026-10-03T03:47:53.5301820Z ##[endgroup]
+2026-10-03T03:47:53.5302700Z ##[group]Disabling automatic garbage collection
+2026-10-03T03:47:53.5303400Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-10-03T03:47:53.5422010Z ##[endgroup]
+2026-10-03T03:47:53.5422810Z ##[group]Setting up auth
+2026-10-03T03:47:53.5424620Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T03:47:53.5549390Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T03:47:53.7100450Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T03:47:53.7165990Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T03:47:53.8001190Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:47:53.8062590Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T03:47:53.8908480Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-03T03:47:53.8976940Z ##[endgroup]
+2026-10-03T03:47:53.8977810Z ##[group]Fetching the repository
+2026-10-03T03:47:53.8982970Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-03T03:47:54.8740260Z From https://github.com/duranereloise-hash/MadeiraTV
+2026-10-03T03:47:54.8764150Z  * [new branch]      main       -> origin/main
+2026-10-03T03:47:54.8773730Z [command]/opt/homebrew/bin/git branch --list --remote origin/main
+2026-10-03T03:47:54.8821560Z   origin/main
+2026-10-03T03:47:54.8827840Z [command]/opt/homebrew/bin/git rev-parse refs/remotes/origin/main
+2026-10-03T03:47:54.8875520Z 8e2dd679a7a3f0e01862f66f63d8a500a222c958
+2026-10-03T03:47:54.8877080Z ##[endgroup]
+2026-10-03T03:47:54.8877450Z ##[group]Determining the checkout info
+2026-10-03T03:47:54.8877990Z ##[endgroup]
+2026-10-03T03:47:54.8881830Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-10-03T03:47:54.8943140Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-03T03:47:54.8998420Z ##[group]Checking out the ref
+2026-10-03T03:47:54.9000340Z [command]/opt/homebrew/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-03T03:47:54.9298340Z Switched to a new branch 'main'
+2026-10-03T03:47:54.9313460Z branch 'main' set up to track 'origin/main'.
+2026-10-03T03:47:54.9345290Z ##[endgroup]
+2026-10-03T03:47:54.9345750Z ##[group]Setting up auth for fetching submodules
+2026-10-03T03:47:54.9346460Z [command]/opt/homebrew/bin/git config --global http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-03T03:47:54.9482420Z [command]/opt/homebrew/bin/git config --global --unset-all url.https://github.com/.insteadOf
+2026-10-03T03:47:54.9610510Z [command]/opt/homebrew/bin/git config --global --add url.https://github.com/.insteadOf git@github.com:
+2026-10-03T03:47:54.9657630Z [command]/opt/homebrew/bin/git config --global --add url.https://github.com/.insteadOf org-309539288@github.com:
+2026-10-03T03:47:54.9676440Z ##[endgroup]
+2026-10-03T03:47:54.9678720Z ##[group]Fetching submodules
+2026-10-03T03:47:54.9680230Z [command]/opt/homebrew/bin/git submodule sync --recursive
+2026-10-03T03:47:55.0246230Z [command]/opt/homebrew/bin/git -c protocol.version=2 submodule update --init --force --recursive
+2026-10-03T03:47:55.1137370Z Submodule 'FEX' (https://github.com/willfaust/FEX.git) registered for path 'FEX'
+2026-10-03T03:47:55.1170810Z Submodule 'dxmt' (https://github.com/willfaust/dxmt.git) registered for path 'dxmt'
+2026-10-03T03:47:55.1174840Z Submodule 'madeira-dock' (https://github.com/willfaust/madeira-dock.git) registered for path 'madeira-dock'
+2026-10-03T03:47:55.1276460Z Submodule 'wine' (https://github.com/willfaust/wine.git) registered for path 'wine'
+2026-10-03T03:47:55.1292770Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX'...
+2026-10-03T03:47:59.4345870Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/dxmt'...
+2026-10-03T03:48:01.2233900Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/madeira-dock'...
+2026-10-03T03:48:01.9981550Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/wine'...
+2026-10-03T03:49:32.6271120Z Submodule path 'FEX': checked out '26859e184ad90f0e811d7f8bbd943a4b1573a2c3'
+2026-10-03T03:49:32.6361750Z Submodule 'External/Catch2' (https://github.com/catchorg/Catch2.git) registered for path 'FEX/External/Catch2'
+2026-10-03T03:49:32.6466130Z Submodule 'External/Vulkan-Headers' (https://github.com/KhronosGroup/Vulkan-Headers.git) registered for path 'FEX/External/Vulkan-Headers'
+2026-10-03T03:49:32.6564730Z Submodule 'External/drm-headers' (https://github.com/FEX-Emu/drm-headers.git) registered for path 'FEX/External/drm-headers'
+2026-10-03T03:49:32.6666510Z Submodule 'External/fex-gcc-target-tests-bins' (https://github.com/FEX-Emu/fex-gcc-target-tests-bins.git) registered for path 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:49:32.6768950Z Submodule 'External/fex-gvisor-tests-bins' (https://github.com/FEX-Emu/fex-gvisor-tests-bins.git) registered for path 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:49:32.6869570Z Submodule 'External/fex-posixtest-bins' (https://github.com/FEX-Emu/fex-posixtest-bins.git) registered for path 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:49:32.6901990Z Submodule 'External/fmt' (https://github.com/fmtlib/fmt.git) registered for path 'FEX/External/fmt'
+2026-10-03T03:49:32.6906970Z Submodule 'External/jemalloc_glibc' (https://github.com/FEX-Emu/jemalloc.git) registered for path 'FEX/External/jemalloc_glibc'
+2026-10-03T03:49:32.7009400Z Submodule 'External/range-v3' (https://github.com/ericniebler/range-v3.git) registered for path 'FEX/External/range-v3'
+2026-10-03T03:49:32.7089010Z Submodule 'External/rpmalloc' (https://github.com/willfaust/rpmalloc.git) registered for path 'FEX/External/rpmalloc'
+2026-10-03T03:49:32.7143800Z Submodule 'External/tracy' (https://github.com/wolfpld/tracy) registered for path 'FEX/External/tracy'
+2026-10-03T03:49:32.7159940Z Submodule 'External/unordered_dense' (https://github.com/martinus/unordered_dense.git) registered for path 'FEX/External/unordered_dense'
+2026-10-03T03:49:32.7267230Z Submodule 'External/vixl' (https://github.com/FEX-Emu/vixl.git) registered for path 'FEX/External/vixl'
+2026-10-03T03:49:32.7375100Z Submodule 'External/xxhash' (https://github.com/Cyan4973/xxHash.git) registered for path 'FEX/External/xxhash'
+2026-10-03T03:49:32.7477090Z Submodule 'External/zydis' (https://github.com/zyantific/zydis.git) registered for path 'FEX/External/zydis'
+2026-10-03T03:49:32.7578040Z Submodule 'External/cpp-optparse' (https://github.com/Sonicadvance1/cpp-optparse) registered for path 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:49:32.7598340Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/Catch2'...
+2026-10-03T03:49:36.4455240Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/Vulkan-Headers'...
+2026-10-03T03:49:37.4128340Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/drm-headers'...
+2026-10-03T03:49:38.2400300Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fex-gcc-target-tests-bins'...
+2026-10-03T03:49:39.2661940Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fex-gvisor-tests-bins'...
+2026-10-03T03:49:43.3137810Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fex-posixtest-bins'...
+2026-10-03T03:49:44.3496990Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/fmt'...
+2026-10-03T03:49:46.2523040Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/jemalloc_glibc'...
+2026-10-03T03:49:47.6818540Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/range-v3'...
+2026-10-03T03:49:50.1850220Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/rpmalloc'...
+2026-10-03T03:49:51.4593940Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/tracy'...
+2026-10-03T03:49:55.6958580Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/unordered_dense'...
+2026-10-03T03:49:56.9801930Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/vixl'...
+2026-10-03T03:49:59.2565680Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/xxhash'...
+2026-10-03T03:50:00.4270330Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/zydis'...
+2026-10-03T03:50:01.6402760Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/Source/Common/cpp-optparse'...
+2026-10-03T03:50:02.4832200Z Submodule path 'FEX/External/Catch2': checked out 'b3fb4b9feafcd8d91c5cb510a4775143fdbef02f'
+2026-10-03T03:50:19.0152730Z From https://github.com/KhronosGroup/Vulkan-Headers
+2026-10-03T03:50:19.0153560Z  * branch            450bd2232225d6c7728a4108055ac2e37cef6475 -> FETCH_HEAD
+2026-10-03T03:50:19.0977810Z Submodule path 'FEX/External/Vulkan-Headers': checked out '450bd2232225d6c7728a4108055ac2e37cef6475'
+2026-10-03T03:50:19.1481760Z Submodule path 'FEX/External/drm-headers': checked out '3e49836995c1dcb3df709440ad2f270b569c6a5f'
+2026-10-03T03:50:19.3931170Z Submodule path 'FEX/External/fex-gcc-target-tests-bins': checked out '442678a134e2d25e759c430cca32e06e9e142f1f'
+2026-10-03T03:50:21.0391220Z Submodule path 'FEX/External/fex-gvisor-tests-bins': checked out '71349ae6d14ac2e3e792730e240aecd8076cee6c'
+2026-10-03T03:50:21.4995980Z Submodule path 'FEX/External/fex-posixtest-bins': checked out '9ae29638f8000c1603f16385ed1cf6c4c23ee414'
+2026-10-03T03:50:21.5769350Z Submodule path 'FEX/External/fmt': checked out '407c905e45ad75fc29bf0f9bb7c5c2fd3475976f'
+2026-10-03T03:50:21.6832760Z Submodule path 'FEX/External/jemalloc_glibc': checked out '8436195ad5e1bc347d9b39743af3d29abee59f06'
+2026-10-03T03:50:21.8180800Z Submodule path 'FEX/External/range-v3': checked out 'ca1388fb9da8e69314dda222dc7b139ca84e092f'
+2026-10-03T03:50:21.8244010Z Submodule 'doc/gh-pages' (https://github.com/ericniebler/range-v3.git) registered for path 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:50:21.8332320Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/range-v3/doc/gh-pages'...
+2026-10-03T03:50:25.8400490Z Submodule path 'FEX/External/range-v3/doc/gh-pages': checked out '2dae74bb693e42d850fb0adcc9045c5b71fbdeae'
+2026-10-03T03:50:25.8791270Z Submodule path 'FEX/External/rpmalloc': checked out '812c2b9cf4310ffacf14e6b64066e78ab0c394b5'
+2026-10-03T03:50:26.0274880Z Submodule path 'FEX/External/tracy': checked out '650c98ece70da9e155e7ba1c2b3ee16004aae118'
+2026-10-03T03:50:26.3961690Z Submodule path 'FEX/External/unordered_dense': checked out '3234af2c03549bc85656bfd3a86993bf1cd8aef1'
+2026-10-03T03:50:34.5672830Z From https://github.com/FEX-Emu/vixl
+2026-10-03T03:50:34.5694230Z  * branch              5f418449c48f6ca3ad37c47ec632f17a561c0580 -> FETCH_HEAD
+2026-10-03T03:50:35.7339260Z Submodule path 'FEX/External/vixl': checked out '5f418449c48f6ca3ad37c47ec632f17a561c0580'
+2026-10-03T03:50:35.7929180Z Submodule path 'FEX/External/xxhash': checked out 'e626a72bc2321cd320e953a0ccf1584cad60f363'
+2026-10-03T03:50:42.7143840Z From https://github.com/zyantific/zydis
+2026-10-03T03:50:42.7144510Z  * branch            9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f -> FETCH_HEAD
+2026-10-03T03:50:42.8308700Z Submodule path 'FEX/External/zydis': checked out '9bfadd6a55fc92dbd37fa3ba089bf8b36622df4f'
+2026-10-03T03:50:42.8366630Z Submodule 'dependencies/zycore' (https://github.com/zyantific/zycore-c) registered for path 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:50:42.8460930Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/FEX/External/zydis/dependencies/zycore'...
+2026-10-03T03:50:43.7508470Z Submodule path 'FEX/External/zydis/dependencies/zycore': checked out '75a36c45ae1ad382b0f4e0ede0af84c11ee69928'
+2026-10-03T03:50:43.8280400Z Submodule path 'FEX/Source/Common/cpp-optparse': checked out '9f94388a339fcbb0bc95c17768eb786c85988f6e'
+2026-10-03T03:50:43.9377190Z Submodule path 'dxmt': checked out 'a5e0cd3d41bf248fd1c030a2e1c515ba3522f4ef'
+2026-10-03T03:50:43.9435080Z Submodule 'external/nvapi' (https://github.com/NVIDIA/nvapi.git) registered for path 'dxmt/external/nvapi'
+2026-10-03T03:50:43.9436050Z Submodule 'include/native/directx' (https://github.com/misyltoad/mingw-directx-headers) registered for path 'dxmt/include/native/directx'
+2026-10-03T03:50:43.9524250Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/dxmt/external/nvapi'...
+2026-10-03T03:50:48.6483830Z Cloning into '/Users/runner/work/MadeiraTV/MadeiraTV/dxmt/include/native/directx'...
+2026-10-03T03:50:49.5219180Z Submodule path 'dxmt/external/nvapi': checked out 'd08488fcc82eef313b0464db37d2955709691e94'
+2026-10-03T03:50:49.5628800Z Submodule path 'dxmt/include/native/directx': checked out '9df86f2341616ef1888ae59919feaa6d4fad693d'
+2026-10-03T03:50:49.5997810Z Submodule path 'madeira-dock': checked out '3cadfbea700e4da4b04e331dd7ef1ba633dfacef'
+2026-10-03T03:50:51.9009970Z Submodule path 'wine': checked out '4f5b19718f4de88ecc5cb0dc08b119497a67ba8f'
+2026-10-03T03:50:51.9159240Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local gc.auto 0
+2026-10-03T03:50:52.0420190Z Entering 'FEX'
+2026-10-03T03:50:52.0583920Z Entering 'FEX/External/Catch2'
+2026-10-03T03:50:52.0752590Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:50:52.0888150Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:50:52.1030040Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:50:52.1179430Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:50:52.1335840Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:50:52.1533380Z Entering 'FEX/External/fmt'
+2026-10-03T03:50:52.1719800Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:50:52.1947060Z Entering 'FEX/External/range-v3'
+2026-10-03T03:50:52.2111020Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:50:52.2258350Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:50:52.2412130Z Entering 'FEX/External/tracy'
+2026-10-03T03:50:52.2551180Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:50:52.2710650Z Entering 'FEX/External/vixl'
+2026-10-03T03:50:52.2834000Z Entering 'FEX/External/xxhash'
+2026-10-03T03:50:52.2956650Z Entering 'FEX/External/zydis'
+2026-10-03T03:50:52.3082110Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:50:52.3205740Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:50:52.3333490Z Entering 'dxmt'
+2026-10-03T03:50:52.3457080Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:50:52.3578260Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:50:52.3699850Z Entering 'madeira-dock'
+2026-10-03T03:50:52.3817000Z Entering 'wine'
+2026-10-03T03:50:52.3945470Z ##[endgroup]
+2026-10-03T03:50:52.3945970Z ##[group]Persisting credentials for submodules
+2026-10-03T03:50:52.3955810Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'url\.https\:\/\/github\.com\/\.insteadOf' && git config --local --unset-all 'url.https://github.com/.insteadOf' || :"
+2026-10-03T03:50:52.4522400Z Entering 'FEX'
+2026-10-03T03:50:52.4670950Z Entering 'FEX/External/Catch2'
+2026-10-03T03:50:52.4840630Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:50:52.5008720Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:50:52.5411850Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:50:52.5717110Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:50:52.6018610Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:50:52.6320060Z Entering 'FEX/External/fmt'
+2026-10-03T03:50:52.6622210Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:50:52.6923820Z Entering 'FEX/External/range-v3'
+2026-10-03T03:50:52.7125360Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:50:52.7427800Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:50:52.7729270Z Entering 'FEX/External/tracy'
+2026-10-03T03:50:52.8031060Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:50:52.8332610Z Entering 'FEX/External/vixl'
+2026-10-03T03:50:52.8634490Z Entering 'FEX/External/xxhash'
+2026-10-03T03:50:52.8835730Z Entering 'FEX/External/zydis'
+2026-10-03T03:50:52.9138110Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:50:52.9440590Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:50:52.9708910Z Entering 'dxmt'
+2026-10-03T03:50:52.9965430Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:50:53.0275880Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:50:53.0516760Z Entering 'madeira-dock'
+2026-10-03T03:50:53.0742670Z Entering 'wine'
+2026-10-03T03:50:53.0935810Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local 'http.https://github.com/.extraheader' 'AUTHORIZATION: basic ***' && git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-03T03:50:53.1818790Z Entering 'FEX'
+2026-10-03T03:50:53.1994250Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/config	remote.origin.url
+2026-10-03T03:50:53.2050190Z Entering 'FEX/External/Catch2'
+2026-10-03T03:50:53.2224920Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Catch2/config	remote.origin.url
+2026-10-03T03:50:53.2281400Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:50:53.2448980Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Vulkan-Headers/config	remote.origin.url
+2026-10-03T03:50:53.2501100Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:50:53.2671340Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/drm-headers/config	remote.origin.url
+2026-10-03T03:50:53.2726230Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:50:53.2887290Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gcc-target-tests-bins/config	remote.origin.url
+2026-10-03T03:50:53.2941690Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:50:53.3111390Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gvisor-tests-bins/config	remote.origin.url
+2026-10-03T03:50:53.3167490Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:50:53.3333950Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-posixtest-bins/config	remote.origin.url
+2026-10-03T03:50:53.3391700Z Entering 'FEX/External/fmt'
+2026-10-03T03:50:53.3551970Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fmt/config	remote.origin.url
+2026-10-03T03:50:53.3604450Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:50:53.3763940Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/jemalloc_glibc/config	remote.origin.url
+2026-10-03T03:50:53.3819080Z Entering 'FEX/External/range-v3'
+2026-10-03T03:50:53.3982140Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/config	remote.origin.url
+2026-10-03T03:50:53.4033180Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:50:53.4198010Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/modules/doc/gh-pages/config	remote.origin.url
+2026-10-03T03:50:53.4253720Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:50:53.4435790Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/rpmalloc/config	remote.origin.url
+2026-10-03T03:50:53.4489600Z Entering 'FEX/External/tracy'
+2026-10-03T03:50:53.4646440Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/tracy/config	remote.origin.url
+2026-10-03T03:50:53.4697670Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:50:53.4856510Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/unordered_dense/config	remote.origin.url
+2026-10-03T03:50:53.4908020Z Entering 'FEX/External/vixl'
+2026-10-03T03:50:53.5070640Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/vixl/config	remote.origin.url
+2026-10-03T03:50:53.5125780Z Entering 'FEX/External/xxhash'
+2026-10-03T03:50:53.5287790Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/xxhash/config	remote.origin.url
+2026-10-03T03:50:53.5341430Z Entering 'FEX/External/zydis'
+2026-10-03T03:50:53.5507250Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/config	remote.origin.url
+2026-10-03T03:50:53.5559250Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:50:53.5826300Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/modules/dependencies/zycore/config	remote.origin.url
+2026-10-03T03:50:53.5845570Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:50:53.6007770Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/cpp-optparse/config	remote.origin.url
+2026-10-03T03:50:53.6063150Z Entering 'dxmt'
+2026-10-03T03:50:53.6232180Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/config	remote.origin.url
+2026-10-03T03:50:53.6343050Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:50:53.6592780Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/external/nvapi/config	remote.origin.url
+2026-10-03T03:50:53.6667270Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:50:53.6869660Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/include/native/directx/config	remote.origin.url
+2026-10-03T03:50:53.6922690Z Entering 'madeira-dock'
+2026-10-03T03:50:53.7091490Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/madeira-dock/config	remote.origin.url
+2026-10-03T03:50:53.7144160Z Entering 'wine'
+2026-10-03T03:50:53.7312610Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/wine/config	remote.origin.url
+2026-10-03T03:50:53.7449510Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --add 'url.https://github.com/.insteadOf' 'git@github.com:'
+2026-10-03T03:50:53.8086470Z Entering 'FEX'
+2026-10-03T03:50:53.8225770Z Entering 'FEX/External/Catch2'
+2026-10-03T03:50:53.8363280Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:50:53.8569610Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:50:53.8811460Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:50:53.9014030Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:50:53.9153650Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:50:53.9371440Z Entering 'FEX/External/fmt'
+2026-10-03T03:50:53.9577970Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:50:53.9733870Z Entering 'FEX/External/range-v3'
+2026-10-03T03:50:53.9856190Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:50:53.9979340Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:50:54.0111890Z Entering 'FEX/External/tracy'
+2026-10-03T03:50:54.0244140Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:50:54.0376230Z Entering 'FEX/External/vixl'
+2026-10-03T03:50:54.0517020Z Entering 'FEX/External/xxhash'
+2026-10-03T03:50:54.0674290Z Entering 'FEX/External/zydis'
+2026-10-03T03:50:54.0820420Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:50:54.0967730Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:50:54.1120180Z Entering 'dxmt'
+2026-10-03T03:50:54.1266460Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:50:54.1414870Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:50:54.1571650Z Entering 'madeira-dock'
+2026-10-03T03:50:54.1731380Z Entering 'wine'
+2026-10-03T03:50:54.1891660Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --add 'url.https://github.com/.insteadOf' 'org-309539288@github.com:'
+2026-10-03T03:50:54.2648110Z Entering 'FEX'
+2026-10-03T03:50:54.2804610Z Entering 'FEX/External/Catch2'
+2026-10-03T03:50:54.2948730Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:50:54.3094720Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:50:54.3248340Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:50:54.3406120Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:50:54.3561110Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:50:54.3722490Z Entering 'FEX/External/fmt'
+2026-10-03T03:50:54.3876040Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:50:54.4027560Z Entering 'FEX/External/range-v3'
+2026-10-03T03:50:54.4170140Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:50:54.4313120Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:50:54.4469810Z Entering 'FEX/External/tracy'
+2026-10-03T03:50:54.4630670Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:50:54.4798090Z Entering 'FEX/External/vixl'
+2026-10-03T03:50:54.4946350Z Entering 'FEX/External/xxhash'
+2026-10-03T03:50:54.5106040Z Entering 'FEX/External/zydis'
+2026-10-03T03:50:54.5254540Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:50:54.5400890Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:50:54.5555390Z Entering 'dxmt'
+2026-10-03T03:50:54.5712780Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:50:54.5874790Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:50:54.6036650Z Entering 'madeira-dock'
+2026-10-03T03:50:54.6225740Z Entering 'wine'
+2026-10-03T03:50:54.6390580Z ##[endgroup]
+2026-10-03T03:50:54.6483350Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-10-03T03:50:54.6545590Z 8e2dd679a7a3f0e01862f66f63d8a500a222c958
+2026-10-03T03:50:54.6968550Z ##[group]Run xcodebuild -version
+2026-10-03T03:50:54.6968830Z [36;1mxcodebuild -version[0m
+2026-10-03T03:50:54.6969020Z [36;1mcmake --version | head -2[0m
+2026-10-03T03:50:54.6969290Z [36;1mxcrun --sdk appletvos --show-sdk-version[0m
+2026-10-03T03:50:54.6969610Z [36;1mpip3 install --quiet packaging setuptools 2>&1 | tail -2 || true[0m
+2026-10-03T03:50:54.7233730Z shell: /bin/bash -e {0}
+2026-10-03T03:50:54.7234010Z ##[endgroup]
+2026-10-03T03:50:55.1486100Z Xcode 16.4
+2026-10-03T03:50:55.1494740Z Build version 16F6
+2026-10-03T03:50:55.1900910Z cmake version 4.4.3
+2026-10-03T03:50:55.1901140Z 
+2026-10-03T03:50:56.8154780Z 18.5
+2026-10-03T03:50:57.9547660Z note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+2026-10-03T03:50:57.9548650Z hint: See PEP 668 for the detailed specification.
+2026-10-03T03:50:57.9598670Z ##[group]Run set -euo pipefail
+2026-10-03T03:50:57.9598970Z [36;1mset -euo pipefail[0m
+2026-10-03T03:50:57.9599320Z [36;1m# Accept tvOS as a supported system (fork-only change; do not send upstream)[0m
+2026-10-03T03:50:57.9600370Z [36;1msed -i.bak 's/CMAKE_SYSTEM_NAME STREQUAL "iOS")/CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_SYSTEM_NAME STREQUAL "tvOS")/' FEX/CMakeLists.txt[0m
+2026-10-03T03:50:57.9600910Z [36;1mrm -f FEX/CMakeLists.txt.bak[0m
+2026-10-03T03:50:57.9601260Z [36;1mif ! grep -q 'tvOS' FEX/CMakeLists.txt; then echo "PATCH FAILED"; exit 1; fi[0m
+2026-10-03T03:50:57.9601650Z [36;1mgrep -n 'tvOS' FEX/CMakeLists.txt | head -5[0m
+2026-10-03T03:50:57.9639690Z shell: /bin/bash -e {0}
+2026-10-03T03:50:57.9639910Z ##[endgroup]
+2026-10-03T03:50:57.9968870Z 64:elseif (NOT (WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_SYSTEM_NAME STREQUAL "tvOS"))
+2026-10-03T03:50:57.9996230Z ##[group]Run set -o pipefail
+2026-10-03T03:50:57.9996470Z [36;1mset -o pipefail[0m
+2026-10-03T03:50:57.9996650Z [36;1mmkdir -p build[0m
+2026-10-03T03:50:57.9996840Z [36;1mR="$(pwd)"[0m
+2026-10-03T03:50:57.9997000Z [36;1mB="$R/FEX/build-ios"[0m
+2026-10-03T03:50:57.9997230Z [36;1mCC_BIN="$(xcrun --sdk appletvos --find clang)"[0m
+2026-10-03T03:50:57.9997530Z [36;1mCXX_BIN="$(xcrun --sdk appletvos --find clang++)"[0m
+2026-10-03T03:50:57.9997780Z [36;1mecho "CC=$CC_BIN"[0m
+2026-10-03T03:50:57.9997970Z [36;1mecho "CXX=$CXX_BIN"[0m
+2026-10-03T03:50:57.9998220Z [36;1m# Detect whether CMake accepts iOS system name + tvOS sysroot[0m
+2026-10-03T03:50:57.9998520Z [36;1mcmake -S "$R/FEX" -B "$B" \[0m
+2026-10-03T03:50:57.9998720Z [36;1m  -DCMAKE_SYSTEM_NAME=tvOS \[0m
+2026-10-03T03:50:57.9998940Z [36;1m  -DCMAKE_SYSTEM_PROCESSOR=arm64 \[0m
+2026-10-03T03:50:57.9999170Z [36;1m  -DCMAKE_OSX_ARCHITECTURES=arm64 \[0m
+2026-10-03T03:50:57.9999430Z [36;1m  -DCMAKE_OSX_SYSROOT=appletvos \[0m
+2026-10-03T03:50:57.9999670Z [36;1m  -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \[0m
+2026-10-03T03:50:57.9999910Z [36;1m  -DCMAKE_BUILD_TYPE=Release \[0m
+2026-10-03T03:50:58.0000130Z [36;1m  -DCMAKE_C_COMPILER="$CC_BIN" \[0m
+2026-10-03T03:50:58.0000360Z [36;1m  -DCMAKE_CXX_COMPILER="$CXX_BIN" \[0m
+2026-10-03T03:50:58.0000570Z [36;1m  -DFEX_IOS_HOST_BUILD=ON \[0m
+2026-10-03T03:50:58.0000780Z [36;1m  -DTUNE_CPU=none \[0m
+2026-10-03T03:50:58.0000970Z [36;1m  -DCMAKE_C_FLAGS="-DFEX_IOS_HOST" \[0m
+2026-10-03T03:50:58.0001220Z [36;1m  -DCMAKE_CXX_FLAGS="-DFEX_IOS_HOST" \[0m
+2026-10-03T03:50:58.0001530Z [36;1m  -DBUILD_TESTING=OFF -DBUILD_THUNKS=OFF -DBUILD_FEXCONFIG=OFF \[0m
+2026-10-03T03:50:58.0001880Z [36;1m  -DBUILD_FEX_LINUX_TESTS=OFF -DENABLE_FEX_ALLOCATOR=OFF \[0m
+2026-10-03T03:50:58.0002210Z [36;1m  -DENABLE_ASSERTIONS=OFF -DENABLE_CLANG_THUNKS=ON \[0m
+2026-10-03T03:50:58.0002510Z [36;1m  -DENABLE_CCACHE=ON 2>&1 | tee build/fex-config.log[0m
+2026-10-03T03:50:58.0033200Z shell: /bin/bash -e {0}
+2026-10-03T03:50:58.0033380Z ##[endgroup]
+2026-10-03T03:50:58.8810000Z CC=/Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+2026-10-03T03:50:58.8810960Z CXX=/Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
+2026-10-03T03:50:59.5094490Z -- The C compiler identification is AppleClang 17.0.0.17000013
+2026-10-03T03:50:59.5928930Z -- The CXX compiler identification is AppleClang 17.0.0.17000013
+2026-10-03T03:50:59.6059280Z -- The ASM compiler identification is AppleClang
+2026-10-03T03:50:59.6069930Z -- Found assembler: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+2026-10-03T03:50:59.6208950Z -- Detecting C compiler ABI info
+2026-10-03T03:51:00.1895700Z -- Detecting C compiler ABI info - done
+2026-10-03T03:51:00.2051930Z -- Check for working C compiler: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang - skipped
+2026-10-03T03:51:00.2058450Z -- Detecting C compile features
+2026-10-03T03:51:00.2065070Z -- Detecting C compile features - done
+2026-10-03T03:51:00.2150510Z -- Detecting CXX compiler ABI info
+2026-10-03T03:51:00.3099320Z -- Detecting CXX compiler ABI info - done
+2026-10-03T03:51:00.3366850Z -- Check for working CXX compiler: /Applications/Xcode_16.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ - skipped
+2026-10-03T03:51:00.3370340Z -- Detecting CXX compile features
+2026-10-03T03:51:00.3375850Z -- Detecting CXX compile features - done
+2026-10-03T03:51:00.3452090Z -- Looking for include file gdb/jit-reader.h
+2026-10-03T03:51:00.4304810Z -- Looking for include file gdb/jit-reader.h - not found
+2026-10-03T03:51:00.4331320Z -- Clang version 17.0.0.17000013
+2026-10-03T03:51:00.8192260Z -- Performing Test HAS_CLANG_PRESERVE_ALL
+2026-10-03T03:51:00.9211040Z -- Performing Test HAS_CLANG_PRESERVE_ALL - Success
+2026-10-03T03:51:00.9217000Z -- Has clang::preserve_all
+2026-10-03T03:51:00.9217760Z -- Performing Test HAS_PROGRAM_INVOCATION_NAME
+2026-10-03T03:51:01.0179640Z -- Performing Test HAS_PROGRAM_INVOCATION_NAME - Failed
+2026-10-03T03:51:01.0205420Z -- Apple platform detected â disabling jemalloc and rpmalloc
+2026-10-03T03:51:01.9837970Z -- Found Python: /opt/homebrew/Frameworks/Python.framework/Versions/3.14/bin/python3.14 (found suitable version "3.14.7", minimum required is "3.9") found components: Interpreter
+2026-10-03T03:51:01.9880290Z -- xxHash build type: RELEASE
+2026-10-03T03:51:02.0118850Z -- Architecture: arm64
+2026-10-03T03:51:02.0256420Z -- {fmt} version: 12.1.0
+2026-10-03T03:51:02.0256710Z -- Build type: RELEASE
+2026-10-03T03:51:02.0265380Z -- Performing Test HAS_NULLPTR_WARNING
+2026-10-03T03:51:02.1045550Z -- Performing Test HAS_NULLPTR_WARNING - Success
+2026-10-03T03:51:02.1105380Z CMake Warning (deprecated) at External/range-v3/CMakeLists.txt:8 (cmake_minimum_required):
+2026-10-03T03:51:02.1106020Z   Compatibility with CMake < 3.10 will be removed from a future version of
+2026-10-03T03:51:02.1106330Z   CMake.
+2026-10-03T03:51:02.1106410Z 
+2026-10-03T03:51:02.1106570Z   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+2026-10-03T03:51:02.1107000Z   to tell CMake that the project requires at least <min> but has been updated
+2026-10-03T03:51:02.1107340Z   to work with policies introduced by <max> or earlier.
+2026-10-03T03:51:02.1107690Z This warning is for project developers.  Use -Wno-author or -Wno-deprecated
+2026-10-03T03:51:02.1107990Z to suppress it.
+2026-10-03T03:51:02.1108140Z 
+2026-10-03T03:51:02.1113660Z CMake Warning at External/range-v3/cmake/ranges_env.cmake:65 (message):
+2026-10-03T03:51:02.1114010Z   [range-v3 warning]: unknown system tvOS !
+2026-10-03T03:51:02.1114260Z Call Stack (most recent call first):
+2026-10-03T03:51:02.1114500Z   External/range-v3/CMakeLists.txt:24 (include)
+2026-10-03T03:51:02.1114670Z 
+2026-10-03T03:51:02.1114670Z 
+2026-10-03T03:51:02.1114830Z CMake Warning at External/range-v3/cmake/ranges_env.cmake:92 (message):
+2026-10-03T03:51:02.1115200Z   [range-v3 warning]: unknown build type, defaults to release!
+2026-10-03T03:51:02.1115490Z Call Stack (most recent call first):
+2026-10-03T03:51:02.1115760Z   External/range-v3/CMakeLists.txt:24 (include)
+2026-10-03T03:51:02.1116090Z 
+2026-10-03T03:51:02.1116090Z 
+2026-10-03T03:51:02.1192270Z -- Found Git: /opt/homebrew/bin/git (found version "2.55.0")
+2026-10-03T03:51:02.1195810Z -- [range-v3]: C++ std=2a
+2026-10-03T03:51:02.1200400Z -- Performing Test RANGES_HAS_CXXSTD
+2026-10-03T03:51:02.2002550Z -- Performing Test RANGES_HAS_CXXSTD - Success
+2026-10-03T03:51:02.2007050Z -- Performing Test RANGES_HAS_WALL
+2026-10-03T03:51:02.2996170Z -- Performing Test RANGES_HAS_WALL - Success
+2026-10-03T03:51:02.3000700Z -- Performing Test RANGES_HAS_WEXTRA
+2026-10-03T03:51:02.3815530Z -- Performing Test RANGES_HAS_WEXTRA - Success
+2026-10-03T03:51:02.3820050Z -- Performing Test RANGES_HAS_WERROR
+2026-10-03T03:51:02.4612460Z -- Performing Test RANGES_HAS_WERROR - Success
+2026-10-03T03:51:02.4617310Z -- Performing Test RANGES_HAS_FDIAGNOSTIC_SHOW_TEMPLATE_TREE
+2026-10-03T03:51:02.5421640Z -- Performing Test RANGES_HAS_FDIAGNOSTIC_SHOW_TEMPLATE_TREE - Success
+2026-10-03T03:51:02.5426330Z -- Performing Test RANGES_HAS_FTEMPLATE_BACKTRACE_LIMIT
+2026-10-03T03:51:02.6422570Z -- Performing Test RANGES_HAS_FTEMPLATE_BACKTRACE_LIMIT - Success
+2026-10-03T03:51:02.6427130Z -- Performing Test RANGES_HAS_FMACRO_BACKTRACE_LIMIT
+2026-10-03T03:51:02.7284620Z -- Performing Test RANGES_HAS_FMACRO_BACKTRACE_LIMIT - Success
+2026-10-03T03:51:02.7289030Z -- Performing Test RANGES_HAS_OMIT_FRAME_POINTER
+2026-10-03T03:51:02.8113950Z -- Performing Test RANGES_HAS_OMIT_FRAME_POINTER - Success
+2026-10-03T03:51:02.8118360Z -- Performing Test RANGES_HAS_OFAST
+2026-10-03T03:51:02.9106580Z -- Performing Test RANGES_HAS_OFAST - Success
+2026-10-03T03:51:02.9111250Z -- Performing Test RANGES_HAS_STRICT_ALIASING
+2026-10-03T03:51:02.9939250Z -- Performing Test RANGES_HAS_STRICT_ALIASING - Success
+2026-10-03T03:51:02.9944190Z -- Performing Test RANGES_HAS_STRICT_VTABLE_POINTERS
+2026-10-03T03:51:03.0749940Z -- Performing Test RANGES_HAS_STRICT_VTABLE_POINTERS - Success
+2026-10-03T03:51:03.0754100Z -- Performing Test RANGES_HAS_FAST_MATH
+2026-10-03T03:51:03.1687680Z -- Performing Test RANGES_HAS_FAST_MATH - Success
+2026-10-03T03:51:03.1692310Z -- Performing Test RANGES_HAS_VECTORIZE
+2026-10-03T03:51:03.2728160Z -- Performing Test RANGES_HAS_VECTORIZE - Success
+2026-10-03T03:51:03.2732870Z -- Performing Test RANGES_HAS_SIZED_DEALLOCATION
+2026-10-03T03:51:03.3616150Z -- Performing Test RANGES_HAS_SIZED_DEALLOCATION - Success
+2026-10-03T03:51:03.3620910Z -- Performing Test RANGES_HAS_MARCH_NATIVE
+2026-10-03T03:51:03.4486160Z -- Performing Test RANGES_HAS_MARCH_NATIVE - Success
+2026-10-03T03:51:03.4490710Z -- Performing Test RANGES_HAS_MTUNE_NATIVE
+2026-10-03T03:51:03.5352600Z -- Performing Test RANGES_HAS_MTUNE_NATIVE - Success
+2026-10-03T03:51:03.5355050Z -- Performing Test RANGE_V3_ALIGNED_NEW_PROBE
+2026-10-03T03:51:03.8149390Z -- Performing Test RANGE_V3_ALIGNED_NEW_PROBE - Success
+2026-10-03T03:51:03.8161690Z -- Performing Test RANGES_HAS_FCOROUTINES_TS
+2026-10-03T03:51:03.8671880Z -- Performing Test RANGES_HAS_FCOROUTINES_TS - Failed
+2026-10-03T03:51:03.8675920Z -- Performing Test RANGE_V3_HAS_FCONCEPTS
+2026-10-03T03:51:03.9168990Z -- Performing Test RANGE_V3_HAS_FCONCEPTS - Failed
+2026-10-03T03:51:03.9220310Z -- Performing Test GCC_COLOR
+2026-10-03T03:51:04.0236130Z -- Performing Test GCC_COLOR - Success
+2026-10-03T03:51:04.0242560Z -- Performing Test CLANG_COLOR
+2026-10-03T03:51:04.1122960Z -- Performing Test CLANG_COLOR - Success
+2026-10-03T03:51:04.1123420Z -- Performing Test ENUM_ENUM_WARNING
+2026-10-03T03:51:04.2004490Z -- Performing Test ENUM_ENUM_WARNING - Success
+2026-10-03T03:51:04.2140110Z -- FEX version: 
+2026-10-03T03:51:04.2140530Z -- FEX commit: 26859e184ad90f0e811d7f8bbd943a4b1573a2c3
+2026-10-03T03:51:04.2161380Z -- Performing Test HAS_SYSCALL_GETCPU
+2026-10-03T03:51:04.2676410Z -- Performing Test HAS_SYSCALL_GETCPU - Failed
+2026-10-03T03:51:04.2676880Z -- Performing Test HAS_SYSCALL_GETTID
+2026-10-03T03:51:04.3292220Z -- Performing Test HAS_SYSCALL_GETTID - Failed
+2026-10-03T03:51:04.3292830Z -- Performing Test HAS_SYSCALL_TGKILL
+2026-10-03T03:51:04.3816760Z -- Performing Test HAS_SYSCALL_TGKILL - Failed
+2026-10-03T03:51:04.3817300Z -- Performing Test HAS_SYSCALL_STATX
+2026-10-03T03:51:04.4374890Z -- Performing Test HAS_SYSCALL_STATX - Failed
+2026-10-03T03:51:04.4375440Z -- Performing Test HAS_SYSCALL_RENAMEAT2
+2026-10-03T03:51:04.4948350Z -- Performing Test HAS_SYSCALL_RENAMEAT2 - Failed
+2026-10-03T03:51:04.5009110Z -- Configuring done (5.6s)
+2026-10-03T03:51:04.6052040Z -- Generating done (0.1s)
+2026-10-03T03:51:04.6058970Z -- Build files have been written to: /Users/runner/work/MadeiraTV/MadeiraTV/FEX/build-ios
+2026-10-03T03:51:04.6401120Z ##[group]Run set -o pipefail
+2026-10-03T03:51:04.6401400Z [36;1mset -o pipefail[0m
+2026-10-03T03:51:04.6401790Z [36;1mcmake --build "build/../FEX/build-ios" --target FEXCore FEXCore_Base 2>&1 | tee build/fex-build.log[0m
+2026-10-03T03:51:04.6439690Z shell: /bin/bash -e {0}
+2026-10-03T03:51:04.6439910Z ##[endgroup]
+2026-10-03T03:51:04.7382920Z [  0%] Generating ../../include/FEXCore/Config/ConfigValues.inl, ../../include/FEXCore/Config/ConfigOptions.inl, ../../generated/FEX.1
+2026-10-03T03:51:04.7730620Z [  1%] Generating ../../generated/FEX.1.gz
+2026-10-03T03:51:04.7878490Z [  1%] Built target CONFIG_INC
+2026-10-03T03:51:04.8088150Z [  2%] Building C object External/xxhash/cmake_unofficial/CMakeFiles/xxhash.dir/__/xxhash.c.o
+2026-10-03T03:51:05.0401330Z [  3%] Linking C static library libxxhash.a
+2026-10-03T03:51:05.1105680Z [  3%] Built target xxhash
+2026-10-03T03:51:05.1298690Z [  4%] Building CXX object External/fmt/CMakeFiles/fmt.dir/src/format.cc.o
+2026-10-03T03:51:06.4923740Z [  4%] Building CXX object External/fmt/CMakeFiles/fmt.dir/src/os.cc.o
+2026-10-03T03:51:06.7830230Z [  5%] Linking CXX static library libfmt.a
+2026-10-03T03:51:06.8292390Z [  5%] Built target fmt
+2026-10-03T03:51:06.8536860Z [  5%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_add.c.o
+2026-10-03T03:51:06.8859270Z [  6%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_div.c.o
+2026-10-03T03:51:06.9187070Z [  6%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_sub.c.o
+2026-10-03T03:51:06.9533630Z [  7%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_mul.c.o
+2026-10-03T03:51:06.9868570Z [  8%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_rem.c.o
+2026-10-03T03:51:07.0297290Z [  8%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_sqrt.c.o
+2026-10-03T03:51:07.0689440Z [  9%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_le.c.o
+2026-10-03T03:51:07.1000290Z [  9%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_to_i32.c.o
+2026-10-03T03:51:07.1315640Z [ 10%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_to_i64.c.o
+2026-10-03T03:51:07.1628050Z [ 11%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_to_ui64.c.o
+2026-10-03T03:51:07.2011770Z [ 11%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_to_f32.c.o
+2026-10-03T03:51:07.2430210Z [ 12%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_to_f64.c.o
+2026-10-03T03:51:07.2822990Z [ 12%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/i32_to_extF80.c.o
+2026-10-03T03:51:07.3165390Z [ 13%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/ui64_to_extF80.c.o
+2026-10-03T03:51:07.3549210Z [ 14%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_to_f128.c.o
+2026-10-03T03:51:07.3900670Z [ 14%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_extF80.c.o
+2026-10-03T03:51:07.4202260Z [ 15%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_add.c.o
+2026-10-03T03:51:07.4489810Z [ 15%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_div.c.o
+2026-10-03T03:51:07.4856290Z [ 16%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_eq.c.o
+2026-10-03T03:51:07.5130870Z [ 17%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_eq_signaling.c.o
+2026-10-03T03:51:07.5458110Z [ 17%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_isSignalingNaN.c.o
+2026-10-03T03:51:07.5745820Z [ 18%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_le.c.o
+2026-10-03T03:51:07.6022800Z [ 18%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_le_quiet.c.o
+2026-10-03T03:51:07.6333760Z [ 19%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_lt.c.o
+2026-10-03T03:51:07.6619820Z [ 20%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_lt_quiet.c.o
+2026-10-03T03:51:07.6907960Z [ 20%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_mulAdd.c.o
+2026-10-03T03:51:07.7186330Z [ 21%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_mul.c.o
+2026-10-03T03:51:07.7495390Z [ 21%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_rem.c.o
+2026-10-03T03:51:07.7819830Z [ 22%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_sqrt.c.o
+2026-10-03T03:51:07.8159680Z [ 23%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_sub.c.o
+2026-10-03T03:51:07.8416620Z [ 23%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_f16.c.o
+2026-10-03T03:51:07.8710130Z [ 24%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_f32.c.o
+2026-10-03T03:51:07.9045280Z [ 24%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_f64.c.o
+2026-10-03T03:51:07.9320250Z [ 25%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_i32.c.o
+2026-10-03T03:51:07.9588680Z [ 26%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_i64.c.o
+2026-10-03T03:51:07.9865970Z [ 26%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_ui32.c.o
+2026-10-03T03:51:08.0151690Z [ 27%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f128_to_ui64.c.o
+2026-10-03T03:51:08.0437780Z [ 27%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_addMagsF128.c.o
+2026-10-03T03:51:08.0739180Z [ 28%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_subMagsF128.c.o
+2026-10-03T03:51:08.1042510Z [ 29%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_normRoundPackToF128.c.o
+2026-10-03T03:51:08.1337490Z [ 29%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundPackToF128.c.o
+2026-10-03T03:51:08.1627600Z [ 30%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_propagateNaNF128UI.c.o
+2026-10-03T03:51:08.1886550Z [ 30%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f32_to_f128.c.o
+2026-10-03T03:51:08.2235250Z [ 31%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/i32_to_f128.c.o
+2026-10-03T03:51:08.2529260Z [ 31%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundToUI64.c.o
+2026-10-03T03:51:08.2800160Z [ 32%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_f128UIToCommonNaN.c.o
+2026-10-03T03:51:08.3066200Z [ 34%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_commonNaNToF128UI.c.o
+2026-10-03T03:51:08.3341570Z [ 34%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_normSubnormalF128Sig.c.o
+2026-10-03T03:51:08.3613510Z [ 35%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundToI32.c.o
+2026-10-03T03:51:08.3882630Z [ 35%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundToI64.c.o
+2026-10-03T03:51:08.4174970Z [ 36%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundPackToF32.c.o
+2026-10-03T03:51:08.4458310Z [ 37%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_addMagsExtF80.c.o
+2026-10-03T03:51:08.4741780Z [ 37%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_extF80UIToCommonNaN.c.o
+2026-10-03T03:51:08.4995830Z [ 38%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_commonNaNToF32UI.c.o
+2026-10-03T03:51:08.5245220Z [ 38%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_commonNaNToF64UI.c.o
+2026-10-03T03:51:08.5503780Z [ 39%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundPackToF64.c.o
+2026-10-03T03:51:08.5853250Z [ 40%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_propagateNaNExtF80UI.c.o
+2026-10-03T03:51:08.6136780Z [ 40%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_roundPackToExtF80.c.o
+2026-10-03T03:51:08.6432110Z [ 41%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_normSubnormalExtF80Sig.c.o
+2026-10-03T03:51:08.6697370Z [ 41%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_subMagsExtF80.c.o
+2026-10-03T03:51:08.6976940Z [ 42%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_shiftRightJam128.c.o
+2026-10-03T03:51:08.7232680Z [ 43%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_shiftRightJam128Extra.c.o
+2026-10-03T03:51:08.7500070Z [ 43%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_normRoundPackToExtF80.c.o
+2026-10-03T03:51:08.7760280Z [ 44%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_approxRecip_1Ks.c.o
+2026-10-03T03:51:08.8012060Z [ 44%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_approxRecipSqrt32_1.c.o
+2026-10-03T03:51:08.8270000Z [ 45%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_approxRecipSqrt_1Ks.c.o
+2026-10-03T03:51:08.8699040Z [ 46%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/softfloat_raiseFlags.c.o
+2026-10-03T03:51:08.8961670Z [ 46%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f64_to_extF80.c.o
+2026-10-03T03:51:08.9248480Z [ 47%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_commonNaNToExtF80UI.c.o
+2026-10-03T03:51:08.9534590Z [ 47%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_normSubnormalF64Sig.c.o
+2026-10-03T03:51:08.9799550Z [ 48%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_f64UIToCommonNaN.c.o
+2026-10-03T03:51:09.0160000Z [ 49%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_roundToInt.c.o
+2026-10-03T03:51:09.0523370Z [ 49%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_eq.c.o
+2026-10-03T03:51:09.0847490Z [ 50%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/extF80_lt.c.o
+2026-10-03T03:51:09.1154670Z [ 50%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/f32_to_extF80.c.o
+2026-10-03T03:51:09.1431800Z [ 51%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_normSubnormalF32Sig.c.o
+2026-10-03T03:51:09.1730120Z [ 52%] Building C object External/SoftFloat-3e/CMakeFiles/softfloat_3e.dir/src/s_f32UIToCommonNaN.c.o
+2026-10-03T03:51:09.2014520Z [ 52%] Linking C static library libsoftfloat_3e.a
+2026-10-03T03:51:09.2657750Z [ 52%] Built target softfloat_3e
+2026-10-03T03:51:09.2878730Z [ 53%] Building CXX object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/Impl.cpp.o
+2026-10-03T03:51:09.3187650Z [ 54%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/atanll.c.o
+2026-10-03T03:51:09.3492870Z [ 54%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/constll.c.o
+2026-10-03T03:51:09.3809100Z [ 55%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/exp2ll.c.o
+2026-10-03T03:51:09.4216500Z [ 55%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/floorll.c.o
+2026-10-03T03:51:09.4591530Z [ 56%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/log2ll.c.o
+2026-10-03T03:51:09.4885950Z [ 57%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/mtherr.c.o
+2026-10-03T03:51:09.5147950Z [ 57%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/polevll.c.o
+2026-10-03T03:51:09.5406500Z [ 58%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/sinll.c.o
+2026-10-03T03:51:09.5685870Z [ 58%] Building C object External/cephes/CMakeFiles/cephes_128bit.dir/src/128bit/tanll.c.o
+2026-10-03T03:51:09.5956270Z [ 59%] Linking CXX static library libcephes_128bit.a
+2026-10-03T03:51:09.6342810Z [ 59%] Built target cephes_128bit
+2026-10-03T03:51:09.6576030Z [ 59%] Generating ../../include/FEXCore/IR/IRDefines.inc, ../../include/FEXCore/IR/IRDefines_Dispatch.inc
+2026-10-03T03:51:09.7304410Z [ 60%] Generating ../../IR.md
+2026-10-03T03:51:09.7735180Z [ 60%] Built target IR_INC
+2026-10-03T03:51:09.8001400Z [ 61%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Interface/Config/Config.cpp.o
+2026-10-03T03:51:11.1075660Z [ 61%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Utils/Allocator.cpp.o
+2026-10-03T03:51:11.7534360Z [ 62%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Utils/FileLoading.cpp.o
+2026-10-03T03:51:12.3743220Z [ 63%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Utils/ForcedAssert.cpp.o
+2026-10-03T03:51:12.4450590Z [ 63%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Utils/LogManager.cpp.o
+2026-10-03T03:51:13.0294030Z [ 64%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Utils/SpinWaitLock.cpp.o
+2026-10-03T03:51:13.6348260Z [ 64%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_Base.dir/Utils/WildcardMatcher.cpp.o
+2026-10-03T03:51:13.9223410Z [ 65%] Linking CXX static library libFEXCore_Base.a
+2026-10-03T03:51:13.9761670Z [ 65%] Built target FEXCore_Base
+2026-10-03T03:51:14.0133560Z [ 67%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Common/JitSymbols.cpp.o
+2026-10-03T03:51:14.7305520Z [ 67%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Context/Context.cpp.o
+2026-10-03T03:51:16.1140500Z [ 68%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/LookupCache.cpp.o
+2026-10-03T03:51:17.1783560Z [ 68%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/CodeCache.cpp.o
+2026-10-03T03:51:19.5255840Z [ 69%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/Core.cpp.o
+2026-10-03T03:51:20.8341140Z [1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Interface/Core/Core.cpp:1998:32: [0m[0;1;35mwarning: [0m[1mincrement of object of volatile-qualified type 'volatile uint64_t' (aka 'volatile unsigned long long') is deprecated [-Wdeprecated-volatile][0m
+2026-10-03T03:51:20.8361260Z  1998 |       g_madeira_thr_count[slot]++;[0m
+2026-10-03T03:51:20.8362250Z       | [0;1;32m                               ^
+2026-10-03T03:51:20.8364040Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Interface/Core/Core.cpp:2036:20: [0m[0;1;35mwarning: [0m[1mincrement of object of volatile-qualified type 'volatile uint64_t' (aka 'volatile unsigned long long') is deprecated [-Wdeprecated-volatile][0m
+2026-10-03T03:51:20.8365530Z  2036 |       uint64_t n = ++g_madeira_hot_count[idx];[0m
+2026-10-03T03:51:20.8366230Z       | [0;1;32m                   ^
+2026-10-03T03:51:21.9790020Z [0m2 warnings generated.
+2026-10-03T03:51:21.9963840Z [ 70%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/CPUBackend.cpp.o
+2026-10-03T03:51:23.4545030Z [ 70%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/Addressing.cpp.o
+2026-10-03T03:51:24.5859510Z [ 71%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/CPUID.cpp.o
+2026-10-03T03:51:25.5928520Z [ 71%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/Frontend.cpp.o
+2026-10-03T03:51:27.2216800Z [ 72%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher/AVX_128.cpp.o
+2026-10-03T03:51:30.6862600Z [ 73%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher/Crypto.cpp.o
+2026-10-03T03:51:32.3632670Z [ 73%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher/Flags.cpp.o
+2026-10-03T03:51:34.0335180Z [ 74%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher/Vector.cpp.o
+2026-10-03T03:51:36.3154070Z [ 74%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher/X87.cpp.o
+2026-10-03T03:51:37.9767070Z [ 75%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher/X87F64.cpp.o
+2026-10-03T03:51:39.4536430Z [ 76%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/OpcodeDispatcher.cpp.o
+2026-10-03T03:51:41.9240630Z [ 76%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/ArchHelpers/Arm64Emitter.cpp.o
+2026-10-03T03:51:43.2062160Z [ 77%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/Dispatcher/Dispatcher.cpp.o
+2026-10-03T03:51:44.7651110Z [ 77%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/Interpreter/Fallbacks/InterpreterFallbacks.cpp.o
+2026-10-03T03:51:45.7312720Z [ 78%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/Interpreter/Fallbacks/StringCompareFallbacks.cpp.o
+2026-10-03T03:51:46.6079130Z [ 79%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/JIT.cpp.o
+2026-10-03T03:51:47.9059880Z [1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Interface/Core/JIT/JIT.cpp:1102:11: [0m[0;1;35mwarning: [0m[1mvariable 'OpIdx' set but not used [-Wunused-but-set-variable][0m
+2026-10-03T03:51:47.9061370Z  1102 |       [0;34mint[0m OpIdx = [0;32m0[0m;[0m
+2026-10-03T03:51:47.9061960Z       | [0;1;32m          ^
+2026-10-03T03:51:48.4839440Z [0m1 warning generated.
+2026-10-03T03:51:48.4970840Z [ 79%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/ALUOps.cpp.o
+2026-10-03T03:51:49.8591360Z [ 80%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/AtomicOps.cpp.o
+2026-10-03T03:51:51.0055180Z [ 80%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/BranchOps.cpp.o
+2026-10-03T03:51:52.4784640Z [ 81%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/ConversionOps.cpp.o
+2026-10-03T03:51:53.7719620Z [ 82%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/EncryptionOps.cpp.o
+2026-10-03T03:51:54.8874720Z [ 82%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/MemoryOps.cpp.o
+2026-10-03T03:51:56.4911710Z [ 83%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/MiscOps.cpp.o
+2026-10-03T03:51:57.7043870Z [ 83%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/MoveOps.cpp.o
+2026-10-03T03:51:58.7999040Z [ 84%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/VectorOps.cpp.o
+2026-10-03T03:52:01.4934230Z [ 85%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/JIT/Arm64Relocations.cpp.o
+2026-10-03T03:52:02.6146980Z [ 85%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/BaseTables.cpp.o
+2026-10-03T03:52:03.9296920Z [ 86%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/DDDTables.cpp.o
+2026-10-03T03:52:05.1825840Z [ 86%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/H0F38Tables.cpp.o
+2026-10-03T03:52:06.6624590Z [ 87%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/H0F3ATables.cpp.o
+2026-10-03T03:52:07.9587090Z [ 87%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/PrimaryGroupTables.cpp.o
+2026-10-03T03:52:09.1742200Z [ 88%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/SecondaryGroupTables.cpp.o
+2026-10-03T03:52:10.5656940Z [ 89%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/SecondaryModRMTables.cpp.o
+2026-10-03T03:52:11.6749000Z [ 89%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/SecondaryTables.cpp.o
+2026-10-03T03:52:13.0644380Z [ 90%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/VEXTables.cpp.o
+2026-10-03T03:52:14.8581840Z [ 90%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/X87Tables.cpp.o
+2026-10-03T03:52:16.5853160Z [ 91%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/GDBJIT/GDBJIT.cpp.o
+2026-10-03T03:52:17.4735200Z [ 92%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/IRDumper.cpp.o
+2026-10-03T03:52:18.7488490Z [ 92%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/IREmitter.cpp.o
+2026-10-03T03:52:19.9660140Z [ 93%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/PassManager.cpp.o
+2026-10-03T03:52:21.7656430Z [ 93%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/IRDumperPass.cpp.o
+2026-10-03T03:52:23.7706780Z [ 94%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/IRValidation.cpp.o
+2026-10-03T03:52:25.5833760Z [ 95%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp.o
+2026-10-03T03:52:27.6642260Z [ 95%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/RegisterAllocationPass.cpp.o
+2026-10-03T03:52:29.6030800Z [ 96%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/x87StackOptimizationPass.cpp.o
+2026-10-03T03:52:31.6293430Z [ 96%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/AllocWatch.cpp.o
+2026-10-03T03:52:32.0095000Z [1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/AllocWatch.cpp:72:15: [0m[0;1;35mwarning: [0m[1munused function 'EventName' [-Wunused-function][0m
+2026-10-03T03:52:32.0096500Z    72 |   [0;34mconst[0m [0;34mchar[0m* EventName(uint32_t Event) {[0m
+2026-10-03T03:52:32.0152360Z       | [0;1;32m              ^~~~~~~~~
+2026-10-03T03:52:32.0153260Z [0m1 warning generated.
+2026-10-03T03:52:32.0261070Z [ 97%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/LongJump.cpp.o
+2026-10-03T03:52:32.3809700Z [ 98%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/Telemetry.cpp.o
+2026-10-03T03:52:33.2733360Z [ 98%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/Threads.cpp.o
+2026-10-03T03:52:33.6949970Z [100%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/Profiler.cpp.o
+2026-10-03T03:52:34.6980890Z [100%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/ArchHelpers/Arm64.cpp.o
+2026-10-03T03:52:36.0062000Z [1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:707:3: [0m[0;1;31merror: [0m[1munknown type name 'MEMORY_BASIC_INFORMATION'[0m
+2026-10-03T03:52:36.0064580Z   707 |   MEMORY_BASIC_INFORMATION mbi {};[0m
+2026-10-03T03:52:36.0065590Z       | [0;1;32m  ^
+2026-10-03T03:52:36.0198620Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:709:37: [0m[0;1;31merror: [0m[1munknown type name 'LPCVOID'[0m
+2026-10-03T03:52:36.0199680Z   709 |   [0;34mif[0m (VirtualQuery([0;34mreinterpret_cast[0m<LPCVOID>(GPRs[AddressReg]), &mbi, [0;34msizeof[0m(mbi))) {[0m
+2026-10-03T03:52:36.0200350Z       | [0;1;32m                                    ^
+2026-10-03T03:52:36.0360730Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:710:24: [0m[0;1;31merror: [0m[1muse of undeclared identifier 'MEM_IMAGE'[0m
+2026-10-03T03:52:36.0363450Z   710 |     type = mbi.Type == MEM_IMAGE ? [0;32m"MEM_IMAGE"[0m : mbi.Type == MEM_MAPPED ? [0;32m"MEM_MAPPED"[0m : [0;32m"MEM_PRIVATE"[0m;[0m
+2026-10-03T03:52:36.0366510Z       | [0;1;32m                       ^
+2026-10-03T03:52:36.0368460Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:710:62: [0m[0;1;31merror: [0m[1muse of undeclared identifier 'MEM_MAPPED'[0m
+2026-10-03T03:52:36.0370830Z   710 |     type = mbi.Type == MEM_IMAGE ? [0;32m"MEM_IMAGE"[0m : mbi.Type == MEM_MAPPED ? [0;32m"MEM_MAPPED"[0m : [0;32m"MEM_PRIVATE"[0m;[0m
+2026-10-03T03:52:36.0374030Z       | [0;1;32m                                                             ^
+2026-10-03T03:52:36.1673400Z [0m4 errors generated.
+2026-10-03T03:52:36.1758730Z make[3]: *** [FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/ArchHelpers/Arm64.cpp.o] Error 1
+2026-10-03T03:52:36.1765990Z make[2]: *** [FEXCore/Source/CMakeFiles/FEXCore_object.dir/all] Error 2
+2026-10-03T03:52:36.1784120Z make[1]: *** [FEXCore/Source/CMakeFiles/FEXCore.dir/rule] Error 2
+2026-10-03T03:52:36.1792420Z make: *** [FEXCore] Error 2
+2026-10-03T03:52:36.1919120Z ##[error]Process completed with exit code 2.
+2026-10-03T03:52:36.2406940Z ##[group]Run ls -la FEX/build-ios/FEXCore/Source/*.a 2>/dev/null || echo "no .a produced"
+2026-10-03T03:52:36.2407640Z [36;1mls -la FEX/build-ios/FEXCore/Source/*.a 2>/dev/null || echo "no .a produced"[0m
+2026-10-03T03:52:36.2409140Z [36;1mtail -40 build/fex-config.log build/fex-build.log 2>/dev/null[0m
+2026-10-03T03:52:36.2887040Z shell: /bin/bash -e {0}
+2026-10-03T03:52:36.2887360Z ##[endgroup]
+2026-10-03T03:52:36.3807970Z -rw-r--r--  1 runner  staff  236680 Oct  3 03:51 FEX/build-ios/FEXCore/Source/libFEXCore_Base.a
+2026-10-03T03:52:36.3872040Z ==> build/fex-config.log <==
+2026-10-03T03:52:36.3873840Z -- Performing Test RANGES_HAS_STRICT_ALIASING - Success
+2026-10-03T03:52:36.3875110Z -- Performing Test RANGES_HAS_STRICT_VTABLE_POINTERS
+2026-10-03T03:52:36.3877320Z -- Performing Test RANGES_HAS_STRICT_VTABLE_POINTERS - Success
+2026-10-03T03:52:36.3877840Z -- Performing Test RANGES_HAS_FAST_MATH
+2026-10-03T03:52:36.3878180Z -- Performing Test RANGES_HAS_FAST_MATH - Success
+2026-10-03T03:52:36.3880080Z -- Performing Test RANGES_HAS_VECTORIZE
+2026-10-03T03:52:36.3883210Z -- Performing Test RANGES_HAS_VECTORIZE - Success
+2026-10-03T03:52:36.3883750Z -- Performing Test RANGES_HAS_SIZED_DEALLOCATION
+2026-10-03T03:52:36.3884620Z -- Performing Test RANGES_HAS_SIZED_DEALLOCATION - Success
+2026-10-03T03:52:36.3885070Z -- Performing Test RANGES_HAS_MARCH_NATIVE
+2026-10-03T03:52:36.3885470Z -- Performing Test RANGES_HAS_MARCH_NATIVE - Success
+2026-10-03T03:52:36.3885790Z -- Performing Test RANGES_HAS_MTUNE_NATIVE
+2026-10-03T03:52:36.3886750Z -- Performing Test RANGES_HAS_MTUNE_NATIVE - Success
+2026-10-03T03:52:36.3887660Z -- Performing Test RANGE_V3_ALIGNED_NEW_PROBE
+2026-10-03T03:52:36.3889140Z -- Performing Test RANGE_V3_ALIGNED_NEW_PROBE - Success
+2026-10-03T03:52:36.3889570Z -- Performing Test RANGES_HAS_FCOROUTINES_TS
+2026-10-03T03:52:36.3890100Z -- Performing Test RANGES_HAS_FCOROUTINES_TS - Failed
+2026-10-03T03:52:36.3891440Z -- Performing Test RANGE_V3_HAS_FCONCEPTS
+2026-10-03T03:52:36.3891790Z -- Performing Test RANGE_V3_HAS_FCONCEPTS - Failed
+2026-10-03T03:52:36.3892220Z -- Performing Test GCC_COLOR
+2026-10-03T03:52:36.3892470Z -- Performing Test GCC_COLOR - Success
+2026-10-03T03:52:36.3892860Z -- Performing Test CLANG_COLOR
+2026-10-03T03:52:36.3893810Z -- Performing Test CLANG_COLOR - Success
+2026-10-03T03:52:36.3895900Z -- Performing Test ENUM_ENUM_WARNING
+2026-10-03T03:52:36.3896240Z -- Performing Test ENUM_ENUM_WARNING - Success
+2026-10-03T03:52:36.3896630Z -- FEX version: 
+2026-10-03T03:52:36.3897240Z -- FEX commit: 26859e184ad90f0e811d7f8bbd943a4b1573a2c3
+2026-10-03T03:52:36.3897530Z -- Performing Test HAS_SYSCALL_GETCPU
+2026-10-03T03:52:36.3897890Z -- Performing Test HAS_SYSCALL_GETCPU - Failed
+2026-10-03T03:52:36.3898180Z -- Performing Test HAS_SYSCALL_GETTID
+2026-10-03T03:52:36.3899910Z -- Performing Test HAS_SYSCALL_GETTID - Failed
+2026-10-03T03:52:36.3900280Z -- Performing Test HAS_SYSCALL_TGKILL
+2026-10-03T03:52:36.3901320Z -- Performing Test HAS_SYSCALL_TGKILL - Failed
+2026-10-03T03:52:36.3901630Z -- Performing Test HAS_SYSCALL_STATX
+2026-10-03T03:52:36.3902050Z -- Performing Test HAS_SYSCALL_STATX - Failed
+2026-10-03T03:52:36.3902410Z -- Performing Test HAS_SYSCALL_RENAMEAT2
+2026-10-03T03:52:36.3902720Z -- Performing Test HAS_SYSCALL_RENAMEAT2 - Failed
+2026-10-03T03:52:36.3903170Z -- Configuring done (5.6s)
+2026-10-03T03:52:36.3904360Z -- Generating done (0.1s)
+2026-10-03T03:52:36.3906230Z -- Build files have been written to: /Users/runner/work/MadeiraTV/MadeiraTV/FEX/build-ios
+2026-10-03T03:52:36.3906710Z 
+2026-10-03T03:52:36.3906780Z ==> build/fex-build.log <==
+2026-10-03T03:52:36.3907560Z [ 89%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/SecondaryModRMTables.cpp.o
+2026-10-03T03:52:36.3910040Z [ 89%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/SecondaryTables.cpp.o
+2026-10-03T03:52:36.3911850Z [ 90%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/VEXTables.cpp.o
+2026-10-03T03:52:36.3913440Z [ 90%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/Core/X86Tables/X87Tables.cpp.o
+2026-10-03T03:52:36.3914180Z [ 91%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/GDBJIT/GDBJIT.cpp.o
+2026-10-03T03:52:36.3915230Z [ 92%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/IRDumper.cpp.o
+2026-10-03T03:52:36.3917060Z [ 92%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/IREmitter.cpp.o
+2026-10-03T03:52:36.3919880Z [ 93%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/PassManager.cpp.o
+2026-10-03T03:52:36.3921590Z [ 93%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/IRDumperPass.cpp.o
+2026-10-03T03:52:36.3924200Z [ 94%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/IRValidation.cpp.o
+2026-10-03T03:52:36.3925150Z [ 95%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/RedundantFlagCalculationElimination.cpp.o
+2026-10-03T03:52:36.3925930Z [ 95%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/RegisterAllocationPass.cpp.o
+2026-10-03T03:52:36.3927050Z [ 96%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Interface/IR/Passes/x87StackOptimizationPass.cpp.o
+2026-10-03T03:52:36.3928860Z [ 96%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/AllocWatch.cpp.o
+2026-10-03T03:52:36.3930210Z [1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/AllocWatch.cpp:72:15: [0m[0;1;35mwarning: [0m[1munused function 'EventName' [-Wunused-function][0m
+2026-10-03T03:52:36.3931080Z    72 |   [0;34mconst[0m [0;34mchar[0m* EventName(uint32_t Event) {[0m
+2026-10-03T03:52:36.3931520Z       | [0;1;32m              ^~~~~~~~~
+2026-10-03T03:52:36.3931950Z [0m1 warning generated.
+2026-10-03T03:52:36.3932400Z [ 97%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/LongJump.cpp.o
+2026-10-03T03:52:36.3933150Z [ 98%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/Telemetry.cpp.o
+2026-10-03T03:52:36.3933730Z [ 98%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/Threads.cpp.o
+2026-10-03T03:52:36.3934510Z [100%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/Profiler.cpp.o
+2026-10-03T03:52:36.3935240Z [100%] Building CXX object FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/ArchHelpers/Arm64.cpp.o
+2026-10-03T03:52:36.3936390Z [1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:707:3: [0m[0;1;31merror: [0m[1munknown type name 'MEMORY_BASIC_INFORMATION'[0m
+2026-10-03T03:52:36.3937180Z   707 |   MEMORY_BASIC_INFORMATION mbi {};[0m
+2026-10-03T03:52:36.3937630Z       | [0;1;32m  ^
+2026-10-03T03:52:36.3938270Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:709:37: [0m[0;1;31merror: [0m[1munknown type name 'LPCVOID'[0m
+2026-10-03T03:52:36.3939310Z   709 |   [0;34mif[0m (VirtualQuery([0;34mreinterpret_cast[0m<LPCVOID>(GPRs[AddressReg]), &mbi, [0;34msizeof[0m(mbi))) {[0m
+2026-10-03T03:52:36.3940070Z       | [0;1;32m                                    ^
+2026-10-03T03:52:36.3940870Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:710:24: [0m[0;1;31merror: [0m[1muse of undeclared identifier 'MEM_IMAGE'[0m
+2026-10-03T03:52:36.3942480Z   710 |     type = mbi.Type == MEM_IMAGE ? [0;32m"MEM_IMAGE"[0m : mbi.Type == MEM_MAPPED ? [0;32m"MEM_MAPPED"[0m : [0;32m"MEM_PRIVATE"[0m;[0m
+2026-10-03T03:52:36.3943140Z       | [0;1;32m                       ^
+2026-10-03T03:52:36.3944050Z [0m[1m/Users/runner/work/MadeiraTV/MadeiraTV/FEX/FEXCore/Source/Utils/ArchHelpers/Arm64.cpp:710:62: [0m[0;1;31merror: [0m[1muse of undeclared identifier 'MEM_MAPPED'[0m
+2026-10-03T03:52:36.3945380Z   710 |     type = mbi.Type == MEM_IMAGE ? [0;32m"MEM_IMAGE"[0m : mbi.Type == MEM_MAPPED ? [0;32m"MEM_MAPPED"[0m : [0;32m"MEM_PRIVATE"[0m;[0m
+2026-10-03T03:52:36.3946180Z       | [0;1;32m                                                             ^
+2026-10-03T03:52:36.3946620Z [0m4 errors generated.
+2026-10-03T03:52:36.3947020Z make[3]: *** [FEXCore/Source/CMakeFiles/FEXCore_object.dir/Utils/ArchHelpers/Arm64.cpp.o] Error 1
+2026-10-03T03:52:36.3947630Z make[2]: *** [FEXCore/Source/CMakeFiles/FEXCore_object.dir/all] Error 2
+2026-10-03T03:52:36.3948030Z make[1]: *** [FEXCore/Source/CMakeFiles/FEXCore.dir/rule] Error 2
+2026-10-03T03:52:36.3948450Z make: *** [FEXCore] Error 2
+2026-10-03T03:52:36.4085450Z ##[group]Run actions/upload-artifact@v4
+2026-10-03T03:52:36.4085740Z with:
+2026-10-03T03:52:36.4085950Z   name: fex-tvos-build-artifacts
+2026-10-03T03:52:36.4086310Z   path: FEX/build-ios/FEXCore/Source/*.a
+build/fex-config.log
+build/fex-build.log
+
+2026-10-03T03:52:36.4086680Z   if-no-files-found: warn
+2026-10-03T03:52:36.4086880Z   compression-level: 6
+2026-10-03T03:52:36.4087080Z   overwrite: false
+2026-10-03T03:52:36.4087250Z   include-hidden-files: false
+2026-10-03T03:52:36.4087530Z ##[endgroup]
+2026-10-03T03:52:36.8779600Z (node:29235) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-03T03:52:36.8780540Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-03T03:52:36.8859760Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-03T03:52:36.8861240Z The least common ancestor is /Users/runner/work/MadeiraTV/MadeiraTV. This will be the root directory of the artifact
+2026-10-03T03:52:36.8861960Z With the provided path, there will be 3 files uploaded
+2026-10-03T03:52:36.8864400Z Artifact name is valid!
+2026-10-03T03:52:36.8864820Z Root directory input is valid!
+2026-10-03T03:52:37.0955480Z Beginning upload of artifact content to blob storage
+2026-10-03T03:52:37.1163240Z (node:29235) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-03T03:52:37.1463700Z Uploaded bytes 91027
+2026-10-03T03:52:37.1604200Z Finished uploading artifact content to blob storage!
+2026-10-03T03:52:37.1605450Z SHA256 digest of uploaded artifact zip is 7d98bb9c631a75bf970f6e99ea93a09aeea4f4872e5941518f99b2d5e1d78a77
+2026-10-03T03:52:37.1606610Z Finalizing artifact upload
+2026-10-03T03:52:37.4143470Z Artifact fex-tvos-build-artifacts.zip successfully finalized. Artifact ID 11263078544
+2026-10-03T03:52:37.4146710Z Artifact fex-tvos-build-artifacts has been successfully uploaded! Final size is 91027 bytes. Artifact ID is 11263078544
+2026-10-03T03:52:37.4193990Z Artifact download URL: https://github.com/duranereloise-hash/MadeiraTV/actions/runs/37094384809/artifacts/11263078544
+2026-10-03T03:52:37.4311250Z ##[warning]Unexpected input(s) 'submodule-depth', valid inputs are ['repository', 'ref', 'token', 'ssh-key', 'ssh-known-hosts', 'ssh-strict', 'ssh-user', 'persist-credentials', 'path', 'clean', 'filter', 'sparse-checkout', 'sparse-checkout-cone-mode', 'fetch-depth', 'fetch-tags', 'show-progress', 'lfs', 'submodules', 'set-safe-directory', 'github-server-url', 'allow-unsafe-pr-checkout']
+2026-10-03T03:52:37.4316790Z Post job cleanup.
+2026-10-03T03:52:37.5264300Z [command]/opt/homebrew/bin/git version
+2026-10-03T03:52:37.5465130Z git version 2.55.0
+2026-10-03T03:52:37.5485810Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/06176a1a-327d-4005-b7f4-cc6ae8df1c90/.gitconfig'
+2026-10-03T03:52:37.5493740Z Temporarily overriding HOME='/Users/runner/work/_temp/06176a1a-327d-4005-b7f4-cc6ae8df1c90' before making global git config changes
+2026-10-03T03:52:37.5494480Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-03T03:52:37.5496350Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/MadeiraTV/MadeiraTV
+2026-10-03T03:52:37.5595350Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-03T03:52:37.5653620Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-03T03:52:37.6482690Z Entering 'FEX'
+2026-10-03T03:52:37.6778450Z Entering 'FEX/External/Catch2'
+2026-10-03T03:52:37.6991960Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:52:37.7199350Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:52:37.7392600Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:52:37.7592600Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:52:37.7783450Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:52:37.7990970Z Entering 'FEX/External/fmt'
+2026-10-03T03:52:37.8175340Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:52:37.8384060Z Entering 'FEX/External/range-v3'
+2026-10-03T03:52:37.8597150Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:52:37.8813690Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:52:37.9034280Z Entering 'FEX/External/tracy'
+2026-10-03T03:52:37.9216790Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:52:37.9423050Z Entering 'FEX/External/vixl'
+2026-10-03T03:52:37.9666520Z Entering 'FEX/External/xxhash'
+2026-10-03T03:52:37.9886930Z Entering 'FEX/External/zydis'
+2026-10-03T03:52:38.0099660Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:52:38.0325090Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:52:38.0512020Z Entering 'dxmt'
+2026-10-03T03:52:38.0695110Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:52:38.0869570Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:52:38.1041830Z Entering 'madeira-dock'
+2026-10-03T03:52:38.1226960Z Entering 'wine'
+2026-10-03T03:52:38.1491300Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-03T03:52:38.1555370Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.1563460Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-03T03:52:38.1707320Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-03T03:52:38.2648710Z Entering 'FEX'
+2026-10-03T03:52:38.2782750Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.2922890Z Entering 'FEX/External/Catch2'
+2026-10-03T03:52:38.3044630Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.3161180Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:52:38.3279890Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.3387640Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:52:38.3504570Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.3609060Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:52:38.3732560Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.3890690Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:52:38.4020320Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.4152180Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:52:38.4290570Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.4418090Z Entering 'FEX/External/fmt'
+2026-10-03T03:52:38.4536380Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.4701840Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:52:38.4824510Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.4924570Z Entering 'FEX/External/range-v3'
+2026-10-03T03:52:38.5053900Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.5184530Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:52:38.5338320Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.5507700Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:52:38.5724820Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.5881010Z Entering 'FEX/External/tracy'
+2026-10-03T03:52:38.6035590Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.6171050Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:52:38.6370560Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.6522420Z Entering 'FEX/External/vixl'
+2026-10-03T03:52:38.6716480Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.6891890Z Entering 'FEX/External/xxhash'
+2026-10-03T03:52:38.7089240Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.7276310Z Entering 'FEX/External/zydis'
+2026-10-03T03:52:38.7448560Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.7581700Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:52:38.7732660Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.7868040Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:52:38.8016840Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.8185340Z Entering 'dxmt'
+2026-10-03T03:52:38.8402910Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.8620450Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:52:38.8873290Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.9015510Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:52:38.9191020Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.9298830Z Entering 'madeira-dock'
+2026-10-03T03:52:38.9407350Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.9518010Z Entering 'wine'
+2026-10-03T03:52:38.9638360Z http.https://github.com/.extraheader
+2026-10-03T03:52:38.9772530Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:38.9830210Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-03T03:52:39.0520360Z Entering 'FEX'
+2026-10-03T03:52:39.0607840Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/config	remote.origin.url
+2026-10-03T03:52:39.0664760Z Entering 'FEX/External/Catch2'
+2026-10-03T03:52:39.0763550Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Catch2/config	remote.origin.url
+2026-10-03T03:52:39.0852320Z Entering 'FEX/External/Vulkan-Headers'
+2026-10-03T03:52:39.0988050Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Vulkan-Headers/config	remote.origin.url
+2026-10-03T03:52:39.1044570Z Entering 'FEX/External/drm-headers'
+2026-10-03T03:52:39.1153660Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/drm-headers/config	remote.origin.url
+2026-10-03T03:52:39.1221580Z Entering 'FEX/External/fex-gcc-target-tests-bins'
+2026-10-03T03:52:39.1330710Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gcc-target-tests-bins/config	remote.origin.url
+2026-10-03T03:52:39.1417230Z Entering 'FEX/External/fex-gvisor-tests-bins'
+2026-10-03T03:52:39.1516390Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gvisor-tests-bins/config	remote.origin.url
+2026-10-03T03:52:39.1582830Z Entering 'FEX/External/fex-posixtest-bins'
+2026-10-03T03:52:39.1711320Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-posixtest-bins/config	remote.origin.url
+2026-10-03T03:52:39.1781700Z Entering 'FEX/External/fmt'
+2026-10-03T03:52:39.1911350Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fmt/config	remote.origin.url
+2026-10-03T03:52:39.1975130Z Entering 'FEX/External/jemalloc_glibc'
+2026-10-03T03:52:39.2105120Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/jemalloc_glibc/config	remote.origin.url
+2026-10-03T03:52:39.2171270Z Entering 'FEX/External/range-v3'
+2026-10-03T03:52:39.2318530Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/config	remote.origin.url
+2026-10-03T03:52:39.2380130Z Entering 'FEX/External/range-v3/doc/gh-pages'
+2026-10-03T03:52:39.2546280Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/modules/doc/gh-pages/config	remote.origin.url
+2026-10-03T03:52:39.2625460Z Entering 'FEX/External/rpmalloc'
+2026-10-03T03:52:39.2823450Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/rpmalloc/config	remote.origin.url
+2026-10-03T03:52:39.2908180Z Entering 'FEX/External/tracy'
+2026-10-03T03:52:39.3001070Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/tracy/config	remote.origin.url
+2026-10-03T03:52:39.3055260Z Entering 'FEX/External/unordered_dense'
+2026-10-03T03:52:39.3138700Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/unordered_dense/config	remote.origin.url
+2026-10-03T03:52:39.3194300Z Entering 'FEX/External/vixl'
+2026-10-03T03:52:39.3283740Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/vixl/config	remote.origin.url
+2026-10-03T03:52:39.3338420Z Entering 'FEX/External/xxhash'
+2026-10-03T03:52:39.3421790Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/xxhash/config	remote.origin.url
+2026-10-03T03:52:39.3484540Z Entering 'FEX/External/zydis'
+2026-10-03T03:52:39.3585650Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/config	remote.origin.url
+2026-10-03T03:52:39.3661670Z Entering 'FEX/External/zydis/dependencies/zycore'
+2026-10-03T03:52:39.3752840Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/modules/dependencies/zycore/config	remote.origin.url
+2026-10-03T03:52:39.3822080Z Entering 'FEX/Source/Common/cpp-optparse'
+2026-10-03T03:52:39.3973560Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/cpp-optparse/config	remote.origin.url
+2026-10-03T03:52:39.4069360Z Entering 'dxmt'
+2026-10-03T03:52:39.4220360Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/config	remote.origin.url
+2026-10-03T03:52:39.4289590Z Entering 'dxmt/external/nvapi'
+2026-10-03T03:52:39.4437740Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/external/nvapi/config	remote.origin.url
+2026-10-03T03:52:39.4540690Z Entering 'dxmt/include/native/directx'
+2026-10-03T03:52:39.4679920Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/include/native/directx/config	remote.origin.url
+2026-10-03T03:52:39.4804780Z Entering 'madeira-dock'
+2026-10-03T03:52:39.4982560Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/madeira-dock/config	remote.origin.url
+2026-10-03T03:52:39.5109350Z Entering 'wine'
+2026-10-03T03:52:39.5215240Z file:/Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/wine/config	remote.origin.url
+2026-10-03T03:52:39.5312380Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.5416430Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Catch2/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.5492670Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/Vulkan-Headers/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.5568100Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/drm-headers/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.5639530Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gcc-target-tests-bins/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.5779150Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-gvisor-tests-bins/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.5886340Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fex-posixtest-bins/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6017770Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/fmt/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6021260Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/jemalloc_glibc/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6047130Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6253340Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/range-v3/modules/doc/gh-pages/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6345140Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/rpmalloc/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6346840Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/tracy/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6421570Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/unordered_dense/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6506580Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/vixl/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6565230Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/xxhash/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6624420Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6692510Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/zydis/modules/dependencies/zycore/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6755730Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/FEX/modules/External/cpp-optparse/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6822890Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.6984040Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/external/nvapi/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.7038630Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/dxmt/modules/include/native/directx/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.7065760Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/madeira-dock/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.7130130Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/MadeiraTV/MadeiraTV/.git/modules/wine/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-03T03:52:39.7348260Z Cleaning up orphan processes
+2026-10-03T03:52:40.0791750Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+
