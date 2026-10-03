@@ -24,8 +24,11 @@ jobs:
 
       - name: Patch FEX CMake for tvOS
         run: |
+          set -euo pipefail
           # Accept tvOS as a supported system (fork-only change; do not send upstream)
-          sed -i 's/CMAKE_SYSTEM_NAME STREQUAL "iOS")/CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_SYSTEM_NAME STREQUAL "tvOS")/' FEX/CMakeLists.txt
+          sed -i.bak 's/CMAKE_SYSTEM_NAME STREQUAL "iOS")/CMAKE_SYSTEM_NAME STREQUAL "iOS" OR CMAKE_SYSTEM_NAME STREQUAL "tvOS")/' FEX/CMakeLists.txt
+          rm -f FEX/CMakeLists.txt.bak
+          if ! grep -q 'tvOS' FEX/CMakeLists.txt; then echo "PATCH FAILED"; exit 1; fi
           grep -n 'tvOS' FEX/CMakeLists.txt | head -5
 
       - name: FEX build-ios for tvOS
