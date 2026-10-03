@@ -69,6 +69,20 @@ jobs:
           make tools/winebuild/winebuild tools/widl/widl 2>&1 | tail -20
           ls -la tools/winebuild/winebuild tools/widl/widl 2>/dev/null || echo "tools missing"
 
+      - name: Build GnuTLS stack for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/gnutls-ios/build-tvos.sh
+          bash build/gnutls-ios/build-tvos.sh > build/gnutls-tvos.log 2>&1 || { tail -30 build/gnutls-tvos.log; exit 1; }
+          echo "gnutls ok"
+
+      - name: Build FFmpeg for tvOS
+        run: |
+          set -o pipefail
+          chmod +x build/ffmpeg/build-tvos.sh
+          bash build/ffmpeg/build-tvos.sh > build/ffmpeg-tvos.log 2>&1 || { tail -30 build/ffmpeg-tvos.log; exit 1; }
+          echo "ffmpeg ok"
+
       - name: Build ntdll-unix for tvOS
         run: |
           set -o pipefail
@@ -80,6 +94,8 @@ jobs:
             -e 's|xcrun --sdk iphoneos|xcrun --sdk appletvos|g' \
             -e 's|-miphoneos-version-min=17.0|-mtvos-version-min=17.0|g' \
             -e 's|-miphoneos-version-min=| -mtvos-version-min=|g' \
+            -e 's|toolchains/gnutls-ios|toolchains/gnutls-tvos|g' \
+            -e 's|toolchains/ffmpeg-ios|toolchains/ffmpeg-tvos|g' \
             build/ntdll-unix/build.sh
           bash build/ntdll-unix/build.sh 2>&1 | tee build/ntdll-unix-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
