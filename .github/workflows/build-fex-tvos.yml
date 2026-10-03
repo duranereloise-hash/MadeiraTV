@@ -28,6 +28,10 @@ jobs:
           mkdir -p build
           R="$(pwd)"
           B="$R/FEX/build-ios"
+          CC_BIN="$(xcrun --sdk appletvos --find clang)"
+          CXX_BIN="$(xcrun --sdk appletvos --find clang++)"
+          echo "CC=$CC_BIN"
+          echo "CXX=$CXX_BIN"
           # Detect whether CMake accepts iOS system name + tvOS sysroot
           cmake -S "$R/FEX" -B "$B" \
             -DCMAKE_SYSTEM_NAME=iOS \
@@ -35,21 +39,17 @@ jobs:
             -DCMAKE_OSX_SYSROOT=appletvos \
             -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER="$CC_BIN" \
+            -DCMAKE_CXX_COMPILER="$CXX_BIN" \
             -DBUILD_TESTING=OFF -DBUILD_THUNKS=OFF -DBUILD_FEXCONFIG=OFF \
             -DBUILD_FEX_LINUX_TESTS=OFF -DENABLE_FEX_ALLOCATOR=OFF \
             -DENABLE_ASSERTIONS=OFF -DENABLE_CLANG_THUNKS=ON \
             -DENABLE_CCACHE=ON 2>&1 | tee build/fex-config.log
-        env:
-          CC: $(xcrun --sdk appletvos --find clang)
-          CXX: $(xcrun --sdk appletvos --find clang++)
 
       - name: Build FEXCore
         run: |
           set -o pipefail
           cmake --build "build/../FEX/build-ios" --target FEXCore FEXCore_Base 2>&1 | tee build/fex-build.log
-        env:
-          CC: $(xcrun --sdk appletvos --find clang)
-          CXX: $(xcrun --sdk appletvos --find clang++)
 
       - name: Show output
         if: always()
