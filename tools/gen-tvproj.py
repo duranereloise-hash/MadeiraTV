@@ -44,6 +44,23 @@ winios_sources = [
     ('Winios/WiniosCursor.c', 'sourcecode.c.c'),
     ('Winios/WiniosGamepad.c', 'sourcecode.c.c'),
 ]
+# Platform integration bridges (ObjC/ObjC++/C) — same set the iOS app links.
+platform_objc_sources = [
+    ('IOSDisplayShim.m', 'sourcecode.c.objc'),
+    ('WineServerBridge.m', 'sourcecode.c.objc'),
+    ('WineProcessBridge.m', 'sourcecode.c.objc'),
+]
+platform_mm_sources = [
+    ('FEXBridge.mm', 'sourcecode.cpp.objcpp'),
+]
+platform_c_sources = [
+    ('JITAllocator.c', 'sourcecode.c.c'),
+    ('wine_stubs.c', 'sourcecode.c.c'),
+]
+platform_mm_sources = [
+    ('FEXBridge.mm', 'sourcecode.cpp.objcpp'),
+    ('MadeiraIntegrations.mm', 'sourcecode.cpp.objcpp'),
+]
 c_files = [
     ('SwiftSteam/chunk_zip.c', 'sourcecode.c.c'),
     ('SwiftSteam/lzma_shim.c', 'sourcecode.c.c'),
@@ -58,6 +75,11 @@ tv_files = [
 
 # Verify all referenced files exist.
 all_src = [os.path.join(APP_SRC, f) for f in portable] + [os.path.join(TV_SRC, f) for f in tv_files]
+all_src += [os.path.join(APP_SRC, f) for f, _ in c_files]
+all_src += [os.path.join(APP_SRC, f) for f, _ in winios_sources]
+all_src += [os.path.join(APP_SRC, f) for f, _ in platform_objc_sources]
+all_src += [os.path.join(APP_SRC, f) for f, _ in platform_mm_sources]
+all_src += [os.path.join(APP_SRC, f) for f, _ in platform_c_sources]
 missing = [f for f in all_src if not os.path.exists(f)]
 if missing:
     for m in missing:
@@ -93,6 +115,7 @@ static_libs = [
     'libFEXCore.a', 'libFEXCore_Base.a',
     'libfmt.a', 'libcephes_128bit.a', 'libxxhash.a', 'libsoftfloat_3e.a',
     'libgnutls.a', 'libhogweed.a', 'libnettle.a', 'libgmp.a',
+    'libfreetype.a',
     'libavformat.a', 'libavcodec.a', 'libswresample.a', 'libavutil.a',
 ]
 static_bf = {}
@@ -136,6 +159,14 @@ for f, lft in winios_sources:
     file_refs['w_' + f] = wfr
     proj.append(f'\t\t{wbf} /* {name} in Sources */ = {{isa = PBXBuildFile; fileRef = {wfr} /* {name} */; }};')
 
+for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources:
+    name = os.path.basename(f)
+    pbf = uid('bf-p-' + f)
+    pfr = uid('fr-p-' + f)
+    build_files['p_' + f] = pbf
+    file_refs['p_' + f] = pfr
+    proj.append(f'\t\t{pbf} /* {name} in Sources */ = {{isa = PBXBuildFile; fileRef = {pfr} /* {name} */; }};')
+
 
 # --- PBXFileReference ---
 proj.append('\n/* Begin PBXFileReference section */')
@@ -166,6 +197,10 @@ for f, lft in winios_sources:
     name = os.path.basename(f)
     wfr = file_refs['w_' + f]
     proj.append(f'\t\t{wfr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
+for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources:
+    name = os.path.basename(f)
+    pfr = file_refs['p_' + f]
+    proj.append(f'\t\t{pfr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
 
 
 # --- PBXFrameworksBuildPhase ---
@@ -214,6 +249,9 @@ for f, _ in c_files:
 for f, _ in winios_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs["w_" + f]} /* {name} */,')
+for f, _ in platform_objc_sources + platform_mm_sources + platform_c_sources:
+    name = os.path.basename(f)
+    proj.append(f'\t\t\t\t{file_refs["p_" + f]} /* {name} */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\tpath = Madeira;')
 proj.append('\t\t\tsourceTree = "<group>";')
@@ -330,6 +368,9 @@ for f, _ in c_files:
 for f, lft in winios_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{build_files["w_" + f]} /* {name} in Sources */,')
+for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources:
+    name = os.path.basename(f)
+    proj.append(f'\t\t\t\t{build_files["p_" + f]} /* {name} in Sources */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')
@@ -418,14 +459,14 @@ proj.append('\t\t\t\tLD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_pat
 proj.append('\t\t\t\tMARKETING_VERSION = 0.1.0;')
 proj.append('\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;')
 proj.append('\t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";')
-proj.append('\t\t\t\tOTHER_LDFLAGS = ("$(inherited)", "-force_load \\"$(SRCROOT)/Madeira/libntdll_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libwineserver.a\\" -force_load \\"$(SRCROOT)/Madeira/libwin32u_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore_Base.a\\" -force_load \\"$(SRCROOT)/Madeira/libfmt.a\\" -force_load \\"$(SRCROOT)/Madeira/libcephes_128bit.a\\" -force_load \\"$(SRCROOT)/Madeira/libxxhash.a\\" -force_load \\"$(SRCROOT)/Madeira/libsoftfloat_3e.a\\" -force_load \\"$(SRCROOT)/Madeira/libgnutls.a\\" -force_load \\"$(SRCROOT)/Madeira/libhogweed.a\\" -force_load \\"$(SRCROOT)/Madeira/libnettle.a\\" -force_load \\"$(SRCROOT)/Madeira/libgmp.a\\" -force_load \\"$(SRCROOT)/Madeira/libavformat.a\\" -force_load \\"$(SRCROOT)/Madeira/libavcodec.a\\" -force_load \\"$(SRCROOT)/Madeira/libswresample.a\\" -force_load \\"$(SRCROOT)/Madeira/libavutil.a\\" -lc++ -lc++abi");')
+proj.append('\t\t\t\tOTHER_LDFLAGS = ("$(inherited)", "-force_load \\"$(SRCROOT)/Madeira/libntdll_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libwineserver.a\\" -force_load \\"$(SRCROOT)/Madeira/libwin32u_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore_Base.a\\" -force_load \\"$(SRCROOT)/Madeira/libfmt.a\\" -force_load \\"$(SRCROOT)/Madeira/libcephes_128bit.a\\" -force_load \\"$(SRCROOT)/Madeira/libxxhash.a\\" -force_load \\"$(SRCROOT)/Madeira/libsoftfloat_3e.a\\" -force_load \\"$(SRCROOT)/Madeira/libgnutls.a\\" -force_load \\"$(SRCROOT)/Madeira/libhogweed.a\\" -force_load \\"$(SRCROOT)/Madeira/libnettle.a\\" -force_load \\"$(SRCROOT)/Madeira/libgmp.a\\" -force_load \\"$(SRCROOT)/Madeira/libfreetype.a\\" -force_load \\"$(SRCROOT)/Madeira/libavformat.a\\" -force_load \\"$(SRCROOT)/Madeira/libavcodec.a\\" -force_load \\"$(SRCROOT)/Madeira/libswresample.a\\" -force_load \\"$(SRCROOT)/Madeira/libavutil.a\\" -lc++ -lc++abi -framework Metal -framework QuartzCore -framework MetalFX -framework VideoToolbox -framework CoreMedia -framework AudioToolbox -framework CoreFoundation -lsqlite3");')
 proj.append('\t\t\t\tSUPPORTED_PLATFORMS = "appletvos appletvsimulator";')
 proj.append('\t\t\t\tSUPPORTS_MACCATALYST = NO;')
 proj.append('\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;')
 proj.append('\t\t\t\tSWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";')
 proj.append('\t\t\t\tSWIFT_VERSION = 5.0;')
 proj.append('\t\t\t\tTARGETED_DEVICE_FAMILY = 3;')
-proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV");')
+proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");')
 proj.append('\t\t\t\tLIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");')
 proj.append('\t\t\t};')
 proj.append('\t\t\tname = Debug;')
@@ -445,14 +486,14 @@ proj.append('\t\t\t\tLD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_pat
 proj.append('\t\t\t\tMARKETING_VERSION = 0.1.0;')
 proj.append('\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;')
 proj.append('\t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";')
-proj.append('\t\t\t\tOTHER_LDFLAGS = ("$(inherited)", "-force_load \\"$(SRCROOT)/Madeira/libntdll_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libwineserver.a\\" -force_load \\"$(SRCROOT)/Madeira/libwin32u_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore_Base.a\\" -force_load \\"$(SRCROOT)/Madeira/libfmt.a\\" -force_load \\"$(SRCROOT)/Madeira/libcephes_128bit.a\\" -force_load \\"$(SRCROOT)/Madeira/libxxhash.a\\" -force_load \\"$(SRCROOT)/Madeira/libsoftfloat_3e.a\\" -force_load \\"$(SRCROOT)/Madeira/libgnutls.a\\" -force_load \\"$(SRCROOT)/Madeira/libhogweed.a\\" -force_load \\"$(SRCROOT)/Madeira/libnettle.a\\" -force_load \\"$(SRCROOT)/Madeira/libgmp.a\\" -force_load \\"$(SRCROOT)/Madeira/libavformat.a\\" -force_load \\"$(SRCROOT)/Madeira/libavcodec.a\\" -force_load \\"$(SRCROOT)/Madeira/libswresample.a\\" -force_load \\"$(SRCROOT)/Madeira/libavutil.a\\" -lc++ -lc++abi");')
+proj.append('\t\t\t\tOTHER_LDFLAGS = ("$(inherited)", "-force_load \\"$(SRCROOT)/Madeira/libntdll_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libwineserver.a\\" -force_load \\"$(SRCROOT)/Madeira/libwin32u_unix.a\\" -force_load \\"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore.a\\" -force_load \\"$(SRCROOT)/Madeira/libFEXCore_Base.a\\" -force_load \\"$(SRCROOT)/Madeira/libfmt.a\\" -force_load \\"$(SRCROOT)/Madeira/libcephes_128bit.a\\" -force_load \\"$(SRCROOT)/Madeira/libxxhash.a\\" -force_load \\"$(SRCROOT)/Madeira/libsoftfloat_3e.a\\" -force_load \\"$(SRCROOT)/Madeira/libgnutls.a\\" -force_load \\"$(SRCROOT)/Madeira/libhogweed.a\\" -force_load \\"$(SRCROOT)/Madeira/libnettle.a\\" -force_load \\"$(SRCROOT)/Madeira/libgmp.a\\" -force_load \\"$(SRCROOT)/Madeira/libfreetype.a\\" -force_load \\"$(SRCROOT)/Madeira/libavformat.a\\" -force_load \\"$(SRCROOT)/Madeira/libavcodec.a\\" -force_load \\"$(SRCROOT)/Madeira/libswresample.a\\" -force_load \\"$(SRCROOT)/Madeira/libavutil.a\\" -lc++ -lc++abi -framework Metal -framework QuartzCore -framework MetalFX -framework VideoToolbox -framework CoreMedia -framework AudioToolbox -framework CoreFoundation -lsqlite3");')
 proj.append('\t\t\t\tSUPPORTED_PLATFORMS = "appletvos appletvsimulator";')
 proj.append('\t\t\t\tSUPPORTS_MACCATALYST = NO;')
 proj.append('\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;')
 proj.append('\t\t\t\tSWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";')
 proj.append('\t\t\t\tSWIFT_VERSION = 5.0;')
 proj.append('\t\t\t\tTARGETED_DEVICE_FAMILY = 3;')
-proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV");')
+proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");')
 proj.append('\t\t\t\tLIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");')
 proj.append('\t\t\t};')
 proj.append('\t\t\tname = Release;')

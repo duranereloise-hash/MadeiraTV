@@ -14,6 +14,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch FEX submodule (headers for FEXBridge.mm)
+        run: |
+          git submodule init FEX
+          git -c protocol.version=2 submodule update --init --depth 1 FEX
+          git -C FEX log --oneline -1
+          ls FEX/FEXCore/include/FEXCore/Utils/Allocator.h && echo "FEX headers OK"
+
       - name: Download latest artifacts from component workflows
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,6 +78,8 @@ jobs:
           find downloads/toolchains -name "libavcodec.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           find downloads/toolchains -name "libswresample.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           find downloads/toolchains -name "libavutil.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          # FreeType from the wine artifact (built by build-wine-tvos)
+          find downloads/wine -name "libfreetype.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           echo "=== staged app/Madeira ==="
           ls -la app/Madeira/*.a 2>/dev/null || echo "no .a staged"
           ls app/Madeira/arm64ec-windows/ 2>/dev/null | head -20

@@ -24,6 +24,7 @@
 		AC3C014BA8076589F85220B5 /* libhogweed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AF1C5F27845BC184531D3 /* libhogweed.a */; };
 		A7D9D2EECA8305ACF91C8B80 /* libnettle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DC7D8F00D6E5712B8A3131 /* libnettle.a */; };
 		AFE33F52270DE5476AC64A15 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A801CADC9C56753099E6AB85 /* libgmp.a */; };
+		AACD6612F083B54AD9A3FA42 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AA79B92C2275F24B4DE53D /* libfreetype.a */; };
 		A06714853BBC9551EB3A076D /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A440D2874FA3F5B2D9B87E6F /* libavformat.a */; };
 		A779AA4BC94DC5A1C8325A5E /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0066421DA0D95455B98A32C /* libavcodec.a */; };
 		A8DFAFD0965805D628992AB4 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C550AA0668857F6B00033B /* libswresample.a */; };
@@ -64,6 +65,13 @@
 		A6B00A04A571859A3B8C10B1 /* Winios.m in Sources */ = {isa = PBXBuildFile; fileRef = A65E088659F8354D8B50FCA6 /* Winios.m */; };
 		AA984EA37F52E50D68130CDF /* WiniosCursor.c in Sources */ = {isa = PBXBuildFile; fileRef = A4BEB375F1776554DA38A938 /* WiniosCursor.c */; };
 		A91A9658C27A85120B1A9F4A /* WiniosGamepad.c in Sources */ = {isa = PBXBuildFile; fileRef = A0EC266465F8C59BBB022B6A /* WiniosGamepad.c */; };
+		A2AD8232C1DA756F7BF02235 /* IOSDisplayShim.m in Sources */ = {isa = PBXBuildFile; fileRef = A4488B66249EA589798A3B3E /* IOSDisplayShim.m */; };
+		A411340DCC82257A0B97D25A /* WineServerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9DE33C76FF59CCBB140CB /* WineServerBridge.m */; };
+		A2B1AD01159D859FA8D91EAB /* WineProcessBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = ADC2D487348925C23865D19E /* WineProcessBridge.m */; };
+		A7BF9C43264C850C18B01A07 /* FEXBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A69A6F85B723451759E27874 /* FEXBridge.mm */; };
+		AF4722C8999F2598BAFEEFA1 /* MadeiraIntegrations.mm in Sources */ = {isa = PBXBuildFile; fileRef = A3A3A53D6862F57CAAF9C64C /* MadeiraIntegrations.mm */; };
+		A166439C91895501095AEC1E /* JITAllocator.c in Sources */ = {isa = PBXBuildFile; fileRef = AC24C585B569A5A5D86C73B8 /* JITAllocator.c */; };
+		AE0066D2E5FAE5BA2997D29B /* wine_stubs.c in Sources */ = {isa = PBXBuildFile; fileRef = A547AC0888EF95C61AE7FD68 /* wine_stubs.c */; };
 
 /* Begin PBXFileReference section */
 		AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAuthAPI.swift"; path = "SwiftSteam/Auth/SteamAuthAPI.swift"; sourceTree = "<group>"; };
@@ -117,6 +125,7 @@
 		A21AF1C5F27845BC184531D3 /* libhogweed.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libhogweed.a"; path = "Madeira/libhogweed.a"; sourceTree = "<group>"; };
 		A6DC7D8F00D6E5712B8A3131 /* libnettle.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libnettle.a"; path = "Madeira/libnettle.a"; sourceTree = "<group>"; };
 		A801CADC9C56753099E6AB85 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgmp.a"; path = "Madeira/libgmp.a"; sourceTree = "<group>"; };
+		A2AA79B92C2275F24B4DE53D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfreetype.a"; path = "Madeira/libfreetype.a"; sourceTree = "<group>"; };
 		A440D2874FA3F5B2D9B87E6F /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavformat.a"; path = "Madeira/libavformat.a"; sourceTree = "<group>"; };
 		A0066421DA0D95455B98A32C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavcodec.a"; path = "Madeira/libavcodec.a"; sourceTree = "<group>"; };
 		A8C550AA0668857F6B00033B /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libswresample.a"; path = "Madeira/libswresample.a"; sourceTree = "<group>"; };
@@ -125,6 +134,13 @@
 		A65E088659F8354D8B50FCA6 /* Winios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "Winios.m"; path = "Winios/Winios.m"; sourceTree = "<group>"; };
 		A4BEB375F1776554DA38A938 /* WiniosCursor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "WiniosCursor.c"; path = "Winios/WiniosCursor.c"; sourceTree = "<group>"; };
 		A0EC266465F8C59BBB022B6A /* WiniosGamepad.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "WiniosGamepad.c"; path = "Winios/WiniosGamepad.c"; sourceTree = "<group>"; };
+		A4488B66249EA589798A3B3E /* IOSDisplayShim.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "IOSDisplayShim.m"; path = "IOSDisplayShim.m"; sourceTree = "<group>"; };
+		A6D9DE33C76FF59CCBB140CB /* WineServerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "WineServerBridge.m"; path = "WineServerBridge.m"; sourceTree = "<group>"; };
+		ADC2D487348925C23865D19E /* WineProcessBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "WineProcessBridge.m"; path = "WineProcessBridge.m"; sourceTree = "<group>"; };
+		A69A6F85B723451759E27874 /* FEXBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "FEXBridge.mm"; path = "FEXBridge.mm"; sourceTree = "<group>"; };
+		A3A3A53D6862F57CAAF9C64C /* MadeiraIntegrations.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "MadeiraIntegrations.mm"; path = "MadeiraIntegrations.mm"; sourceTree = "<group>"; };
+		AC24C585B569A5A5D86C73B8 /* JITAllocator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "JITAllocator.c"; path = "JITAllocator.c"; sourceTree = "<group>"; };
+		A547AC0888EF95C61AE7FD68 /* wine_stubs.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "wine_stubs.c"; path = "wine_stubs.c"; sourceTree = "<group>"; };
 
 /* Begin PBXFrameworksBuildPhase section */
 		AAAA0C1F2D7B459FD9C7271C /* Frameworks */ = {
@@ -148,6 +164,7 @@
 				AC3C014BA8076589F85220B5 /* libhogweed.a in Frameworks */,
 				A7D9D2EECA8305ACF91C8B80 /* libnettle.a in Frameworks */,
 				AFE33F52270DE5476AC64A15 /* libgmp.a in Frameworks */,
+				AACD6612F083B54AD9A3FA42 /* libfreetype.a in Frameworks */,
 				A06714853BBC9551EB3A076D /* libavformat.a in Frameworks */,
 				A779AA4BC94DC5A1C8325A5E /* libavcodec.a in Frameworks */,
 				A8DFAFD0965805D628992AB4 /* libswresample.a in Frameworks */,
@@ -201,6 +218,13 @@
 				A65E088659F8354D8B50FCA6 /* Winios.m */,
 				A4BEB375F1776554DA38A938 /* WiniosCursor.c */,
 				A0EC266465F8C59BBB022B6A /* WiniosGamepad.c */,
+				A4488B66249EA589798A3B3E /* IOSDisplayShim.m */,
+				A6D9DE33C76FF59CCBB140CB /* WineServerBridge.m */,
+				ADC2D487348925C23865D19E /* WineProcessBridge.m */,
+				A69A6F85B723451759E27874 /* FEXBridge.mm */,
+				A3A3A53D6862F57CAAF9C64C /* MadeiraIntegrations.mm */,
+				AC24C585B569A5A5D86C73B8 /* JITAllocator.c */,
+				A547AC0888EF95C61AE7FD68 /* wine_stubs.c */,
 			);
 			path = Madeira;
 			sourceTree = "<group>";
@@ -328,6 +352,13 @@
 				A6B00A04A571859A3B8C10B1 /* Winios.m in Sources */,
 				AA984EA37F52E50D68130CDF /* WiniosCursor.c in Sources */,
 				A91A9658C27A85120B1A9F4A /* WiniosGamepad.c in Sources */,
+				A2AD8232C1DA756F7BF02235 /* IOSDisplayShim.m in Sources */,
+				A411340DCC82257A0B97D25A /* WineServerBridge.m in Sources */,
+				A2B1AD01159D859FA8D91EAB /* WineProcessBridge.m in Sources */,
+				A7BF9C43264C850C18B01A07 /* FEXBridge.mm in Sources */,
+				AF4722C8999F2598BAFEEFA1 /* MadeiraIntegrations.mm in Sources */,
+				A166439C91895501095AEC1E /* JITAllocator.c in Sources */,
+				AE0066D2E5FAE5BA2997D29B /* wine_stubs.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,14 +440,14 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\" -lc++ -lc++abi");
+				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libfreetype.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\" -lc++ -lc++abi -framework Metal -framework QuartzCore -framework MetalFX -framework VideoToolbox -framework CoreMedia -framework AudioToolbox -framework CoreFoundation -lsqlite3");
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV");
+				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");
 				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
 			name = Debug;
@@ -434,14 +465,14 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\" -lc++ -lc++abi");
+				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libfreetype.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\" -lc++ -lc++abi -framework Metal -framework QuartzCore -framework MetalFX -framework VideoToolbox -framework CoreMedia -framework AudioToolbox -framework CoreFoundation -lsqlite3");
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV");
+				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");
 				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
 			name = Release;

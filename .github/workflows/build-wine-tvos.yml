@@ -188,4 +188,6 @@ jobs:
             build/win32u-unix/obj-tvos/*.err
             build/win32u-tvos.log
             build/ntdll-unix-tvos.log
+            toolchains/freetype-tvos/lib/*
+            build/freetype-tvos.log
           if-no-files-found: warn
