@@ -308,19 +308,29 @@ _ = mkdir(current, 0o777)
         guard let exe = findExecutable(for: app) else { completion("Could not find the game's executable."); return }
 
         launchingID = app.appID
-        let prefix = Self.drive.deletingLastPathComponent().path  // Documents/wine
+        let prefix = Self.drive.deletingLastPathComponent().path  // Library/Caches/wine
         let workdir = workdir(for: app)
         DispatchQueue.global(qos: .userInitiated).async {
+            let message: String?
             let ws = wineserver_start(prefix)
-            if ws != 0 { DispatchQueue.main.async { completion("wineserver failed (\(ws))") }; return }
-            Thread.sleep(forTimeInterval: 1.0)
-            if wineserver_is_running() == 0 { DispatchQueue.main.async { completion("wineserver is not ready") }; return }
-            setenv("MADEIRA_EXE", exe, 1)
-            setenv("MADEIRA_WORKDIR", workdir, 1)
-            let wp = wine_process_start(prefix)
-            SteamLog.event("[steam-tv] launch app=\(app.appID) exe=\(exe)")
+            if ws != 0 {
+                message = "wineserver failed (\(ws))"
+            } else {
+                Thread.sleep(forTimeInterval: 1.0)
+                if wineserver_is_running() == 0 {
+                    message = "wineserver is not ready"
+                } else {
+                    setenv("MADEIRA_EXE", exe, 1)
+                    setenv("MADEIRA_WORKDIR", workdir, 1)
+                    let wp = wine_process_start(prefix)
+                    SteamLog.event("[steam-tv] launch app=\(app.appID) exe=\(exe) rc=\(wp)")
+                    message = wp != 0 ? "Wine process failed (\(wp))" : nil
+                }
+            }
             DispatchQueue.main.async {
-                completion(wp != 0 ? "Wine process failed (\(wp))" : nil)
+                // Always clear the launcher spinner, success or failure.
+                self.launchingID = nil
+                completion(message)
             }
         }
     }
