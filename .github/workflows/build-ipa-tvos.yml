@@ -1,0 +1,106 @@
+name: Build MadeiraTV IPA (link everything for tvOS)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  link-ipa:
+    name: Assemble libs + build .app/.ipa for tvOS
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download latest artifacts from component workflows
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          mkdir -p downloads
+
+          fetch_artifact() { # workflow_file  artifact_name  out_dir
+            wf="$1"; want="$2"; out="$3"
+            run_id=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/workflows/$wf/runs?status=success&per_page=20" \
+              --jq ".workflow_runs[] | select(.conclusion == \"success\") | .id" | head -1)
+            [ -n "$run_id" ] || { echo "no successful run for $wf"; return 1; }
+            echo "== $wf run=$run_id =="
+            arts=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts" --jq ".artifacts[] | select(.name==\"$want\") | .id" | head -1)
+            [ -n "$arts" ] || { echo "no artifact $want in $wf"; return 1; }
+            mkdir -p "$out"
+            gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$arts/zip" > "$out/pkg.zip"
+            (cd "$out" && unzip -o -q pkg.zip && rm -f pkg.zip)
+          }
+
+          fetch_artifact build-fex-tvos.yml fex-tvos-build-artifacts downloads/fex || true
+          fetch_artifact build-wine-tvos.yml wine-tvos-ntdll-unix-artifacts downloads/wine || true
+          fetch_artifact build-dxmt-tvos.yml dxmt-tvos downloads/dxmt || true
+          echo "=== downloaded ==="
+          find downloads -type f | head -40
+
+      - name: Stage libraries into app/Madeira
+        run: |
+          set -e
+          mkdir -p app/Madeira/arm64ec-windows
+          # wine unix libs
+          find downloads/wine -name "libntdll_unix.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/wine -name "libwineserver.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/wine -name "libwin32u_unix.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          # PE DLLs
+          find downloads/wine -name "*.dll" -exec cp {} app/Madeira/arm64ec-windows/ \; 2>/dev/null || true
+          # FEX
+          find downloads/fex -name "libFEXCore*.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/fex -name "libJemallocLibs.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/fex -name "libfmt.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/fex -name "libcephes_128bit.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/fex -name "libxxhash.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/fex -name "libsoftfloat_3e.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          # DXMT combined
+          find downloads/dxmt -name "libdxmt_combined_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/dxmt -name "libdxmt_unix_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          # GnuTLS/FFmpeg from toolchains artifact (inside wine artifact normally). Copy if present.
+          find downloads/wine toolchains -maxdepth 3 -name "libgnutls.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          echo "=== staged app/Madeira ==="
+          ls -la app/Madeira/*.a 2>/dev/null || echo "no .a staged"
+          ls app/Madeira/arm64ec-windows/ | head
+
+      - name: Build MadeiraTV.app for tvOS
+        run: |
+          set -o pipefail
+          mkdir -p build
+          xcodebuild \
+            -project app/MadeiraTV.xcodeproj \
+            -scheme MadeiraTV \
+            -configuration Debug \
+            -destination 'generic/platform=tvOS' \
+            -derivedDataPath build/DerivedDataLink \
+            build \
+            CODE_SIGNING_ALLOWED=NO | tee build/link-tvos.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: Package IPA
+        if: always()
+        run: |
+          APP="build/DerivedDataLink/Build/Products/Debug-appletvos/MadeiraTV.app"
+          if [ -d "$APP" ]; then
+            mkdir -p build/Payload
+            cp -R "$APP" build/Payload/
+            (cd build && zip -qr MadeiraTV.ipa Payload)
+            ls -la build/MadeiraTV.ipa
+          else
+            echo "app not built"
+            find build/DerivedDataLink -name "*.app" 2>/dev/null | head
+          fi
+
+      - name: Upload IPA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MadeiraTV-ipa-tvos
+          path: |
+            build/MadeiraTV.ipa
+            app/Madeira/*.a
+            build/link-tvos.log
+          if-no-files-found: warn

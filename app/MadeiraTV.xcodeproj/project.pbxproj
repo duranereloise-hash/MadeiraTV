@@ -9,6 +9,25 @@
 /* Begin PBXBuildFile section */
 		A2D078F782DA6533A860851D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A3203F99F61D9533E9C0445E /* libz.tbd */; };
 		A9AB40FFD757E582B84B26AA /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A9141375DE2C25BAE83CC96D /* liblzma.tbd */; };
+		A73F92A864CC65A38B043DDD /* libntdll_unix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9BE202059C857229D4C0F9 /* libntdll_unix.a */; };
+		ACC1043E224C45CB6B1778A5 /* libwineserver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A352ABBF281B056789A87551 /* libwineserver.a */; };
+		A330D2D8CAB535B8490F6353 /* libwin32u_unix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC16B617A5B6B5FFBAD480A3 /* libwin32u_unix.a */; };
+		A1D0F1413240E5B3AB3CEF49 /* libdxmt_combined_tvos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD9E90409B7D7566BB92375D /* libdxmt_combined_tvos.a */; };
+		ACB76E60E7E77524E9FC767D /* libFEXCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF830C081F1A5505BBC8EB32 /* libFEXCore.a */; };
+		A756ACCDDFAC85C34873FE6B /* libFEXCore_Base.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA215055A5B0D55059ABAD18 /* libFEXCore_Base.a */; };
+		AF1899A3C1F5E53DCAD6018A /* libJemallocLibs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0E5E23C4F77563B93A1165 /* libJemallocLibs.a */; };
+		ADD060DB527E55ED1BB7CB2D /* libfmt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C199263D230565695757F6 /* libfmt.a */; };
+		A81A0160224F652ACBB28095 /* libcephes_128bit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D2E9591E0365026A9F955E /* libcephes_128bit.a */; };
+		ABE38A7DA6CC958AABBF4B2B /* libxxhash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5FC0E98A57665EEEBC4F37B /* libxxhash.a */; };
+		A8CCBD6871757557EA90C0FD /* libsoftfloat_3e.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03BB688118B052E7ABD09E0 /* libsoftfloat_3e.a */; };
+		A22AF36A501FA5EA1A79F230 /* libgnutls.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A82563952E75A5421B587833 /* libgnutls.a */; };
+		AC3C014BA8076589F85220B5 /* libhogweed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A21AF1C5F27845BC184531D3 /* libhogweed.a */; };
+		A7D9D2EECA8305ACF91C8B80 /* libnettle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6DC7D8F00D6E5712B8A3131 /* libnettle.a */; };
+		AFE33F52270DE5476AC64A15 /* libgmp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A801CADC9C56753099E6AB85 /* libgmp.a */; };
+		A06714853BBC9551EB3A076D /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A440D2874FA3F5B2D9B87E6F /* libavformat.a */; };
+		A779AA4BC94DC5A1C8325A5E /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0066421DA0D95455B98A32C /* libavcodec.a */; };
+		A8DFAFD0965805D628992AB4 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C550AA0668857F6B00033B /* libswresample.a */; };
+		A3ED123048EA4551D9C1D3C7 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9C1867FC92E3566FB23F7F9 /* libavutil.a */; };
 		AC8712ADD340D5333B270881 /* SteamAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */; };
 		A3B781DB655FA5A80A04EA93 /* SteamCredentialAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD04C190330A519AADEAE79 /* SteamCredentialAuth.swift */; };
 		AD6F4B2C56BBE502096D3918 /* SteamTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAF3CA151ED4F5CE48A96C81 /* SteamTokenStore.swift */; };
@@ -80,6 +99,25 @@
 		AC36204B8C1265819923D73A /* MadeiraTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3203F99F61D9533E9C0445E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A9141375DE2C25BAE83CC96D /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
+		AA9BE202059C857229D4C0F9 /* libntdll_unix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libntdll_unix.a"; path = "Madeira/libntdll_unix.a"; sourceTree = "<group>"; };
+		A352ABBF281B056789A87551 /* libwineserver.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwineserver.a"; path = "Madeira/libwineserver.a"; sourceTree = "<group>"; };
+		AC16B617A5B6B5FFBAD480A3 /* libwin32u_unix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwin32u_unix.a"; path = "Madeira/libwin32u_unix.a"; sourceTree = "<group>"; };
+		AD9E90409B7D7566BB92375D /* libdxmt_combined_tvos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libdxmt_combined_tvos.a"; path = "Madeira/libdxmt_combined_tvos.a"; sourceTree = "<group>"; };
+		AF830C081F1A5505BBC8EB32 /* libFEXCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libFEXCore.a"; path = "Madeira/libFEXCore.a"; sourceTree = "<group>"; };
+		AA215055A5B0D55059ABAD18 /* libFEXCore_Base.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libFEXCore_Base.a"; path = "Madeira/libFEXCore_Base.a"; sourceTree = "<group>"; };
+		AD0E5E23C4F77563B93A1165 /* libJemallocLibs.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libJemallocLibs.a"; path = "Madeira/libJemallocLibs.a"; sourceTree = "<group>"; };
+		A8C199263D230565695757F6 /* libfmt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfmt.a"; path = "Madeira/libfmt.a"; sourceTree = "<group>"; };
+		A4D2E9591E0365026A9F955E /* libcephes_128bit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcephes_128bit.a"; path = "Madeira/libcephes_128bit.a"; sourceTree = "<group>"; };
+		A5FC0E98A57665EEEBC4F37B /* libxxhash.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libxxhash.a"; path = "Madeira/libxxhash.a"; sourceTree = "<group>"; };
+		A03BB688118B052E7ABD09E0 /* libsoftfloat_3e.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsoftfloat_3e.a"; path = "Madeira/libsoftfloat_3e.a"; sourceTree = "<group>"; };
+		A82563952E75A5421B587833 /* libgnutls.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgnutls.a"; path = "Madeira/libgnutls.a"; sourceTree = "<group>"; };
+		A21AF1C5F27845BC184531D3 /* libhogweed.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libhogweed.a"; path = "Madeira/libhogweed.a"; sourceTree = "<group>"; };
+		A6DC7D8F00D6E5712B8A3131 /* libnettle.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libnettle.a"; path = "Madeira/libnettle.a"; sourceTree = "<group>"; };
+		A801CADC9C56753099E6AB85 /* libgmp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgmp.a"; path = "Madeira/libgmp.a"; sourceTree = "<group>"; };
+		A440D2874FA3F5B2D9B87E6F /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavformat.a"; path = "Madeira/libavformat.a"; sourceTree = "<group>"; };
+		A0066421DA0D95455B98A32C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavcodec.a"; path = "Madeira/libavcodec.a"; sourceTree = "<group>"; };
+		A8C550AA0668857F6B00033B /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libswresample.a"; path = "Madeira/libswresample.a"; sourceTree = "<group>"; };
+		A9C1867FC92E3566FB23F7F9 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavutil.a"; path = "Madeira/libavutil.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +127,25 @@
 			files = (
 				A2D078F782DA6533A860851D /* libz.tbd in Frameworks */,
 				A9AB40FFD757E582B84B26AA /* liblzma.tbd in Frameworks */,
+				A73F92A864CC65A38B043DDD /* libntdll_unix.a in Frameworks */,
+				ACC1043E224C45CB6B1778A5 /* libwineserver.a in Frameworks */,
+				A330D2D8CAB535B8490F6353 /* libwin32u_unix.a in Frameworks */,
+				A1D0F1413240E5B3AB3CEF49 /* libdxmt_combined_tvos.a in Frameworks */,
+				ACB76E60E7E77524E9FC767D /* libFEXCore.a in Frameworks */,
+				A756ACCDDFAC85C34873FE6B /* libFEXCore_Base.a in Frameworks */,
+				AF1899A3C1F5E53DCAD6018A /* libJemallocLibs.a in Frameworks */,
+				ADD060DB527E55ED1BB7CB2D /* libfmt.a in Frameworks */,
+				A81A0160224F652ACBB28095 /* libcephes_128bit.a in Frameworks */,
+				ABE38A7DA6CC958AABBF4B2B /* libxxhash.a in Frameworks */,
+				A8CCBD6871757557EA90C0FD /* libsoftfloat_3e.a in Frameworks */,
+				A22AF36A501FA5EA1A79F230 /* libgnutls.a in Frameworks */,
+				AC3C014BA8076589F85220B5 /* libhogweed.a in Frameworks */,
+				A7D9D2EECA8305ACF91C8B80 /* libnettle.a in Frameworks */,
+				AFE33F52270DE5476AC64A15 /* libgmp.a in Frameworks */,
+				A06714853BBC9551EB3A076D /* libavformat.a in Frameworks */,
+				A779AA4BC94DC5A1C8325A5E /* libavcodec.a in Frameworks */,
+				A8DFAFD0965805D628992AB4 /* libswresample.a in Frameworks */,
+				A3ED123048EA4551D9C1D3C7 /* libavutil.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

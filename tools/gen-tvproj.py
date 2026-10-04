@@ -79,6 +79,25 @@ proj.append(f'\t\t{libz_bf} /* libz.tbd in Frameworks */ = {{isa = PBXBuildFile;
 liblzma_bf = uid('bf-liblzma')
 liblzma_fr = uid('fr-liblzma')
 proj.append(f'\t\t{liblzma_bf} /* liblzma.tbd in Frameworks */ = {{isa = PBXBuildFile; fileRef = {liblzma_fr} /* liblzma.tbd */; }};')
+
+# Static libraries built by the Phase 2 toolchain, staged in app/Madeira/.
+static_libs = [
+    'libntdll_unix.a', 'libwineserver.a', 'libwin32u_unix.a',
+    'libdxmt_combined_tvos.a',
+    'libFEXCore.a', 'libFEXCore_Base.a', 'libJemallocLibs.a',
+    'libfmt.a', 'libcephes_128bit.a', 'libxxhash.a', 'libsoftfloat_3e.a',
+    'libgnutls.a', 'libhogweed.a', 'libnettle.a', 'libgmp.a',
+    'libavformat.a', 'libavcodec.a', 'libswresample.a', 'libavutil.a',
+]
+static_bf = {}
+static_fr = {}
+for lib in static_libs:
+    bf = uid('bf-lib-' + lib)
+    fr = uid('fr-lib-' + lib)
+    static_bf[lib] = bf
+    static_fr[lib] = fr
+    proj.append(f'\t\t{bf} /* {lib} in Frameworks */ = {{isa = PBXBuildFile; fileRef = {fr} /* {lib} */; }};')
+
 for f in portable:
     name = os.path.basename(f)
     bf = uid('bf-' + f)
@@ -125,6 +144,9 @@ product_ref = uid('fr-app')
 proj.append(f'\t\t{product_ref} /* MadeiraTV.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; }};')
 proj.append(f'\t\t{libz_fr} /* libz.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; }};')
 proj.append(f'\t\t{liblzma_fr} /* liblzma.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; }};')
+for lib in static_libs:
+    fr = static_fr[lib]
+    proj.append(f'\t\t{fr} /* {lib} */ = {{isa = PBXFileReference; lastKnownFileType = archive.ar; name = "{lib}"; path = "Madeira/{lib}"; sourceTree = "<group>"; }};')
 proj.append('/* End PBXFileReference section */')
 
 # --- PBXFrameworksBuildPhase ---
@@ -136,6 +158,8 @@ proj.append('\t\t\tbuildActionMask = 2147483647;')
 proj.append('\t\t\tfiles = (')
 proj.append(f'\t\t\t\t{libz_bf} /* libz.tbd in Frameworks */,')
 proj.append(f'\t\t\t\t{liblzma_bf} /* liblzma.tbd in Frameworks */,')
+for lib in static_libs:
+    proj.append(f'\t\t\t\t{static_bf[lib]} /* {lib} in Frameworks */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')
