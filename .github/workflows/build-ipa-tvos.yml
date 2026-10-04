@@ -19,7 +19,10 @@ jobs:
           git submodule init FEX
           git -c protocol.version=2 submodule update --init --depth 1 FEX
           git -C FEX log --oneline -1
+          # FEXBridge.mm pulls FEXCore headers that include <fmt/format.h>
+          git -C FEX submodule update --init --depth 1 External/fmt External/range-v3 External/unordered_dense 2>&1 | tail -5 || true
           ls FEX/FEXCore/include/FEXCore/Utils/Allocator.h && echo "FEX headers OK"
+          ls FEX/External/fmt/include/fmt/format.h && echo "fmt headers OK"
 
       - name: Download latest artifacts from component workflows
         env:
