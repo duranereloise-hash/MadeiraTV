@@ -15,6 +15,12 @@ SDK=$(xcrun --sdk appletvos --show-sdk-path)
 OBJ_DIR="$BUILD_DIR/obj-tvos"
 OUT_LIB="$BUILD_DIR/libdxmt_unix_tvos.a"
 
+# DXMT sources include ../../../../../build/madeira_cfg.h from
+# dxmt/src/winemetal/unix (5 levels up: past repo root). Point it at the
+# real file.
+sed -i '' -e 's|#include "../../../../../build/madeira_cfg.h"|#include "'"$REPO_ROOT"'/build/madeira_cfg.h"|g' \
+  "$DXMT_SRC/winemetal/unix/winemetal_unix.c" 2>/dev/null || true
+
 mkdir -p "$OBJ_DIR"
 
 COMMON_FLAGS="-arch arm64 -isysroot $SDK -mtvos-version-min=18.0 -fblocks -O2"
