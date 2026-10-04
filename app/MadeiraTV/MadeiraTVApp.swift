@@ -12,6 +12,7 @@ struct MadeiraTVApp: App {
                 .onAppear {
                     GameControllerNotificationObserver.shared.start()
                     steam.start()
+                    TVLogServer.start()
                 }
         }
     }

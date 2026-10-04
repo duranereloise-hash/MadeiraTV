@@ -75,14 +75,21 @@ struct TVHeader: View {
             .buttonStyle(.plain)
         }
         .overlay(alignment: .bottom) {
-            if let diag = steam.diagnostics {
-                Text(diag)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .padding(8)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
-                    .padding(.bottom, 8)
+            VStack(spacing: 4) {
+                if let diag = steam.diagnostics {
+                    Text(diag)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+                if let ip = TVLogServer.localIP() {
+                    Text("Logs: http://\(ip):\(TVLogServer.port.rawValue)/all")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
             }
+            .padding(8)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
+            .padding(.bottom, 8)
         }
         .alert("Steam", isPresented: Binding(get: { steam.error != nil }, set: { if !$0 { steam.error = nil } })) {
             Button("OK", role: .cancel) {}
