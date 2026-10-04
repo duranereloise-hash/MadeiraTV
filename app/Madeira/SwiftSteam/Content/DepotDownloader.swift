@@ -362,40 +362,53 @@ final class DepotDownloader {
         return result
     }
 
-    /// mkdir -p with 0777 + chmod, tolerant of existing dirs and of strict
-    /// Wine-tree permissions that make FileManager.createDirectory throw
-    /// NSCocoaErrorDomain 513 on tvOS.
+    /// mkdir -p: create the whole chain with 0777, tolerant of existing dirs.
     ///
-    /// Returns `nil` on success, or a description of the first component it
-    /// could not create, so the caller can fail loudly instead of letting a
-    /// later open() hit ENOENT.
+    /// Uses FileManager.createDirectory(withIntermediateDirectories: true)
+    /// first: unlike a sequential POSIX mkdir it can also materialise
+    /// top-level sandbox folders (e.g. a freshly-installed app's Documents
+    /// directory, which may not exist yet) — a sequential mkdir then fails
+    /// with ENOENT on `.../Documents`. If Foundation rejects the path inside
+    /// the Wine tree (NSCocoaErrorDomain 513), falls back to a component-wise
+    /// POSIX mkdir + chmod.
+    ///
+    /// Returns `nil` on success, or a description of the failure.
     @discardableResult
     private nonisolated static func ensureDir(_ url: URL) -> String? {
         let path = url.path
-        let isAbsolute = path.hasPrefix("/")
-        let comps = path.split(separator: "/").map(String.init)
-        var current = ""
-        for comp in comps {
-            if comp.isEmpty { continue }
-            if current.isEmpty { current = (isAbsolute ? "/" : "") + comp }
-            else { current += "/" + comp }
-            if current == "/" { continue }
-            let r = mkdir(current, 0o777)
-            if r != 0 {
-                var st = stat()
-                if stat(current, &st) == 0, (st.st_mode & S_IFMT) == S_IFDIR {
-                    _ = chmod(current, 0o777)
-                    continue
+        // 1) Fast path: Foundation creates the whole chain (including any
+        //    missing parents above the app container).
+        do {
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true,
+                                                    attributes: [.posixPermissions: 0o777])
+            _ = chmod(path, 0o777)
+            return nil
+        } catch {
+            // 2) Fall back to a sequential mkdir for paths Foundation refuses
+            //    inside the Wine prefix (errno 513 pattern).
+            let isAbsolute = path.hasPrefix("/")
+            let comps = path.split(separator: "/").map(String.init)
+            var current = ""
+            for comp in comps {
+                if comp.isEmpty { continue }
+                if current.isEmpty { current = (isAbsolute ? "/" : "") + comp }
+                else { current += "/" + comp }
+                if current == "/" { continue }
+                let r = mkdir(current, 0o777)
+                if r != 0 {
+                    var st = stat()
+                    if stat(current, &st) == 0, (st.st_mode & S_IFMT) == S_IFDIR {
+                        _ = chmod(current, 0o777)
+                        continue
+                    }
+                    let msg = "mkdir failed for '\(current)' (errno \(errno))"
+                    SteamLog.trace("[steam-depot] " + msg)
+                    return msg
                 }
-                // Either the path already exists as a file, or a parent is
-                // missing (ENOENT): stop here and report what happened.
-                let msg = "mkdir failed for '\(current)' (errno \(errno))"
-                SteamLog.trace("[steam-depot] " + msg)
-                return msg
+                _ = chmod(current, 0o777)
             }
-            _ = chmod(current, 0o777)
+            return nil
         }
-        return nil
     }
 
     /// Create or resize a file to its manifest length. Existing bytes below

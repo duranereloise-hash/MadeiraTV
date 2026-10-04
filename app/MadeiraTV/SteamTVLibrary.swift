@@ -139,11 +139,21 @@ final class SteamTVLibrary: ObservableObject {
     /// prefix-template.tar.gz resource is present, or at least the drive_c dir.
     private func seedPrefixIfNeeded() {
         let prefix = Self.drive.deletingLastPathComponent().path  // Documents/wine
+        // First ensure the app container's Documents directory exists — on a
+        // freshly installed/updated app it may not, and a sequential POSIX
+        // mkdir then fails with ENOENT on '.../Documents'. FileManager creates
+        // the whole chain (including Documents) in one call.
+        do {
+            try FileManager.default.createDirectory(at: Self.drive, withIntermediateDirectories: true,
+                                                    attributes: [.posixPermissions: 0o777])
+        } catch {
+            // Best effort; seed below may still work if Documents exists.
+        }
         madeira_seed_prefix_if_needed(prefix)
         // Whatever the template covered, ensure the top-level dirs exist.
         // createDirectory may fail inside Wine's tree when an intermediate
-        // component already exists with restrictive mode, so use POSIX mkdir
-        // with an explicit 0777, and make the whole tree writable.
+        // component already exists with restrictive mode, so layer POSIX mkdir
+        // on top with an explicit 0777, and make the whole tree writable.
         ensureDirectoryExists(Self.drive.path)
         ensureDirectoryExists(Self.steamApps.path)
         makeAllWritable(Self.drive.path)
@@ -164,10 +174,20 @@ final class SteamTVLibrary: ObservableObject {
         }
     }
 
-    /// mkdir -p with 0777, tolerant of existing dirs. Works around
-    /// FileManager.createDirectory failures inside Wine's tree when an
-    /// intermediate component exists with restrictive permissions.
+    /// mkdir -p with 0777, tolerant of existing dirs. FileManager first so
+    /// top-level sandbox folders (Documents and its ancestors) materialise;
+    /// POSIX fallback for paths Foundation refuses inside the Wine tree
+    /// (NSCocoaErrorDomain 513).
     private func ensureDirectoryExists(_ path: String) {
+        let url = URL(fileURLWithPath: path)
+        do {
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true,
+                                                    attributes: [.posixPermissions: 0o777])
+            _ = chmod(path, 0o777)
+            return
+        } catch {
+            // fall through to sequential mkdir
+        }
         let isAbsolute = path.hasPrefix("/")
         let comps = path.split(separator: "/").map(String.init)
         var current = ""
@@ -175,11 +195,11 @@ final class SteamTVLibrary: ObservableObject {
             if comp.isEmpty { continue }
             if current.isEmpty { current = (isAbsolute ? "/" : "") + comp }
             else { current += "/" + comp }
-            _ = mkdir(current, 0o777)
+            if current == "/" { continue }
+_ = mkdir(current, 0o777)
             _ = chmod(current, 0o777)
         }
     }
-
     func isInstalled(_ app: SteamAppInfo) -> Bool {
         SteamInstallFiles.sizeOnDisk(appID: Int(app.appID), steamApps: Self.steamApps) != nil
     }
