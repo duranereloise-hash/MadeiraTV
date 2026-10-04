@@ -114,17 +114,43 @@ static bool is_in_jit_pool(void *addr) {
 static bool jit_pool_init(void) {
     if (g_jit_rx_base) return true; // Already initialized
 
-    if (!jit_check_debugged()) {
-        fex_log("Cannot init JIT pool: debugger not attached");
-        return false;
-    }
-
     size_t size = JIT_POOL_SIZE;
     mach_port_t task = mach_task_self();
 
-    // Step 1: Ask debugger to allocate RX pages
+    // iOS-Madeira tvOS fallback: jit26_prepare_region() is a BRK #0xf00d TLS
+    // request that only a StikDebug-style attached debugger serves. Without a
+    // debugger it returns NULL and jit_pool_init previously bailed — so games
+    // on a bare sideloaded tvOS app never got a JIT pool and the screen stayed
+    // black. Fall back to the MeloNX dual-map (mach_make_memory_entry_64 with
+    // RWX max + RW/RX views), which does not need a debugger.
+    void *rx_ptr = NULL;
+    if (!jit_check_debugged()) {
+        fex_log("Debugger not attached; trying MeloNX dual-map fallback for the JIT pool");
+        JITRegion *region = jit_region_create(size);
+        if (!region) {
+            fex_log("FAIL: MeloNX jit_region_create failed (debugger absent)");
+            return false;
+        }
+        rx_ptr = jit_region_rx_ptr(region);
+        void *rw = jit_region_rw_ptr(region);
+        if (!rx_ptr || !rw) {
+            fex_log("FAIL: MeloNX region returned null views");
+            jit_region_destroy(region);
+            return false;
+        }
+        // Pin the region so it outlives this function: keep both pointers.
+        g_jit_rx_base = rx_ptr;
+        g_jit_rw_base = rw;
+        g_jit_pool_size = size;
+        int64_t write_offset = reinterpret_cast<intptr_t>(g_jit_rw_base) - reinterpret_cast<intptr_t>(g_jit_rx_base);
+        FEXCore::DualMap::WriteOffset = write_offset;
+        fex_log("MeloNX JIT pool: RX=%p RW=%p size=%zu WriteOffset=%lld",
+                g_jit_rx_base, g_jit_rw_base, g_jit_pool_size, (long long)write_offset);
+        return true;
+    }
+
     fex_log("Requesting debugger to allocate %zu bytes of RX memory...", size);
-    void *rx_ptr = jit26_prepare_region(NULL, size);
+    rx_ptr = jit26_prepare_region(NULL, size);
     if (!rx_ptr) {
         fex_log("FAIL: Debugger RX allocation returned NULL");
         return false;
