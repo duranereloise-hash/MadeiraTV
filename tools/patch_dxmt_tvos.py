@@ -39,6 +39,8 @@ src = re.sub(
 # provide a dlsym shim right after the mach include.
 TGSP = """#if TARGET_OS_TV && defined(__APPLE__)
 #include <dlfcn.h>
+#include <mach/mach_types.h>
+#include <mach/message.h>
 #define task_get_special_port madeira_tvos_task_get_special_port
 static inline kern_return_t madeira_tvos_task_get_special_port(mach_port_t task,
                                                                int which_port,
