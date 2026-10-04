@@ -10,7 +10,7 @@ REPO_ROOT="$(cd "$BUILD_DIR/../.." && pwd)"
 LLVM_SRC="$REPO_ROOT/toolchains/llvm-project"
 LLVM_BUILD="$REPO_ROOT/toolchains/llvm-tvos-build"
 HOST_BUILD="$REPO_ROOT/toolchains/llvm-host-build"
-LLVM_VERSION=18
+LLVM_VERSION=15
 
 if [ ! -d "$LLVM_SRC/llvm" ]; then
     echo "=== cloning llvm-project (release/$LLVM_VERSION) ==="

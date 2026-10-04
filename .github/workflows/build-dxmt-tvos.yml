@@ -14,12 +14,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch dxmt submodule
+      - name: Fetch dxmt submodule (recursive for native DirectX headers)
         run: |
           git submodule init dxmt
           git config submodule.dxmt.url https://github.com/willfaust/dxmt.git
           git -c protocol.version=2 submodule update --init --depth 1 dxmt
+          # in dxmt: recursive submodules (include/native/directx = mingw headers, external/nvapi)
+          git -C dxmt submodule update --init --recursive --depth 1
           git -C dxmt log --oneline -1
+          ls dxmt/include/native/directx/d3d9.h && echo "d3d9.h OK (native headers present)"
 
       - name: Show env
         run: |
