@@ -55,7 +55,16 @@ platform_mm_sources = [
 ]
 platform_c_sources = [
     ('JITAllocator.c', 'sourcecode.c.c'),
+    ('PrefixExtractor.c', 'sourcecode.c.c'),
     ('wine_stubs.c', 'sourcecode.c.c'),
+]
+# SoftFloat-3e internals that FEX's vendored copy does not build (F16 helpers,
+# f128 mulAdd, roundToUI32) but libFEXCore's thinlto objects reference.
+softfloat_fix_sources = [
+    ('SoftFloat/s_commonNaNToF16UI.c', 'sourcecode.c.c'),
+    ('SoftFloat/s_roundPackToF16.c', 'sourcecode.c.c'),
+    ('SoftFloat/s_roundToUI32.c', 'sourcecode.c.c'),
+    ('SoftFloat/s_mulAddF128.c', 'sourcecode.c.c'),
 ]
 platform_mm_sources = [
     ('FEXBridge.mm', 'sourcecode.cpp.objcpp'),
@@ -159,7 +168,7 @@ for f, lft in winios_sources:
     file_refs['w_' + f] = wfr
     proj.append(f'\t\t{wbf} /* {name} in Sources */ = {{isa = PBXBuildFile; fileRef = {wfr} /* {name} */; }};')
 
-for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources:
+for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources + softfloat_fix_sources:
     name = os.path.basename(f)
     pbf = uid('bf-p-' + f)
     pfr = uid('fr-p-' + f)
@@ -197,7 +206,7 @@ for f, lft in winios_sources:
     name = os.path.basename(f)
     wfr = file_refs['w_' + f]
     proj.append(f'\t\t{wfr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
-for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources:
+for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources + softfloat_fix_sources:
     name = os.path.basename(f)
     pfr = file_refs['p_' + f]
     proj.append(f'\t\t{pfr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
@@ -249,7 +258,7 @@ for f, _ in c_files:
 for f, _ in winios_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs["w_" + f]} /* {name} */,')
-for f, _ in platform_objc_sources + platform_mm_sources + platform_c_sources:
+for f, _ in platform_objc_sources + platform_mm_sources + platform_c_sources + softfloat_fix_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs["p_" + f]} /* {name} */,')
 proj.append('\t\t\t);')
@@ -368,7 +377,7 @@ for f, _ in c_files:
 for f, lft in winios_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{build_files["w_" + f]} /* {name} in Sources */,')
-for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources:
+for f, lft in platform_objc_sources + platform_mm_sources + platform_c_sources + softfloat_fix_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{build_files["p_" + f]} /* {name} in Sources */,')
 proj.append('\t\t\t);')
@@ -466,7 +475,7 @@ proj.append('\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;')
 proj.append('\t\t\t\tSWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";')
 proj.append('\t\t\t\tSWIFT_VERSION = 5.0;')
 proj.append('\t\t\t\tTARGETED_DEVICE_FAMILY = 3;')
-proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");')
+proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX", "$(SRCROOT)/../FEX/External/SoftFloat-3e/src", "$(SRCROOT)/../FEX/External/SoftFloat-3e/include/SoftFloat-3e");')
 proj.append('\t\t\t\tLIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");')
 proj.append('\t\t\t};')
 proj.append('\t\t\tname = Debug;')
@@ -493,7 +502,7 @@ proj.append('\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;')
 proj.append('\t\t\t\tSWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";')
 proj.append('\t\t\t\tSWIFT_VERSION = 5.0;')
 proj.append('\t\t\t\tTARGETED_DEVICE_FAMILY = 3;')
-proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");')
+proj.append('\t\t\t\tHEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX", "$(SRCROOT)/../FEX/External/SoftFloat-3e/src", "$(SRCROOT)/../FEX/External/SoftFloat-3e/include/SoftFloat-3e");')
 proj.append('\t\t\t\tLIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");')
 proj.append('\t\t\t};')
 proj.append('\t\t\tname = Release;')

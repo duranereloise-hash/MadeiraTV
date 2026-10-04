@@ -71,7 +71,12 @@
 		A7BF9C43264C850C18B01A07 /* FEXBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A69A6F85B723451759E27874 /* FEXBridge.mm */; };
 		AF4722C8999F2598BAFEEFA1 /* MadeiraIntegrations.mm in Sources */ = {isa = PBXBuildFile; fileRef = A3A3A53D6862F57CAAF9C64C /* MadeiraIntegrations.mm */; };
 		A166439C91895501095AEC1E /* JITAllocator.c in Sources */ = {isa = PBXBuildFile; fileRef = AC24C585B569A5A5D86C73B8 /* JITAllocator.c */; };
+		A4DDD0E58FBAF5AF6B512D53 /* PrefixExtractor.c in Sources */ = {isa = PBXBuildFile; fileRef = AAD3FF995E5B956678B2DA9E /* PrefixExtractor.c */; };
 		AE0066D2E5FAE5BA2997D29B /* wine_stubs.c in Sources */ = {isa = PBXBuildFile; fileRef = A547AC0888EF95C61AE7FD68 /* wine_stubs.c */; };
+		AA104139AEAB653A799072B5 /* s_commonNaNToF16UI.c in Sources */ = {isa = PBXBuildFile; fileRef = A60B4427BBB595ECD9B98A42 /* s_commonNaNToF16UI.c */; };
+		A05E32D27B9F25F87A1D0215 /* s_roundPackToF16.c in Sources */ = {isa = PBXBuildFile; fileRef = A4A1559A71C555C7CBA62157 /* s_roundPackToF16.c */; };
+		A4664E8474D3C55ABA4DDF06 /* s_roundToUI32.c in Sources */ = {isa = PBXBuildFile; fileRef = ADDFE566730045AF0B8472D7 /* s_roundToUI32.c */; };
+		A926A9AB4EF28581D9FE5468 /* s_mulAddF128.c in Sources */ = {isa = PBXBuildFile; fileRef = AD54C0C8C7F8C566D82E52FE /* s_mulAddF128.c */; };
 
 /* Begin PBXFileReference section */
 		AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAuthAPI.swift"; path = "SwiftSteam/Auth/SteamAuthAPI.swift"; sourceTree = "<group>"; };
@@ -140,7 +145,12 @@
 		A69A6F85B723451759E27874 /* FEXBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "FEXBridge.mm"; path = "FEXBridge.mm"; sourceTree = "<group>"; };
 		A3A3A53D6862F57CAAF9C64C /* MadeiraIntegrations.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "MadeiraIntegrations.mm"; path = "MadeiraIntegrations.mm"; sourceTree = "<group>"; };
 		AC24C585B569A5A5D86C73B8 /* JITAllocator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "JITAllocator.c"; path = "JITAllocator.c"; sourceTree = "<group>"; };
+		AAD3FF995E5B956678B2DA9E /* PrefixExtractor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "PrefixExtractor.c"; path = "PrefixExtractor.c"; sourceTree = "<group>"; };
 		A547AC0888EF95C61AE7FD68 /* wine_stubs.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "wine_stubs.c"; path = "wine_stubs.c"; sourceTree = "<group>"; };
+		A60B4427BBB595ECD9B98A42 /* s_commonNaNToF16UI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "s_commonNaNToF16UI.c"; path = "SoftFloat/s_commonNaNToF16UI.c"; sourceTree = "<group>"; };
+		A4A1559A71C555C7CBA62157 /* s_roundPackToF16.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "s_roundPackToF16.c"; path = "SoftFloat/s_roundPackToF16.c"; sourceTree = "<group>"; };
+		ADDFE566730045AF0B8472D7 /* s_roundToUI32.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "s_roundToUI32.c"; path = "SoftFloat/s_roundToUI32.c"; sourceTree = "<group>"; };
+		AD54C0C8C7F8C566D82E52FE /* s_mulAddF128.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "s_mulAddF128.c"; path = "SoftFloat/s_mulAddF128.c"; sourceTree = "<group>"; };
 
 /* Begin PBXFrameworksBuildPhase section */
 		AAAA0C1F2D7B459FD9C7271C /* Frameworks */ = {
@@ -224,7 +234,12 @@
 				A69A6F85B723451759E27874 /* FEXBridge.mm */,
 				A3A3A53D6862F57CAAF9C64C /* MadeiraIntegrations.mm */,
 				AC24C585B569A5A5D86C73B8 /* JITAllocator.c */,
+				AAD3FF995E5B956678B2DA9E /* PrefixExtractor.c */,
 				A547AC0888EF95C61AE7FD68 /* wine_stubs.c */,
+				A60B4427BBB595ECD9B98A42 /* s_commonNaNToF16UI.c */,
+				A4A1559A71C555C7CBA62157 /* s_roundPackToF16.c */,
+				ADDFE566730045AF0B8472D7 /* s_roundToUI32.c */,
+				AD54C0C8C7F8C566D82E52FE /* s_mulAddF128.c */,
 			);
 			path = Madeira;
 			sourceTree = "<group>";
@@ -358,7 +373,12 @@
 				A7BF9C43264C850C18B01A07 /* FEXBridge.mm in Sources */,
 				AF4722C8999F2598BAFEEFA1 /* MadeiraIntegrations.mm in Sources */,
 				A166439C91895501095AEC1E /* JITAllocator.c in Sources */,
+				A4DDD0E58FBAF5AF6B512D53 /* PrefixExtractor.c in Sources */,
 				AE0066D2E5FAE5BA2997D29B /* wine_stubs.c in Sources */,
+				AA104139AEAB653A799072B5 /* s_commonNaNToF16UI.c in Sources */,
+				A05E32D27B9F25F87A1D0215 /* s_roundPackToF16.c in Sources */,
+				A4664E8474D3C55ABA4DDF06 /* s_roundToUI32.c in Sources */,
+				A926A9AB4EF28581D9FE5468 /* s_mulAddF128.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +467,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");
+				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX", "$(SRCROOT)/../FEX/External/SoftFloat-3e/src", "$(SRCROOT)/../FEX/External/SoftFloat-3e/include/SoftFloat-3e");
 				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
 			name = Debug;
@@ -472,7 +492,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
-				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX");
+				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX", "$(SRCROOT)/../FEX/External/SoftFloat-3e/src", "$(SRCROOT)/../FEX/External/SoftFloat-3e/include/SoftFloat-3e");
 				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
 			name = Release;
