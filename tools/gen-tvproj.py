@@ -80,6 +80,8 @@ tv_files = [
     'MadeiraTVApp.swift',
     'TVSessionModel.swift',
     'LogStore.swift',
+    'TVSteamViews.swift',
+    'SteamTVLibrary.swift',
 ]
 
 # Verify all referenced files exist.

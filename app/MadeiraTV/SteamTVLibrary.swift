@@ -1,0 +1,252 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Madeira Converter Exception: see LICENSE-EXCEPTION.md
+//
+// tvOS Steam library model: sign-in state, the account's owned games and
+// their downloads, and direct Wine launch of an installed game.
+//
+// Reuses the already-ported Steam primitives (SteamSession/SteamLibraryFetcher/
+// DepotDownloader/SteamInstallFiles) instead of the iOS-only SteamOwnedLibrary
+// (which couples to Madeira Dock and UIKit).
+
+import SwiftUI
+import Combine
+import Foundation
+
+@MainActor
+final class SteamTVLibrary: ObservableObject {
+    static let shared = SteamTVLibrary()
+
+    @Published private(set) var signedIn = false
+    @Published private(set) var accountName: String?
+    @Published private(set) var games: [SteamAppInfo] = []
+    @Published private(set) var loading = false
+    @Published private(set) var downloads: [UInt32: SteamDownloadProgress] = [:]
+    @Published var error: String?
+    @Published private(set) var launchingID: UInt32?
+
+    private let session = SteamSession()
+    private lazy var fetcher = SteamLibraryFetcher(session: session)
+    private lazy var downloader = DepotDownloader(session: session)
+
+    private var installTask: Task<Void, Never>?
+    private var libraryTask: Task<Void, Never>?
+    private var started = false
+    private var shouldRefresh = false
+
+    /// Wine prefix (same layout as iOS: Documents/wine/drive_c).
+    static var drive: URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("wine", isDirectory: true)
+            .appendingPathComponent("drive_c", isDirectory: true)
+    }
+    static var steamApps: URL { SteamInstallPaths.steamApps(drive: drive) }
+    static var steamPath: String { drive.path }
+
+    func start() {
+        guard !started else { return }
+        started = true
+        NotificationCenter.default.addObserver(forName: SteamSignIn.didChange, object: nil, queue: .main) { [weak self] _ in
+            MainActor.assumeIsolated { self?.signInChanged() }
+        }
+        refreshSignIn()
+    }
+
+    private func refreshSignIn() {
+        signedIn = SteamSignIn.isSignedIn
+        accountName = SteamSignIn.accountName
+        if signedIn {
+            loadGames(interactive: true)
+        } else {
+            games = []; downloads = [:]
+        }
+    }
+
+    private func signInChanged() {
+        if SteamSignIn.isSignedIn != signedIn || SteamSignIn.accountName != accountName {
+            refreshSignIn()
+        }
+    }
+
+    func signOut() {
+        installTask?.cancel()
+        libraryTask?.cancel()
+        session.logoff()
+        SteamSignIn.signOut()
+        signedIn = false
+        accountName = nil
+        games = []
+        downloads = [:]
+        error = nil
+        SteamLog.event("[steam-tv] signed out")
+    }
+
+    /// Owned Windows games + what is already installed on disk.
+    func loadGames(interactive: Bool) {
+        guard signedIn else { return }
+        libraryTask?.cancel()
+        loading = interactive
+        libraryTask = Task { @MainActor in
+            do {
+                try await session.ensureConnected()
+                let apps = try await fetcher.fetchOwnedApps()
+                try Task.checkCancellation()
+                var result = apps.filter {
+                    $0.type.isPlayable && Self.isWindowsApp($0)
+                }
+                // Keep a stable order by name.
+                result.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+                games = result
+                error = nil
+            } catch is CancellationError {
+            } catch {
+                if !Task.isCancelled {
+                    error = SteamSignIn.message(error)
+                    SteamLog.event("[steam-tv] library failed reason=\(SteamSignIn.reason(error))")
+                }
+            }
+            loading = false
+        }
+    }
+
+    /// Whether an app has a Windows depot / can install on tvOS's Wine.
+    private static func isWindowsApp(_ app: SteamAppInfo) -> Bool {
+        if app.oslist.contains("windows") { return true }
+        return app.depots.contains { ($0.oslist.isEmpty || $0.oslist.contains("windows")) }
+    }
+
+    // MARK: - Downloads
+
+    func isInstalled(_ app: SteamAppInfo) -> Bool {
+        SteamInstallFiles.sizeOnDisk(appID: Int(app.appID), steamApps: steamApps) != nil
+    }
+
+    func install(_ app: SteamAppInfo) {
+        guard signedIn else { error = "Sign in to Steam to download games."; return }
+        installTask?.cancel()
+        downloads[app.appID] = SteamDownloadProgress()
+        installTask = Task { @MainActor in
+            do {
+                let url = try await downloader.install(app, steamApps: steamApps, ownedDepots: { nil }) { [weak self] progress in
+                    MainActor.assumeIsolated {
+                        self?.downloads[app.appID] = progress
+                    }
+                }
+                Self.materializeInstallRecord(app: app)
+                downloads[app.appID] = SteamDownloadProgress(phase: .finishing)
+                SteamLog.event("[steam-tv] installed app=\(app.appID) to=\(url.path)")
+                downloads[app.appID] = nil
+                try Task.checkCancellation()
+            } catch is CancellationError {
+            } catch {
+                if !Task.isCancelled {
+                    self.error = SteamSignIn.message(error)
+                    SteamLog.event("[steam-tv] install failed app=\(app.appID) reason=\(SteamSignIn.reason(error))")
+                }
+            }
+        }
+    }
+
+    /// After the raw download the folder exists but Steam has no ACF record;
+    /// write a minimal appmanifest so the UI counts the game installed and a
+    /// future Valve client run sees it too.
+    private static func materializeInstallRecord(app: SteamAppInfo) {
+        let record = steamApps.appendingPathComponent("appmanifest_\(app.appID).acf")
+        guard !FileManager.default.fileExists(atPath: record.path) else { return }
+        let folder = SteamInstallFiles.safeFolderName(app.installDir.isEmpty ? "app_\(app.appID)" : app.installDir)
+        let text = """
+        "AppState"
+        {
+            "appid"  "\(app.appID)"
+            "Universe"  "1"
+            "name"  "\(app.name.replacingOccurrences(of: "\"", with: "'"))"
+            "StateFlags"  "4"
+            "installdir"  "\(folder)"
+            "InstalledDepots"
+            {
+            }
+            "SharedDepots"
+            {
+            }
+            "UserConfig"
+            {
+            }
+            "MountedConfig"
+            {
+            }
+        }
+
+        """
+        try? text.write(to: record, atomically: true, encoding: .utf8)
+    }
+
+    func cancelInstall(_ appID: UInt32) {
+        installTask?.cancel()
+        downloads[appID] = nil
+    }
+
+    func progress(_ appID: UInt32) -> SteamDownloadProgress? { downloads[appID] }
+
+    // MARK: - Launch
+
+    /// Launches an installed game: finds its .exe in the install folder and
+    /// starts it through Wine (wineserver + wine_process with MADEIRA_EXE).
+    func launch(_ app: SteamAppInfo, completion: @escaping (String?) -> Void) {
+        guard isInstalled(app) else { completion("Game is not installed."); return }
+        guard let exe = findExecutable(for: app) else { completion("Could not find the game's executable."); return }
+
+        launchingID = app.appID
+        let prefix = Self.drive.deletingLastPathComponent().path  // Documents/wine
+        let workdir = workdir(for: app)
+        DispatchQueue.global(qos: .userInitiated).async {
+            let ws = wineserver_start(prefix)
+            if ws != 0 { DispatchQueue.main.async { completion("wineserver failed (\(ws))") }; return }
+            Thread.sleep(forTimeInterval: 1.0)
+            if wineserver_is_running() == 0 { DispatchQueue.main.async { completion("wineserver is not ready") }; return }
+            setenv("MADEIRA_EXE", exe, 1)
+            setenv("MADEIRA_WORKDIR", workdir, 1)
+            let wp = wine_process_start(prefix)
+            SteamLog.event("[steam-tv] launch app=\(app.appID) exe=\(exe)")
+            DispatchQueue.main.async {
+                completion(wp != 0 ? "Wine process failed (\(wp))" : nil)
+            }
+        }
+    }
+
+    /// `C:\Program Files (x86)\Steam\steamapps\common\<dir>\<exe>` for the
+    /// game's launch options (first Windows executable), else any .exe found
+    /// in the install folder.
+    private func findExecutable(for app: SteamAppInfo) -> String? {
+        let folder = SteamInstallFiles.safeFolderName(app.installDir.isEmpty ? "app_\(app.appID)" : app.installDir)
+        let common = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\\(folder)"
+        let launchWindows = app.launches.first { $0.oslist.isEmpty || $0.oslist.contains("windows") }
+        if let exe = launchWindows?.executable, !exe.isEmpty {
+            let named = exe.replacingOccurrences(of: "/", with: "\\")
+                .replacingOccurrences(of: "\\\\", with: "\\")
+                .trimmingCharacters(in: .whitespaces)
+            // exe may already be a full path or relative to the install dir.
+            if named.contains(":") { return named }
+            if named.contains("\\") { return common + "\\" + named }
+            return common + "\\" + named
+        }
+        // Fallback: scan the install folder for the first .exe (non-steam).
+        let disk = Self.steamApps.appendingPathComponent("common", isDirectory: true)
+            .appendingPathComponent(folder, isDirectory: true)
+        guard let enumerator = FileManager.default.enumerator(at: disk,
+                                                             includingPropertiesForKeys: nil,
+                                                             options: [.skipsHiddenFiles]) else { return nil }
+        for case let url as URL in enumerator {
+            if url.lastPathComponent.lowercased().hasSuffix(".exe"),
+               !url.lastPathComponent.lowercased().contains("steam") {
+                let rel = url.path.replacingOccurrences(of: disk.path + "/", with: "")
+                return common + "\\" + rel.replacingOccurrences(of: "/", with: "\\")
+            }
+            if (url.path.count - disk.path.count) > 4000 { break }
+        }
+        return nil
+    }
+
+    private func workdir(for app: SteamAppInfo) -> String {
+        let folder = SteamInstallFiles.safeFolderName(app.installDir.isEmpty ? "app_\(app.appID)" : app.installDir)
+        return "C:\\Program Files (x86)\\Steam\\steamapps\\common\\\(folder)"
+    }
+}

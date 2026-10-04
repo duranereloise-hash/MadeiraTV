@@ -57,6 +57,8 @@
 		A36994E037C9D550DAC47282 /* MadeiraTVApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */; };
 		AAAFD7142CCDF5BA393B412A /* TVSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAACD3DADEF6950309A10409 /* TVSessionModel.swift */; };
 		AB4566EA2D9FA529DB29663A /* LogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD2B3CD5B485D59709FE87AA /* LogStore.swift */; };
+		A9F71A7DCA7FD5F40ABA9EEC /* TVSteamViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AFC27B555B150F1AF5EA34 /* TVSteamViews.swift */; };
+		A70E6DDBD88F156359539FDC /* SteamTVLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF47DB1CE5E3C50EA9E3FD87 /* SteamTVLibrary.swift */; };
 		AB3A151A72D5C5C5E829B211 /* chunk_zip.c in Sources */ = {isa = PBXBuildFile; fileRef = AB95E09B3B0B254BB94AAE94 /* chunk_zip.c */; };
 		AB324AAE719A150F3BC772E6 /* lzma_shim.c in Sources */ = {isa = PBXBuildFile; fileRef = AD0227EA22C2A58738380D34 /* lzma_shim.c */; };
 		AD01FA7FCB1CC561E9D280E3 /* zstd_edu.c in Sources */ = {isa = PBXBuildFile; fileRef = A7CAF30D28FF3575292D95B2 /* zstd_edu.c */; };
@@ -110,6 +112,8 @@
 		AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MadeiraTVApp.swift"; sourceTree = "<group>"; };
 		AAACD3DADEF6950309A10409 /* TVSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSessionModel.swift"; sourceTree = "<group>"; };
 		AD2B3CD5B485D59709FE87AA /* LogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LogStore.swift"; sourceTree = "<group>"; };
+		A2AFC27B555B150F1AF5EA34 /* TVSteamViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSteamViews.swift"; sourceTree = "<group>"; };
+		AF47DB1CE5E3C50EA9E3FD87 /* SteamTVLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SteamTVLibrary.swift"; sourceTree = "<group>"; };
 		AB95E09B3B0B254BB94AAE94 /* chunk_zip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "chunk_zip.c"; path = "SwiftSteam/chunk_zip.c"; sourceTree = "<group>"; };
 		AD0227EA22C2A58738380D34 /* lzma_shim.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "lzma_shim.c"; path = "SwiftSteam/lzma_shim.c"; sourceTree = "<group>"; };
 		A7CAF30D28FF3575292D95B2 /* zstd_edu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "zstd_edu.c"; path = "SwiftSteam/zstd_edu.c"; sourceTree = "<group>"; };
@@ -259,6 +263,8 @@
 				AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */,
 				AAACD3DADEF6950309A10409 /* TVSessionModel.swift */,
 				AD2B3CD5B485D59709FE87AA /* LogStore.swift */,
+				A2AFC27B555B150F1AF5EA34 /* TVSteamViews.swift */,
+				AF47DB1CE5E3C50EA9E3FD87 /* SteamTVLibrary.swift */,
 				AB59B26BFB7B055559A3E722 /* Assets.xcassets */,
 				A70AAA1F1EE26514085DD238 /* Info-TVP.plist */,
 			);
@@ -373,6 +379,8 @@
 				A36994E037C9D550DAC47282 /* MadeiraTVApp.swift in Sources */,
 				AAAFD7142CCDF5BA393B412A /* TVSessionModel.swift in Sources */,
 				AB4566EA2D9FA529DB29663A /* LogStore.swift in Sources */,
+				A9F71A7DCA7FD5F40ABA9EEC /* TVSteamViews.swift in Sources */,
+				A70E6DDBD88F156359539FDC /* SteamTVLibrary.swift in Sources */,
 				AB3A151A72D5C5C5E829B211 /* chunk_zip.c in Sources */,
 				AB324AAE719A150F3BC772E6 /* lzma_shim.c in Sources */,
 				AD01FA7FCB1CC561E9D280E3 /* zstd_edu.c in Sources */,
