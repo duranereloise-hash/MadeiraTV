@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		A2D078F782DA6533A860851D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A3203F99F61D9533E9C0445E /* libz.tbd */; };
 		A9AB40FFD757E582B84B26AA /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A9141375DE2C25BAE83CC96D /* liblzma.tbd */; };
-		A080F597AF16C50E8A335764 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A2EAFCFDE6A325171828A5BD /* libc++.tbd */; };
-		A34B20BD021AC50C7BDD3131 /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A868F1283E1E65ECB8018522 /* libc++abi.tbd */; };
 		A73F92A864CC65A38B043DDD /* libntdll_unix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9BE202059C857229D4C0F9 /* libntdll_unix.a */; };
 		ACC1043E224C45CB6B1778A5 /* libwineserver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A352ABBF281B056789A87551 /* libwineserver.a */; };
 		A330D2D8CAB535B8490F6353 /* libwin32u_unix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC16B617A5B6B5FFBAD480A3 /* libwin32u_unix.a */; };
@@ -101,8 +99,6 @@
 		AC36204B8C1265819923D73A /* MadeiraTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3203F99F61D9533E9C0445E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		A9141375DE2C25BAE83CC96D /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
-		A2EAFCFDE6A325171828A5BD /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = usr/lib/libc++.tbd; sourceTree = SDKROOT; };
-		A868F1283E1E65ECB8018522 /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = usr/lib/libc++abi.tbd; sourceTree = SDKROOT; };
 		AA9BE202059C857229D4C0F9 /* libntdll_unix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libntdll_unix.a"; path = "Madeira/libntdll_unix.a"; sourceTree = "<group>"; };
 		A352ABBF281B056789A87551 /* libwineserver.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwineserver.a"; path = "Madeira/libwineserver.a"; sourceTree = "<group>"; };
 		AC16B617A5B6B5FFBAD480A3 /* libwin32u_unix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwin32u_unix.a"; path = "Madeira/libwin32u_unix.a"; sourceTree = "<group>"; };
@@ -131,8 +127,6 @@
 			files = (
 				A2D078F782DA6533A860851D /* libz.tbd in Frameworks */,
 				A9AB40FFD757E582B84B26AA /* liblzma.tbd in Frameworks */,
-				A080F597AF16C50E8A335764 /* libc++.tbd in Frameworks */,
-				A34B20BD021AC50C7BDD3131 /* libc++abi.tbd in Frameworks */,
 				A73F92A864CC65A38B043DDD /* libntdll_unix.a in Frameworks */,
 				ACC1043E224C45CB6B1778A5 /* libwineserver.a in Frameworks */,
 				A330D2D8CAB535B8490F6353 /* libwin32u_unix.a in Frameworks */,
@@ -403,7 +397,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\"");
+				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\" -lc++ -lc++abi");
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -428,7 +422,7 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.madeira.tvos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\"");
+				OTHER_LDFLAGS = ("$(inherited)", "-force_load \"$(SRCROOT)/Madeira/libntdll_unix.a\" -force_load \"$(SRCROOT)/Madeira/libwineserver.a\" -force_load \"$(SRCROOT)/Madeira/libwin32u_unix.a\" -force_load \"$(SRCROOT)/Madeira/libdxmt_combined_tvos.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore.a\" -force_load \"$(SRCROOT)/Madeira/libFEXCore_Base.a\" -force_load \"$(SRCROOT)/Madeira/libfmt.a\" -force_load \"$(SRCROOT)/Madeira/libcephes_128bit.a\" -force_load \"$(SRCROOT)/Madeira/libxxhash.a\" -force_load \"$(SRCROOT)/Madeira/libsoftfloat_3e.a\" -force_load \"$(SRCROOT)/Madeira/libgnutls.a\" -force_load \"$(SRCROOT)/Madeira/libhogweed.a\" -force_load \"$(SRCROOT)/Madeira/libnettle.a\" -force_load \"$(SRCROOT)/Madeira/libgmp.a\" -force_load \"$(SRCROOT)/Madeira/libavformat.a\" -force_load \"$(SRCROOT)/Madeira/libavcodec.a\" -force_load \"$(SRCROOT)/Madeira/libswresample.a\" -force_load \"$(SRCROOT)/Madeira/libavutil.a\" -lc++ -lc++abi");
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
