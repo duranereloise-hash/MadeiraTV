@@ -198,6 +198,9 @@
 				AB95E09B3B0B254BB94AAE94 /* chunk_zip.c */,
 				AD0227EA22C2A58738380D34 /* lzma_shim.c */,
 				A7CAF30D28FF3575292D95B2 /* zstd_edu.c */,
+				A65E088659F8354D8B50FCA6 /* Winios.m */,
+				A4BEB375F1776554DA38A938 /* WiniosCursor.c */,
+				A0EC266465F8C59BBB022B6A /* WiniosGamepad.c */,
 			);
 			path = Madeira;
 			sourceTree = "<group>";

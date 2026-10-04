@@ -211,6 +211,9 @@ for f in portable:
 for f, _ in c_files:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs[f]} /* {name} */,')
+for f, _ in winios_sources:
+    name = os.path.basename(f)
+    proj.append(f'\t\t\t\t{file_refs["w_" + f]} /* {name} */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\tpath = Madeira;')
 proj.append('\t\t\tsourceTree = "<group>";')
