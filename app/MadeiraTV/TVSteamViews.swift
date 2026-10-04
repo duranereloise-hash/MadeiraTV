@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Madeira Converter Exception: see LICENSE-EXCEPTION.md
 //
 // tvOS home: Steam sign-in gate, the owned-game grid, and an account panel.
@@ -27,7 +27,7 @@ struct TVHomeView: View {
                     TVGameGrid()
                 }
             } else {
-                ProgressView("Загрузка…")
+                ProgressView("Loading…")
                     .onAppear { steam.loadGames(interactive: true) }
             }
         }
@@ -35,7 +35,7 @@ struct TVHomeView: View {
     }
 }
 
-// MARK: - Header (title left, account right)
+// MARK: - Header (title left, account + logs right)
 
 struct TVHeader: View {
     @EnvironmentObject private var steam: SteamTVLibrary
@@ -48,6 +48,17 @@ struct TVHeader: View {
             Text("Steam")
                 .font(.system(size: 40, weight: .bold))
             Spacer()
+            Button {
+                showLogs = true
+            } label: {
+                Image(systemName: "doc.text")
+                    .font(.title2)
+                    .padding(12)
+            }
+            .buttonStyle(.plain)
+            .sheet(isPresented: $showLogs) {
+                TVLogView()
+            }
             Button {
                 showAccount = true
             } label: {
@@ -62,21 +73,6 @@ struct TVHeader: View {
                 .background(.quaternary.opacity(0.6), in: Capsule())
             }
             .buttonStyle(.plain)
-            .sheet(isPresented: $showAccount) {
-                TVAccountSheet()
-            }
-
-            Button {
-                showLogs = true
-            } label: {
-                Image(systemName: "doc.text")
-                    .font(.title2)
-                    .padding(12)
-            }
-            .buttonStyle(.plain)
-            .sheet(isPresented: $showLogs) {
-                TVLogView()
-            }
         }
         .overlay(alignment: .bottom) {
             if let diag = steam.diagnostics {
@@ -89,7 +85,7 @@ struct TVHeader: View {
             }
         }
         .alert("Steam", isPresented: Binding(get: { steam.error != nil }, set: { if !$0 { steam.error = nil } })) {
-            Button("ОК", role: .cancel) {}
+            Button("OK", role: .cancel) {}
         } message: {
             Text(steam.error ?? "")
         }
@@ -110,12 +106,12 @@ struct TVSignInGate: View {
             Image(systemName: "gamecontroller.fill")
                 .font(.system(size: 84))
                 .foregroundStyle(.tint)
-            Text("Madeira для tvOS")
+            Text("Madeira for tvOS")
                 .font(.largeTitle.bold())
-            Text("Играй в свои Steam-игры на Apple TV через Wine + FEX")
+            Text("Your Steam games on Apple TV via Wine + FEX")
                 .font(.title3)
                 .foregroundStyle(.secondary)
-            Text("Подпишись на свою учётную запись Steam — QR-кодом или паролем. Игры из библиотеки можно будет скачать и запустить прямо на приставке.")
+            Text("Sign in with your Steam account — QR code or password. Games can be downloaded and launched right on the box.")
                 .font(.body)
                 .foregroundStyle(.tertiary)
                 .multilineTextAlignment(.center)
@@ -123,7 +119,7 @@ struct TVSignInGate: View {
             Button {
                 showSignIn = true
             } label: {
-                Label("Войти в Steam", systemImage: "qrcode")
+                Label("Sign in to Steam", systemImage: "qrcode")
                     .font(.title3.bold())
                     .padding(.horizontal, 44)
                     .padding(.vertical, 14)
@@ -156,16 +152,16 @@ struct TVSignInView: View {
             VStack(spacing: 24) {
                 if let name = model.accountName {
                     VStack(spacing: 12) {
-                        Label("Вы вошли как \(name)", systemImage: "checkmark.seal.fill")
+                        Label("Signed in as \(name)", systemImage: "checkmark.seal.fill")
                             .font(.title3.bold())
-                        Button("Готово") { dismiss() }
+                        Button("Done") { dismiss() }
                             .buttonStyle(.borderedProminent)
                     }
                     .padding(.vertical, 40)
                 } else {
-                    Picker("Способ входа", selection: $method) {
-                        Text("QR-код").tag(SteamSignInModel.SignInMethod.qr)
-                        Text("Пароль").tag(SteamSignInModel.SignInMethod.password)
+                    Picker("Method", selection: $method) {
+                        Text("QR code").tag(SteamSignInModel.SignInMethod.qr)
+                        Text("Password").tag(SteamSignInModel.SignInMethod.password)
                     }
                     .pickerStyle(.segmented)
                     .frame(maxWidth: 520)
@@ -181,14 +177,6 @@ struct TVSignInView: View {
             }
             .padding(40)
             .navigationTitle("Steam")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(model.signedIn ? "Готово" : "Отмена") {
-                        if !model.signedIn { model.cancelSignIn() }
-                        dismiss()
-                    }
-                }
-            }
             .onAppear {
                 model.refresh()
                 if !model.signedIn {
@@ -235,41 +223,38 @@ struct TVSignInView: View {
                 ProgressView()
                     .frame(width: 360, height: 360)
             }
-            Text("Отсканируй QR-код приложением Steam и подтверди вход.")
+            Text("Scan with the Steam mobile app and approve the sign-in.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
-            if model.signInBusy && model.qrImage == nil {
-                Text("Ждём подтверждения…").font(.callout).foregroundStyle(.secondary)
-            }
         }
     }
 
     private var passwordView: some View {
         VStack(spacing: 18) {
-            TextField("Логин Steam", text: $account)
+            TextField("Steam account name", text: $account)
                 .textFieldStyle(.plain)
                 .focused($focus, equals: .account)
                 .frame(maxWidth: 520)
                 .padding(10)
                 .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
-            SecureField("Пароль", text: $password)
+            SecureField("Password", text: $password)
                 .textFieldStyle(.plain)
                 .focused($focus, equals: .password)
                 .frame(maxWidth: 520)
                 .padding(10)
                 .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
             if let prompt = model.guardPrompt, let type = prompt.codeType {
-                TextField("Код Steam Guard", text: $code)
+                TextField("Steam Guard code", text: $code)
                     .textFieldStyle(.plain)
                     .focused($focus, equals: .code)
                     .frame(maxWidth: 520)
                     .padding(10)
                     .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
                     .onSubmit { model.submitGuardCode(code) }
-                Text(prompt.hint.isEmpty ? "Введи код из приложения Steam." : prompt.hint)
+                Text(prompt.hint.isEmpty ? "Enter the code from the Steam app." : prompt.hint)
                     .font(.callout).foregroundStyle(.secondary)
             }
-            Button(model.signInBusy ? "Подождите…" : "Войти") {
+            Button(model.signInBusy ? "Please wait…" : "Sign in") {
                 model.signIn(account: account, password: password)
             }
             .buttonStyle(.borderedProminent)
@@ -302,21 +287,21 @@ struct TVAccountSheet: View {
             Button {
                 steam.loadGames(interactive: true)
             } label: {
-                Label("Обновить библиотеку", systemImage: "arrow.clockwise")
+                Label("Refresh library", systemImage: "arrow.clockwise")
                     .frame(maxWidth: 280)
             }
             .buttonStyle(.borderedProminent)
-            Button("Выйти из Steam", role: .destructive) {
+            Button("Sign out of Steam", role: .destructive) {
                 confirmSignOut = true
             }
             .buttonStyle(.bordered)
-            .confirmationDialog("Выйти из Steam?", isPresented: $confirmSignOut, titleVisibility: .visible) {
-                Button("Выйти", role: .destructive) {
+            .confirmationDialog("Sign out of Steam?", isPresented: $confirmSignOut, titleVisibility: .visible) {
+                Button("Sign out", role: .destructive) {
                     steam.signOut()
                     dismiss()
                 }
             }
-            Button("Готово") { dismiss() }
+            Button("Done") { dismiss() }
                 .buttonStyle(.plain)
         }
         .padding(48)
@@ -338,7 +323,7 @@ struct TVGameGrid: View {
             if steam.loading && steam.games.isEmpty {
                 VStack(spacing: 16) {
                     ProgressView()
-                    Text("Загрузка библиотеки…")
+                    Text("Loading library…")
                         .font(.headline)
                 }
             } else if steam.games.isEmpty {
@@ -346,11 +331,11 @@ struct TVGameGrid: View {
                     Image(systemName: "shippingbox")
                         .font(.system(size: 64))
                         .foregroundStyle(.secondary)
-                    Text("В библиотеке пока нет игр")
+                    Text("No games in the library")
                         .font(.title2.bold())
-                    Text("Обнови библиотеку или проверь, что аккаунт владеет Windows-играми.")
+                    Text("Refresh the library, or check that the account owns Windows games.")
                         .font(.callout).foregroundStyle(.secondary)
-                    Button("Обновить") { steam.loadGames(interactive: true) }
+                    Button("Refresh") { steam.loadGames(interactive: true) }
                         .buttonStyle(.borderedProminent)
                 }
             } else {
@@ -393,7 +378,6 @@ struct TVGameCard: View {
         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 18))
     }
 
-    /// Fixed-size preview, double-clipped so the image never escapes the box.
     private var artwork: some View {
         ZStack(alignment: .bottomLeading) {
             AsyncImage(url: heroURL) { phase in
@@ -441,21 +425,16 @@ struct TVGameCard: View {
     }
 
     private var statusText: String {
-        if steam.progress(game.appID) != nil { return "Загрузка…" }
-        if steam.isInstalled(game) { return "Установлена" }
-        return "Не установлена"
+        if steam.progress(game.appID) != nil { return "Downloading…" }
+        if steam.isInstalled(game) { return "Installed" }
+        return "Not installed"
     }
 
     @ViewBuilder
     private var actionButton: some View {
         if let progress = steam.progress(game.appID) {
-            if progress.phase == .finishing {
-                Button("Отмена") { steam.cancelInstall(game.appID) }
-                    .buttonStyle(.bordered)
-            } else {
-                Button("Отменить") { steam.cancelInstall(game.appID) }
-                    .buttonStyle(.bordered)
-            }
+            Button("Cancel") { steam.cancelInstall(game.appID) }
+                .buttonStyle(.bordered)
         } else if steam.isInstalled(game) {
             Button {
                 steam.launch(game) { message in
@@ -466,12 +445,12 @@ struct TVGameCard: View {
                 if steam.launchingID == game.appID {
                     ProgressView().frame(maxWidth: .infinity)
                 } else {
-                    Label("Играть", systemImage: "play.fill").frame(maxWidth: .infinity)
+                    Label("Play", systemImage: "play.fill").frame(maxWidth: .infinity)
                 }
             }
             .buttonStyle(.borderedProminent)
-            .alert("Запуск", isPresented: $showLaunchError) {
-                Button("ОК", role: .cancel) {}
+            .alert("Launch", isPresented: $showLaunchError) {
+                Button("OK", role: .cancel) {}
             } message: {
                 Text(launchMessage ?? "")
             }
@@ -479,7 +458,7 @@ struct TVGameCard: View {
             Button {
                 steam.install(game)
             } label: {
-                Label("Установить", systemImage: "arrow.down.circle").frame(maxWidth: .infinity)
+                Label("Install", systemImage: "arrow.down.circle").frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
         }
@@ -487,15 +466,16 @@ struct TVGameCard: View {
 
     private func progressText(_ p: SteamDownloadProgress) -> String {
         switch p.phase {
-        case .preparing: return "Подключение к Steam…"
-        case .finishing: return "Завершение…"
+        case .preparing: return "Connecting to Steam…"
+        case .finishing: return "Finalizing…"
         case .downloading:
             let pct = Int((p.fraction * 100).rounded())
-            let mbS = p.bytesPerSecond > 0 ? String(format: "%.1f МБ/с", p.bytesPerSecond / 1_048_576) : ""
+            let mbS = p.bytesPerSecond > 0 ? String(format: "%.1f MB/s", p.bytesPerSecond / 1_048_576) : ""
             return "\(pct)% \(mbS)".trimmingCharacters(in: .whitespaces)
         }
     }
 }
+
 // MARK: - Logs
 
 struct TVLogView: View {
@@ -518,13 +498,13 @@ struct TVLogView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
             }
-            .navigationTitle("����")
+            .navigationTitle("Logs")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("��������") { refresh() }
+                    Button("Refresh") { refresh() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("������") { dismiss() }
+                    Button("Done") { dismiss() }
                 }
             }
             .onAppear { refresh() }
@@ -540,6 +520,6 @@ struct TVLogView: View {
                 parts.append(data)
             }
         }
-        text = parts.isEmpty ? "(��� ���� ���� � ������� ���� � �������)" : parts.joined(separator: "\n")
+        text = parts.isEmpty ? "(log is empty — launch a game and come back)" : parts.joined(separator: "\n")
     }
 }
