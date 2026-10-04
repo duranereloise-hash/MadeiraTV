@@ -404,6 +404,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV");
+				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
 			name = Debug;
 		};
@@ -427,6 +428,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV");
+				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
 			name = Release;
 		};
