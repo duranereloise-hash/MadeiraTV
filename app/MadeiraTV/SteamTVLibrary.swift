@@ -134,6 +134,16 @@ final class SteamTVLibrary: ObservableObject {
 
     // MARK: - Downloads
 
+    /// Creates the Wine prefix (drive_c, dosdevices, registry template) if the
+    /// prefix-template.tar.gz resource is present, or at least the drive_c dir.
+    private func seedPrefixIfNeeded() {
+        let prefix = Self.drive.deletingLastPathComponent().path  // Documents/wine
+        madeira_seed_prefix_if_needed(prefix)
+        // Whatever the template covered, ensure the top-level dirs exist.
+        try? FileManager.default.createDirectory(at: Self.drive, withIntermediateDirectories: true)
+        try? FileManager.default.createDirectory(at: Self.steamApps, withIntermediateDirectories: true)
+    }
+
     func isInstalled(_ app: SteamAppInfo) -> Bool {
         SteamInstallFiles.sizeOnDisk(appID: Int(app.appID), steamApps: Self.steamApps) != nil
     }
@@ -144,6 +154,11 @@ final class SteamTVLibrary: ObservableObject {
         downloads[app.appID] = SteamDownloadProgress()
         installTask = Task { @MainActor in
             do {
+                // Lay down the Wine prefix first: without drive_c the download
+                // folder cannot be created (permission error inside "common").
+                seedPrefixIfNeeded()
+                // Ensure the Steam library folder exists on disk.
+                try FileManager.default.createDirectory(at: Self.steamApps, withIntermediateDirectories: true)
                 // Connect cap: if Steam does not answer within 25s, stop the
                 // endless "Подключение к Steam…" state with a visible error.
                 try await withThrowingTaskGroup(of: Void.self) { group in

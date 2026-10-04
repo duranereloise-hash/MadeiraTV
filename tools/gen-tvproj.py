@@ -174,6 +174,13 @@ for wb in windows_bundles:
     wbf_b[wb] = bf
     wfr_b[wb] = fr
     proj.append(f'\t\t{bf} /* {wb} in Resources */ = {{isa = PBXBuildFile; fileRef = {fr} /* {wb} */; }};')
+
+# Wine prefix template: used by madeira_seed_prefix_if_needed to lay down the
+# prefix (drive_c etc). A gzip file resource, not a folder.
+prefix_template_name = 'prefix-template.tar.gz'
+pt_bf = uid('bf-res-prefixtemplate')
+pt_fr = uid('fr-res-prefixtemplate')
+proj.append(f'\t\t{pt_bf} /* {prefix_template_name} in Resources */ = {{isa = PBXBuildFile; fileRef = {pt_fr} /* {prefix_template_name} */; }};')
 proj.append('/* End PBXBuildFile section */')
 for f, lft in winios_sources:
     name = os.path.basename(f)
@@ -210,6 +217,7 @@ proj.append(f'\t\t{assets_ref} /* Assets.xcassets */ = {{isa = PBXFileReference;
 for wb in windows_bundles:
     fr = wfr_b[wb]
     proj.append(f'\t\t{fr} /* {wb} */ = {{isa = PBXFileReference; lastKnownFileType = folder; path = "{wb}"; sourceTree = "<group>"; }};')
+proj.append(f'\t\t{pt_fr} /* {prefix_template_name} */ = {{isa = PBXFileReference; lastKnownFileType = archive.gzip; name = "{prefix_template_name}"; path = "{prefix_template_name}"; sourceTree = "<group>"; }};')
 info_ref = uid('fr-info')
 proj.append(f'\t\t{info_ref} /* Info-TVP.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info-TVP.plist; sourceTree = "<group>"; }};')
 product_ref = uid('fr-app')
@@ -281,6 +289,7 @@ for f, _ in platform_objc_sources + platform_mm_sources + platform_c_sources + s
     proj.append(f'\t\t\t\t{file_refs["p_" + f]} /* {name} */,')
 for wb in windows_bundles:
     proj.append(f'\t\t\t\t{wfr_b[wb]} /* {wb} */,')
+proj.append(f'\t\t\t\t{pt_fr} /* {prefix_template_name} */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\tpath = Madeira;')
 proj.append('\t\t\tsourceTree = "<group>";')
@@ -376,6 +385,7 @@ proj.append('\t\t\tfiles = (')
 proj.append(f'\t\t\t\t{assets_build} /* Assets.xcassets in Resources */,')
 for wb in windows_bundles:
     proj.append(f'\t\t\t\t{wbf_b[wb]} /* {wb} in Resources */,')
+proj.append(f'\t\t\t\t{pt_bf} /* {prefix_template_name} in Resources */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')

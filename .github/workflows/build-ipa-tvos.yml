@@ -111,6 +111,12 @@ jobs:
           echo "aarch64-windows: $(ls app/Madeira/aarch64-windows | wc -l) files"
           echo "arm64ec-windows: $(ls app/Madeira/arm64ec-windows | wc -l) files"
           ls -la app/Madeira/aarch64-windows/cube.exe app/Madeira/arm64ec-windows/cube-x64.exe 2>/dev/null || echo "WARNING: cube exe missing!"
+          # Wine prefix template: required for madeira_seed_prefix_if_needed to
+          # lay down drive_c with correct layout; without it installs fail with
+          # 'permission to save file in folder common'.
+          curl -sSL -o app/Madeira/prefix-template.tar.gz \
+            https://github.com/duranereloise-hash/MadeiraTV/releases/download/windows-bundles-v1/prefix-template.tar.gz
+          ls -la app/Madeira/prefix-template.tar.gz
 
       - name: Build MadeiraTV.app for tvOS
         run: |
