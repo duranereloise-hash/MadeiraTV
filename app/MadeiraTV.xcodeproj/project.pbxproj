@@ -63,6 +63,7 @@
 		A11EB7776D34457CEAA46BFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB59B26BFB7B055559A3E722 /* Assets.xcassets */; };
 		A523774292FE35255AD07428 /* aarch64-windows in Resources */ = {isa = PBXBuildFile; fileRef = AC3113993316B5C1D83009DE /* aarch64-windows */; };
 		A82B12D0E55B15ACB9F2515B /* arm64ec-windows in Resources */ = {isa = PBXBuildFile; fileRef = AC366F939E8C559FAAAFF7FF /* arm64ec-windows */; };
+		AADB41C064BA359E9AF9AE48 /* nls in Resources */ = {isa = PBXBuildFile; fileRef = AAA3E2A7B77875889ADF5125 /* nls */; };
 /* End PBXBuildFile section */
 		A6B00A04A571859A3B8C10B1 /* Winios.m in Sources */ = {isa = PBXBuildFile; fileRef = A65E088659F8354D8B50FCA6 /* Winios.m */; };
 		AA984EA37F52E50D68130CDF /* WiniosCursor.c in Sources */ = {isa = PBXBuildFile; fileRef = A4BEB375F1776554DA38A938 /* WiniosCursor.c */; };
@@ -115,6 +116,7 @@
 		AB59B26BFB7B055559A3E722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC3113993316B5C1D83009DE /* aarch64-windows */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "aarch64-windows"; sourceTree = "<group>"; };
 		AC366F939E8C559FAAAFF7FF /* arm64ec-windows */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "arm64ec-windows"; sourceTree = "<group>"; };
+		AAA3E2A7B77875889ADF5125 /* nls */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "nls"; sourceTree = "<group>"; };
 		A70AAA1F1EE26514085DD238 /* Info-TVP.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info-TVP.plist; sourceTree = "<group>"; };
 		AC36204B8C1265819923D73A /* MadeiraTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3203F99F61D9533E9C0445E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -246,6 +248,7 @@
 				AD54C0C8C7F8C566D82E52FE /* s_mulAddF128.c */,
 				AC3113993316B5C1D83009DE /* aarch64-windows */,
 				AC366F939E8C559FAAAFF7FF /* arm64ec-windows */,
+				AAA3E2A7B77875889ADF5125 /* nls */,
 			);
 			path = Madeira;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				A11EB7776D34457CEAA46BFD /* Assets.xcassets in Resources */,
 				A523774292FE35255AD07428 /* aarch64-windows in Resources */,
 				A82B12D0E55B15ACB9F2515B /* arm64ec-windows in Resources */,
+				AADB41C064BA359E9AF9AE48 /* nls in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

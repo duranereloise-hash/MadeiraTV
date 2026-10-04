@@ -162,7 +162,8 @@ proj.append(f'\t\t{assets_build} /* Assets.xcassets in Resources */ = {{isa = PB
 
 # Windows PE bundles embed as folder resources so Wine can symlink system32
 # DLLs and launch the demo exe (cube.exe / cube-x64.exe) from the bundle.
-windows_bundles = ['aarch64-windows', 'arm64ec-windows']
+# nls/ carries Wine's codepage tables (wineserver_set_nls_dir).
+windows_bundles = ['aarch64-windows', 'arm64ec-windows', 'nls']
 wbf_b = {}
 wfr_b = {}
 for wb in windows_bundles:
