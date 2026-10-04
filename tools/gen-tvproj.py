@@ -82,6 +82,7 @@ tv_files = [
     'LogStore.swift',
     'TVSteamViews.swift',
     'SteamTVLibrary.swift',
+    'TVMetalSurface.swift',
 ]
 
 # Verify all referenced files exist.

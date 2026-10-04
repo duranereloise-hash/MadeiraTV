@@ -10,4 +10,7 @@
 #import "WineServerBridge.h"
 #import "WineProcessBridge.h"
 
+// Display bridge: registers the CAMetalLayer DXMT renders into.
+#import "IOSDisplayShim.h"
+
 #include <stdint.h>
