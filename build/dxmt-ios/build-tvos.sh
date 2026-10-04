@@ -15,6 +15,18 @@ SDK=$(xcrun --sdk appletvos --show-sdk-path)
 OBJ_DIR="$BUILD_DIR/obj-tvos"
 OUT_LIB="$BUILD_DIR/libdxmt_unix_tvos.a"
 
+# tvOS: treat like iOS in winemetal_unix.c guards (UIKit, no Cocoa/ColorSync).
+python3 "$REPO_ROOT/tools/patch_dxmt_tvos.py" "$DXMT_SRC/winemetal/unix/winemetal_unix.c" || true
+# Generate aircon shader headers (air_msad.h etc): .metal -> .air -> xxd .h
+mkdir -p "$BUILD_DIR/shader-headers"
+for sh in air_msad air_samplepos air_tessellation; do
+  if [ ! -f "$BUILD_DIR/shader-headers/$sh.h" ]; then
+    xcrun -sdk macosx metal -std=metal3.1 --target=air64-apple-macos14.0 \
+      -o "$BUILD_DIR/shader-headers/$sh.air" -c "$DXMT_SRC/airconv/shaders/$sh.metal" \
+      && xxd -n $sh -i "$BUILD_DIR/shader-headers/$sh.air" "$BUILD_DIR/shader-headers/$sh.h"
+    echo "  $sh.h generated"
+  fi
+done
 # DXMT sources include ../../../../../build/madeira_cfg.h from
 # dxmt/src/winemetal/unix (5 levels up: past repo root). Point it at the
 # real file.
