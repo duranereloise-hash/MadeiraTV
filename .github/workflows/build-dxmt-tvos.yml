@@ -29,6 +29,12 @@ jobs:
           xcodebuild -version
           xcrun --sdk appletvos --show-sdk-version
 
+      - name: Cache LLVM tvOS build
+        uses: actions/cache@v4
+        with:
+          path: toolchains/llvm-tvos-build
+          key: llvm-tvos-15-${{ runner.os }}
+
       - name: Build LLVM for tvOS
         run: |
           set -o pipefail
