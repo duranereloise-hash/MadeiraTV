@@ -322,10 +322,14 @@ final class DepotDownloader {
                 }
                 let url = installURL.appendingPathComponent(relative)
                 if file.isDirectory {
-                    Self.ensureDir(url)
+                    if let fail = Self.ensureDir(url) {
+                        throw SteamError.chunkDownloadFailed(fail)
+                    }
                     paths.append(""); existing.append(false); continue
                 }
-                Self.ensureDir(url.deletingLastPathComponent())
+                if let fail = Self.ensureDir(url.deletingLastPathComponent()) {
+                    throw SteamError.chunkDownloadFailed(fail)
+                }
                 var before = stat()
                 let hadContent = stat(url.path, &before) == 0 && before.st_size > 0
                 existing.append(hadContent)
@@ -361,7 +365,12 @@ final class DepotDownloader {
     /// mkdir -p with 0777 + chmod, tolerant of existing dirs and of strict
     /// Wine-tree permissions that make FileManager.createDirectory throw
     /// NSCocoaErrorDomain 513 on tvOS.
-    private nonisolated static func ensureDir(_ url: URL) {
+    ///
+    /// Returns `nil` on success, or a description of the first component it
+    /// could not create, so the caller can fail loudly instead of letting a
+    /// later open() hit ENOENT.
+    @discardableResult
+    private nonisolated static func ensureDir(_ url: URL) -> String? {
         let path = url.path
         let isAbsolute = path.hasPrefix("/")
         let comps = path.split(separator: "/").map(String.init)
@@ -373,26 +382,29 @@ final class DepotDownloader {
             if current == "/" { continue }
             let r = mkdir(current, 0o777)
             if r != 0 {
-                // Already exists? Accept if it is a directory (a file in the
-                // way means the manifest lists a dir after a file with the
-                // same name; there is nothing we can create). ENOTDIR/EISDIR
-                // on the target are treated as "cannot make a dir here".
                 var st = stat()
                 if stat(current, &st) == 0, (st.st_mode & S_IFMT) == S_IFDIR {
                     _ = chmod(current, 0o777)
                     continue
                 }
-            } else {
-                _ = chmod(current, 0o777)
+                // Either the path already exists as a file, or a parent is
+                // missing (ENOENT): stop here and report what happened.
+                let msg = "mkdir failed for '\(current)' (errno \(errno))"
+                SteamLog.trace("[steam-depot] " + msg)
+                return msg
             }
+            _ = chmod(current, 0o777)
         }
+        return nil
     }
 
     /// Create or resize a file to its manifest length. Existing bytes below
     /// that length are kept so resumed and updated installs reuse them.
     private nonisolated static func sizeFile(_ path: String, to size: UInt64) throws {
         // Guarantee the parent dir exists (ENOENT otherwise).
-        ensureDir(URL(fileURLWithPath: path).deletingLastPathComponent())
+        if let fail = ensureDir(URL(fileURLWithPath: path).deletingLastPathComponent()) {
+            throw SteamError.chunkDownloadFailed(fail)
+        }
         let fd = open(path, O_WRONLY | O_CREAT, 0o644)
         guard fd >= 0 else { throw SteamError.chunkDownloadFailed("Cannot create a game file (errno \(errno), path=\(path)).") }
         defer { close(fd) }
@@ -462,7 +474,9 @@ final class DepotDownloader {
     }
 
     private nonisolated static func write(_ data: Data, to path: String, offset: UInt64) throws {
-        ensureDir(URL(fileURLWithPath: path).deletingLastPathComponent())
+        if let fail = ensureDir(URL(fileURLWithPath: path).deletingLastPathComponent()) {
+            throw SteamError.chunkDownloadFailed(fail)
+        }
         let fd = open(path, O_WRONLY)
         guard fd >= 0 else { throw SteamError.chunkDownloadFailed("Cannot open a game file (errno \(errno), path=\(path)).") }
         defer { close(fd) }
