@@ -50,9 +50,9 @@ cmake -S "$LLVM_SRC/llvm" -B . \
     -DLLVM_NATIVE_ARCH=AArch64 2>&1 | tail -30
 
 echo "=== building LLVM (tvOS) ==="
-# fork()/execv/execve are TVOS_PROHIBITED; LLVM compiles its fork-fallback even
-# when posix_spawn is available. Patch Program.inc to skip it on tvOS.
-python3 "$REPO_ROOT/tools/patch_llvm_tvos.py" "$LLVM_SRC/llvm/lib/Support/Unix/Program.inc" || true
+# fork()/execv/execve and task_{set,get}_exception_ports are TVOS_PROHIBITED;
+# patch the Unix support sources so they do not break the build on tvOS.
+python3 "$REPO_ROOT/tools/patch_llvm_tvos.py" "$LLVM_SRC/llvm/lib/Support/Unix" || true
 # 'llvm-libs' target does not exist in this configuration; the default target
 # builds every static library (tools/tests are off).
 cmake --build . -j$(sysctl -n hw.ncpu) 2>&1 | tail -25
