@@ -65,6 +65,7 @@ done
 # Extra contributed objects.
 compile_one "$BUILD_DIR/wine_log_ios.c" "wine_log_ios" || true
 compile_one "$BUILD_DIR/wineserver_ios_kill.c" "wineserver_ios_kill" || true
+compile_one "$BUILD_DIR/wineserver_missing.c" "wineserver_missing" || true
 
 # Fail if any object is missing.
 objs=()
