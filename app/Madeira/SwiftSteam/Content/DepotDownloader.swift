@@ -89,8 +89,12 @@ final class DepotDownloader {
             .appendingPathComponent(folderName, isDirectory: true)
         let journalDir = steamApps.appendingPathComponent("downloading", isDirectory: true)
             .appendingPathComponent("\(app.appID)", isDirectory: true)
-        try FileManager.default.createDirectory(at: installURL, withIntermediateDirectories: true)
-        try FileManager.default.createDirectory(at: journalDir, withIntermediateDirectories: true)
+        // Use POSIX mkdir -p with 0777 + chmod instead of FileManager:
+        // FileManager.createDirectory can fail with NSCocoaErrorDomain 513
+        // ("You don't have permission to save the file … in the folder …")
+        // inside a Wine prefix tree on tvOS even when the path is writable.
+        Self.ensureDir(installURL)
+        Self.ensureDir(journalDir)
 
         var state = SteamDownloadProgress()
         report(state)
@@ -318,10 +322,10 @@ final class DepotDownloader {
                 }
                 let url = installURL.appendingPathComponent(relative)
                 if file.isDirectory {
-                    try fm.createDirectory(at: url, withIntermediateDirectories: true)
+                    Self.ensureDir(url)
                     paths.append(""); existing.append(false); continue
                 }
-                try fm.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+                Self.ensureDir(url.deletingLastPathComponent())
                 var before = stat()
                 let hadContent = stat(url.path, &before) == 0 && before.st_size > 0
                 existing.append(hadContent)
@@ -352,6 +356,23 @@ final class DepotDownloader {
             result.journals.append(journalURL)
         }
         return result
+    }
+
+    /// mkdir -p with 0777 + chmod, tolerant of existing dirs and of strict
+    /// Wine-tree permissions that make FileManager.createDirectory throw
+    /// NSCocoaErrorDomain 513 on tvOS.
+    private nonisolated static func ensureDir(_ url: URL) {
+        let path = url.path
+        let isAbsolute = path.hasPrefix("/")
+        let comps = path.split(separator: "/").map(String.init)
+        var current = ""
+        for comp in comps {
+            if comp.isEmpty { continue }
+            if current.isEmpty { current = (isAbsolute ? "/" : "") + comp }
+            else { current += "/" + comp }
+            _ = mkdir(current, 0o777)
+            _ = chmod(current, 0o777)
+        }
     }
 
     /// Create or resize a file to its manifest length. Existing bytes below
@@ -466,7 +487,7 @@ final class DepotDownloader {
                     // Valve's client reads a depot's manifest from steamapps/depotcache
                     // when it prepares a per-user custom executable. Keep it for such depots.
                     if let cache, manifest.files.contains(where: { $0.flags & DepotManifest.customExecutableFlag != 0 }) {
-                        try? FileManager.default.createDirectory(at: cache, withIntermediateDirectories: true)
+                        Self.ensureDir(cache)
                         let file = cache.appendingPathComponent("\(depotID)_\(manifestGID).manifest")
                         let existing = (try? file.resourceValues(forKeys: [.fileSizeKey]))?.fileSize
                         if existing != payload.count { try? payload.write(to: file, options: .atomic) }
