@@ -1,44 +1,74 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Madeira Converter Exception: see LICENSE-EXCEPTION.md
 //
-// tvOS home: Steam sign-in gate, the owned-game grid, and a session banner.
+// tvOS home: Steam sign-in gate, the owned-game grid, and an account panel.
 // Designed for the Siri Remote: focusable cards, QR sign-in default.
+//
+// Layout notes:
+// - A custom header row (title left, account right) instead of the toolbar:
+//   `.toolbar`/`.navigationTitle` is unreliable for focus on tvOS.
+// - Cards use a fixed-height preview with a double clip (scaledToFill + frame
+//   + clipped + clipShape) so artwork never escapes the rounded box.
 
 import SwiftUI
-
-enum TVHome {
-    struct State {
-        var signedIn: Bool = false
-        var account: String?
-        var games: [SteamAppInfo] = []
-        var loading: Bool = false
-        var error: String?
-        var downloads: [UInt32: SteamDownloadProgress] = [:]
-        var launching: UInt32?
-    }
-}
 
 struct TVHomeView: View {
     @EnvironmentObject private var steam: SteamTVLibrary
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if !steam.signedIn {
-                    TVSignInGate()
-                } else if steam.accountName != nil {
+        Group {
+            if !steam.signedIn {
+                TVSignInGate()
+            } else if steam.accountName != nil {
+                VStack(spacing: 0) {
+                    TVHeader()
+                        .padding(.horizontal, 48)
+                        .padding(.top, 24)
                     TVGameGrid()
-                        .navigationTitle("Steam")
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                TVAccountButton()
-                            }
-                        }
-                } else {
-                    ProgressView("Загрузка…")
-                        .onAppear { steam.loadGames(interactive: true) }
                 }
+            } else {
+                ProgressView("Загрузка…")
+                    .onAppear { steam.loadGames(interactive: true) }
             }
+        }
+        .onAppear { steam.start() }
+    }
+}
+
+// MARK: - Header (title left, account right)
+
+struct TVHeader: View {
+    @EnvironmentObject private var steam: SteamTVLibrary
+    @State private var showAccount = false
+    @State private var showError = false
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text("Steam")
+                .font(.system(size: 40, weight: .bold))
+            Spacer()
+            Button {
+                showAccount = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "person.crop.circle.fill")
+                        .font(.title2)
+                    Text(steam.accountName ?? "")
+                        .font(.title3)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
+                .background(.quaternary.opacity(0.6), in: Capsule())
+            }
+            .buttonStyle(.plain)
+        }
+        .alert("Steam", isPresented: Binding(get: { steam.error != nil }, set: { if !$0 { steam.error = nil } })) {
+            Button("ОК", role: .cancel) {}
+        } message: {
+            Text(steam.error ?? "")
+        }
+        .sheet(isPresented: $showAccount) {
+            TVAccountSheet()
         }
     }
 }
@@ -102,7 +132,6 @@ struct TVSignInView: View {
                     VStack(spacing: 12) {
                         Label("Вы вошли как \(name)", systemImage: "checkmark.seal.fill")
                             .font(.title3.bold())
-                        Button("Выйти", role: .destructive) { model.signOut() }
                         Button("Готово") { dismiss() }
                             .buttonStyle(.borderedProminent)
                     }
@@ -151,6 +180,17 @@ struct TVSignInView: View {
                     dismiss()
                 }
             }
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    if !model.signedIn { model.cancelSignIn() }
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .padding(12)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .frame(minWidth: 900, minHeight: 560)
     }
@@ -184,15 +224,21 @@ struct TVSignInView: View {
                 .textFieldStyle(.plain)
                 .focused($focus, equals: .account)
                 .frame(maxWidth: 520)
+                .padding(10)
+                .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
             SecureField("Пароль", text: $password)
                 .textFieldStyle(.plain)
                 .focused($focus, equals: .password)
                 .frame(maxWidth: 520)
+                .padding(10)
+                .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
             if let prompt = model.guardPrompt, let type = prompt.codeType {
                 TextField("Код Steam Guard", text: $code)
                     .textFieldStyle(.plain)
                     .focused($focus, equals: .code)
                     .frame(maxWidth: 520)
+                    .padding(10)
+                    .background(.quaternary.opacity(0.6), in: RoundedRectangle(cornerRadius: 8))
                     .onSubmit { model.submitGuardCode(code) }
                 Text(prompt.hint.isEmpty ? "Введи код из приложения Steam." : prompt.hint)
                     .font(.callout).foregroundStyle(.secondary)
@@ -209,28 +255,10 @@ struct TVSignInView: View {
 
 // MARK: - Account
 
-struct TVAccountButton: View {
-    @EnvironmentObject private var steam: SteamTVLibrary
-    @State private var showAccount = false
-
-    var body: some View {
-        Button {
-            showAccount = true
-        } label: {
-            Image(systemName: "person.crop.circle")
-                .font(.title2)
-        }
-        .buttonStyle(.plain)
-        .sheet(isPresented: $showAccount) {
-            TVAccountSheet()
-        }
-    }
-}
-
 struct TVAccountSheet: View {
     @EnvironmentObject private var steam: SteamTVLibrary
     @Environment(\.dismiss) private var dismiss
-    @State private var busy = false
+    @State private var confirmSignOut = false
 
     var body: some View {
         VStack(spacing: 24) {
@@ -243,25 +271,30 @@ struct TVAccountSheet: View {
                 Text(error)
                     .font(.callout)
                     .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
             }
             Button {
-                busy = true
                 steam.loadGames(interactive: true)
-                busy = false
             } label: {
-                if busy { ProgressView() } else { Label("Обновить библиотеку", systemImage: "arrow.clockwise") }
+                Label("Обновить библиотеку", systemImage: "arrow.clockwise")
+                    .frame(maxWidth: 280)
             }
             .buttonStyle(.borderedProminent)
             Button("Выйти из Steam", role: .destructive) {
-                steam.signOut()
-                dismiss()
+                confirmSignOut = true
             }
             .buttonStyle(.bordered)
+            .confirmationDialog("Выйти из Steam?", isPresented: $confirmSignOut, titleVisibility: .visible) {
+                Button("Выйти", role: .destructive) {
+                    steam.signOut()
+                    dismiss()
+                }
+            }
             Button("Готово") { dismiss() }
                 .buttonStyle(.plain)
         }
         .padding(48)
-        .frame(minWidth: 560, minHeight: 420)
+        .frame(minWidth: 560, minHeight: 440)
     }
 }
 
@@ -270,12 +303,18 @@ struct TVAccountSheet: View {
 struct TVGameGrid: View {
     @EnvironmentObject private var steam: SteamTVLibrary
 
-    private let columns = [GridItem(.adaptive(minimum: 340, maximum: 400), spacing: 32)]
+    private let columns = [
+        GridItem(.adaptive(minimum: 300, maximum: 360), spacing: 28)
+    ]
 
     var body: some View {
         Group {
             if steam.loading && steam.games.isEmpty {
-                ProgressView("Загрузка библиотеки…")
+                VStack(spacing: 16) {
+                    ProgressView()
+                    Text("Загрузка библиотеки…")
+                        .font(.headline)
+                }
             } else if steam.games.isEmpty {
                 VStack(spacing: 20) {
                     Image(systemName: "shippingbox")
@@ -300,7 +339,6 @@ struct TVGameGrid: View {
                 }
             }
         }
-        .onAppear { steam.start() }
     }
 }
 
@@ -308,44 +346,13 @@ struct TVGameCard: View {
     @EnvironmentObject private var steam: SteamTVLibrary
     let game: SteamAppInfo
     @State private var launchMessage: String?
+    @State private var showLaunchError = false
 
     private var heroURL: URL? { SteamTVLibrary.heroURL(for: game) }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            ZStack(alignment: .bottomLeading) {
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(.quaternary)
-                AsyncImage(url: heroURL) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image.resizable().scaledToFill()
-                    case .failure:
-                        placeholder
-                    default:
-                        ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                }
-                .aspectRatio(1.6, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
-                if let progress = steam.progress(game.appID) {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(progressText(progress))
-                            .font(.caption)
-                            .foregroundStyle(.white)
-                        if progress.phase == .preparing {
-                            ProgressView()
-                                .tint(.white)
-                        } else {
-                            ProgressView(value: progress.fraction)
-                                .tint(.white)
-                        }
-                    }
-                    .padding(12)
-                    .background(.black.opacity(0.65), in: RoundedRectangle(cornerRadius: 8))
-                    .padding(10)
-                }
-            }
+        VStack(alignment: .leading, spacing: 10) {
+            artwork
             Text(game.name)
                 .font(.headline)
                 .lineLimit(2)
@@ -353,38 +360,81 @@ struct TVGameCard: View {
             Text(statusText)
                 .font(.caption)
                 .foregroundStyle(.secondary)
+                .lineLimit(1)
             actionButton
         }
-        .padding(12)
+        .padding(10)
         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 18))
-        .buttonStyle(.card)
+    }
+
+    /// Fixed-size preview, double-clipped so the image never escapes the box.
+    private var artwork: some View {
+        ZStack(alignment: .bottomLeading) {
+            AsyncImage(url: heroURL) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable().scaledToFill()
+                case .failure:
+                    placeholder
+                default:
+                    ProgressView()
+                }
+            }
+            .frame(width: 300, height: 168)
+            .clipped()
+
+            if let progress = steam.progress(game.appID) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(progressText(progress))
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                    if progress.phase == .preparing {
+                        ProgressView().tint(.white)
+                    } else {
+                        ProgressView(value: progress.fraction).tint(.white)
+                    }
+                }
+                .padding(10)
+                .background(.black.opacity(0.7), in: RoundedRectangle(cornerRadius: 8))
+                .padding(8)
+            }
+        }
+        .frame(width: 300, height: 168)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     private var placeholder: some View {
         ZStack {
             Color.gray.opacity(0.3)
             Image(systemName: "gamecontroller")
-                .font(.system(size: 44))
+                .font(.system(size: 40))
                 .foregroundStyle(.secondary)
         }
-        .aspectRatio(1.6, contentMode: .fit)
+        .frame(width: 300, height: 168)
     }
 
     private var statusText: String {
+        if steam.progress(game.appID) != nil { return "Загрузка…" }
         if steam.isInstalled(game) { return "Установлена" }
-        if !game.oslist.contains("windows") { return "Windows" }
-        return steam.progress(game.appID) == nil ? "Не установлена" : "Загрузка…"
+        return "Не установлена"
     }
 
     @ViewBuilder
     private var actionButton: some View {
-        if let progress = steam.progress(game.appID), progress.phase != .finishing {
-            Button("Отменить") { steam.cancelInstall(game.appID) }
-                .buttonStyle(.bordered)
+        if let progress = steam.progress(game.appID) {
+            if progress.phase == .finishing {
+                Button("Отмена") { steam.cancelInstall(game.appID) }
+                    .buttonStyle(.bordered)
+            } else {
+                Button("Отменить") { steam.cancelInstall(game.appID) }
+                    .buttonStyle(.bordered)
+            }
         } else if steam.isInstalled(game) {
             Button {
                 steam.launch(game) { message in
                     launchMessage = message
+                    if message != nil { showLaunchError = true }
                 }
             } label: {
                 if steam.launchingID == game.appID {
@@ -394,7 +444,7 @@ struct TVGameCard: View {
                 }
             }
             .buttonStyle(.borderedProminent)
-            .alert("Запуск", isPresented: Binding(get: { launchMessage != nil }, set: { if !$0 { launchMessage = nil } })) {
+            .alert("Запуск", isPresented: $showLaunchError) {
                 Button("ОК", role: .cancel) {}
             } message: {
                 Text(launchMessage ?? "")

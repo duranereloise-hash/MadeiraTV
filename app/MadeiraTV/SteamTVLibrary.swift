@@ -95,7 +95,16 @@ final class SteamTVLibrary: ObservableObject {
         loading = interactive
         libraryTask = Task { @MainActor in
             do {
-                try await session.ensureConnected()
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    group.addTask { try await self.session.ensureConnected() }
+                    group.addTask {
+                        try await Task.sleep(nanoseconds: 25_000_000_000)  // 25s connect cap
+                        throw SteamError.connectionTimeout
+                    }
+                    try await group.next()
+                    group.cancelAll()
+                }
+                try Task.checkCancellation()
                 let apps = try await fetcher.fetchOwnedApps()
                 try Task.checkCancellation()
                 var result = apps.filter {
@@ -104,12 +113,12 @@ final class SteamTVLibrary: ObservableObject {
                 // Keep a stable order by name.
                 result.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
                 games = result
-                error = nil
+                self.error = nil
             } catch is CancellationError {
             } catch {
                 if !Task.isCancelled {
-                    let message = SteamSignIn.message(error)
-                    self.error = message
+                    let errorMessage = SteamSignIn.message(error)
+                    self.error = errorMessage
                     SteamLog.event("[steam-tv] library failed reason=\(SteamSignIn.reason(error))")
                 }
             }
@@ -135,6 +144,17 @@ final class SteamTVLibrary: ObservableObject {
         downloads[app.appID] = SteamDownloadProgress()
         installTask = Task { @MainActor in
             do {
+                // Connect cap: if Steam does not answer within 25s, stop the
+                // endless "Подключение к Steam…" state with a visible error.
+                try await withThrowingTaskGroup(of: Void.self) { group in
+                    group.addTask { try await self.session.ensureConnected() }
+                    group.addTask {
+                        try await Task.sleep(nanoseconds: 25_000_000_000)
+                        throw SteamError.connectionTimeout
+                    }
+                    try await group.next()
+                    group.cancelAll()
+                }
                 let url = try await downloader.install(app, steamApps: Self.steamApps, ownedDepots: { try? await self.fetcher.ownedDepotIDs() }) { [weak self] progress in
                     MainActor.assumeIsolated {
                         self?.downloads[app.appID] = progress
@@ -144,9 +164,10 @@ final class SteamTVLibrary: ObservableObject {
                 downloads[app.appID] = SteamDownloadProgress(phase: .finishing)
                 SteamLog.event("[steam-tv] installed app=\(app.appID) to=\(url.path)")
                 downloads[app.appID] = nil
-                try Task.checkCancellation()
             } catch is CancellationError {
+                downloads[app.appID] = nil
             } catch {
+                downloads[app.appID] = nil
                 if !Task.isCancelled {
                     self.error = SteamSignIn.message(error)
                     SteamLog.event("[steam-tv] install failed app=\(app.appID) reason=\(SteamSignIn.reason(error))")
