@@ -30,15 +30,12 @@ fi
 
 mkdir -p "$LLVM_BUILD"
 cd "$LLVM_BUILD"
-# Do NOT set CMAKE_SYSTEM_NAME=tvOS: that forces a native TableGen build dir and
-# trips the "no BUNDLE DESTINATION for llvm-tblgen" error. Instead keep CMake
-# thinking it is a native build but point sysroot/clang at the tvOS SDK —
-# cmake --build then produces libLLVM*.a for arm64-apple-tvos.
 cmake -S "$LLVM_SRC/llvm" -B . \
     -DCMAKE_OSX_ARCHITECTURES=arm64 \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \
     -DCMAKE_OSX_SYSROOT="$(xcrun --sdk appletvos --show-sdk-path)" \
     -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_TABLEGEN="$HOST_BUILD/bin/llvm-tblgen" \
     -DLLVM_TARGETS_TO_BUILD="AArch64" \
     -DLLVM_ENABLE_PROJECTS="" \
     -DLLVM_BUILD_TOOLS=Off \
