@@ -144,16 +144,14 @@ final class SteamTVLibrary: ObservableObject {
     /// Creates the Wine prefix (drive_c, dosdevices, registry template) if the
     /// prefix-template.tar.gz resource is present, or at least the drive_c dir.
     private func seedPrefixIfNeeded() {
-        let prefix = Self.drive.deletingLastPathComponent().path  // Documents/wine
-        // First ensure the app container's Documents directory exists — on a
-        // freshly installed/updated app it may not, and a sequential POSIX
-        // mkdir then fails with ENOENT on '.../Documents'. FileManager creates
-        // the whole chain (including Documents) in one call.
+        let prefix = Self.drive.deletingLastPathComponent().path  // Library/Caches/wine
+        // FileManager creates the whole chain (Caches is always present;
+        // wine/ and drive_c/ are materialised here) in one call.
         do {
             try FileManager.default.createDirectory(at: Self.drive, withIntermediateDirectories: true,
                                                     attributes: [.posixPermissions: 0o777])
         } catch {
-            // Best effort; seed below may still work if Documents exists.
+            // Best effort; seed below may still work if drive_c already exists.
         }
         madeira_seed_prefix_if_needed(prefix)
         // Whatever the template covered, ensure the top-level dirs exist.
