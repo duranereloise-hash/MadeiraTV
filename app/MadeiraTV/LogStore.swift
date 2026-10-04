@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 
 /// tvOS-минимальная версия LogStore: без Wine/JIT C-колбэков, просто
-/// кольцевой список записей + запись в stderr. Полная версия (с тайл-реадером
-/// лога Wine) подключается на Фазе 2 вместе с Wine-библиотеками.
+/// кольцевой список записей + запись в stderr и в файл
+/// Library/Caches/log.txt (когда Documents недоступен в сайдлоаде).
 final class LogStore: ObservableObject {
     static let shared = LogStore()
 
@@ -26,6 +26,12 @@ final class LogStore: ObservableObject {
         return f
     }()
 
+    /// File-backed log under Library/Caches (always writable on tvOS).
+    static var logFileURL: URL {
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        return base.appendingPathComponent("log.txt", isDirectory: false)
+    }
+
     private init() {}
 
     func log(_ message: String, level: LogEntry.Level = .info) {
@@ -37,7 +43,17 @@ final class LogStore: ObservableObject {
         case .warning: badge = "WARN"
         case .error: badge = "ERR "
         }
-        fputs("[\(ts)] [\(badge)] \(message)\n", stderr)
+        let line = "[\(ts)] [\(badge)] \(message)"
+        fputs(line + "\n", stderr)
+        // Append to the file (single line, no locking needed at this volume).
+        if let handle = try? FileHandle(forWritingTo: Self.logFileURL) {
+            handle.seekToEndOfFile()
+            handle.write((line + "\n").data(using: .utf8) ?? Data())
+            try? handle.close()
+        } else {
+            // Create it on first write.
+            try? (line + "\n").data(using: .utf8)?.write(to: Self.logFileURL, options: .atomic)
+        }
         let entry = LogEntry(message: message, level: level)
         DispatchQueue.main.async {
             self.entries.append(entry)
@@ -49,6 +65,7 @@ final class LogStore: ObservableObject {
 
     func clear() {
         entries.removeAll()
+        try? FileManager.default.removeItem(at: Self.logFileURL)
     }
 }
 

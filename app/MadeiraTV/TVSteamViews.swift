@@ -40,6 +40,7 @@ struct TVHomeView: View {
 struct TVHeader: View {
     @EnvironmentObject private var steam: SteamTVLibrary
     @State private var showAccount = false
+    @State private var showLogs = false
     @State private var showError = false
 
     var body: some View {
@@ -61,6 +62,21 @@ struct TVHeader: View {
                 .background(.quaternary.opacity(0.6), in: Capsule())
             }
             .buttonStyle(.plain)
+            .sheet(isPresented: $showAccount) {
+                TVAccountSheet()
+            }
+
+            Button {
+                showLogs = true
+            } label: {
+                Image(systemName: "doc.text")
+                    .font(.title2)
+                    .padding(12)
+            }
+            .buttonStyle(.plain)
+            .sheet(isPresented: $showLogs) {
+                TVLogView()
+            }
         }
         .overlay(alignment: .bottom) {
             if let diag = steam.diagnostics {
@@ -478,5 +494,52 @@ struct TVGameCard: View {
             let mbS = p.bytesPerSecond > 0 ? String(format: "%.1f –Ь–С/—Б", p.bytesPerSecond / 1_048_576) : ""
             return "\(pct)% \(mbS)".trimmingCharacters(in: .whitespaces)
         }
+    }
+}
+// MARK: - Logs
+
+struct TVLogView: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var text = ""
+
+    private var files: [URL] {
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        return [
+            base.appendingPathComponent("log.txt"),
+            base.appendingPathComponent("madeira-log.txt")
+        ]
+    }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                Text(text)
+                    .font(.system(.footnote, design: .monospaced))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+            }
+            .navigationTitle("Ћоги")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("ќбновить") { refresh() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("√отово") { dismiss() }
+                }
+            }
+            .onAppear { refresh() }
+        }
+        .frame(minWidth: 900, minHeight: 600)
+    }
+
+    private func refresh() {
+        var parts: [String] = []
+        for url in files {
+            if let data = try? String(contentsOf: url, encoding: .utf8), !data.isEmpty {
+                parts.append("=== \(url.lastPathComponent) ===")
+                parts.append(data)
+            }
+        }
+        text = parts.isEmpty ? "(лог пока пуст Ч запусти игру и вернись)" : parts.joined(separator: "\n")
     }
 }

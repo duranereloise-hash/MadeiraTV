@@ -1027,8 +1027,8 @@ static void *wine_process_thread(void *arg) {
 
         // Set up file-based logging for Wine C code
         {
-            NSString *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-            NSString *logPath = [docs stringByAppendingPathComponent:@"madeira-log.txt"];
+            NSString *docs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
+        NSString *logPath = [docs stringByAppendingPathComponent:@"madeira-log.txt"];
             wine_log_set_file(logPath.UTF8String);
             /* ml519: start the freeze detector as soon as logging works, so
              * every launch (Thumper as well as Steam) yields a measurement. */
@@ -1129,7 +1129,7 @@ static void *wine_process_thread(void *arg) {
         // Redirect stderr AND stdout to log file so Wine debug output (WINEDEBUG)
         // and the guest program's printf are both captured.
         {
-            NSString *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+            NSString *docs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
             NSString *logPath2 = [docs stringByAppendingPathComponent:@"madeira-log.txt"];
             int logfd = open(logPath2.UTF8String, O_WRONLY | O_CREAT | O_APPEND, 0644);
             if (logfd >= 0) {

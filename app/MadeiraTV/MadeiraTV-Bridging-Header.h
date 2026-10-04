@@ -13,6 +13,9 @@
 // Display bridge: registers the CAMetalLayer DXMT renders into.
 #import "IOSDisplayShim.h"
 
+// FEX bridge: log callback + init helpers.
+#import "FEXBridge.h"
+
 // DXMT present counter (defined in libdxmt) — for diagnosing black screens.
 uint64_t madeira_get_present_count(void);
 
