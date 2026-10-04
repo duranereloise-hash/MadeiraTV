@@ -58,7 +58,7 @@ jobs:
           ar x ../libdxmt_unix_tvos.a
           # also pull in the madeira-ir/other objects from obj-tvos
           for o in ../obj-tvos/*.o; do [ -f "$o" ] && cp "$o" .; done
-LLVMLIB="$PWD/../../../toolchains/llvm-tvos-build/lib"
+          LLVMLIB="$PWD/../../../toolchains/llvm-tvos-build/lib"
           # merge ALL LLVM archives (StringError/ECError/Support are in libLLVMSupport & co)
           for a in "$LLVMLIB"/libLLVM*.a; do
             [ -f "$a" ] && ar x "$a" 2>/dev/null || true
