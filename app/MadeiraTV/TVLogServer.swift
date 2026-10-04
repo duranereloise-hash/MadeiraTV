@@ -74,20 +74,22 @@ enum TVLogServer {
     private static func handle(_ conn: NWConnection) {
         conn.start(queue: .global(qos: .utility))
         conn.receive(minimumIncompleteLength: 1, maximumLength: 65536) { data, _, isComplete, _ in
-            defer { conn.cancel() }
-            guard let data, let text = String(data: data, encoding: .utf8) else { return }
+            guard let data, let text = String(data: data, encoding: .utf8) else {
+                conn.cancel()
+                return
+            }
             let requestLine = text.components(separatedBy: "\r\n").first ?? ""
             let path = requestLine.split(separator: " ").dropFirst().first.map(String.init) ?? "/"
             let (body, contentType) = route(path)
-            let http = """
-            HTTP/1.1 200 OK\r
-            Content-Type: \(contentType)\r
-            Content-Length: \(body.utf8.count)\r
-            Connection: close\r
-            \r
-            \(body)
-            """
-            conn.send(content: http.data(using: .utf8), completion: .contentProcessed { _ in })
+            let http = "HTTP/1.1 200 OK\r\n" +
+                "Content-Type: \(contentType)\r\n" +
+                "Content-Length: \(body.utf8.count)\r\n" +
+                "Connection: close\r\n" +
+                "\r\n" +
+                body
+            conn.send(content: http.data(using: .utf8), completion: .contentProcessed { _ in
+                conn.cancel()
+            })
             _ = isComplete
         }
     }
