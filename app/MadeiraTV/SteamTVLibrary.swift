@@ -61,21 +61,10 @@ final class SteamTVLibrary: ObservableObject {
     func start() {
         guard !started else { return }
         started = true
-        setupFEXLog()
         NotificationCenter.default.addObserver(forName: SteamSignIn.didChange, object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.signInChanged() }
         }
         refreshSignIn()
-    }
-
-    /// Route FEX's C logs into LogStore (and thus log.txt).
-    private func setupFEXLog() {
-        let cb: fex_log_callback_t = { raw in
-            guard let raw else { return }
-            let msg = String(cString: raw)
-            LogStore.shared.log("[fex] " + msg)
-        }
-        fex_set_log_callback(cb)
     }
 
     private func refreshSignIn() {
