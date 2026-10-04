@@ -37,6 +37,7 @@ jobs:
           fetch_artifact build-fex-tvos.yml fex-tvos-build-artifacts downloads/fex || true
           fetch_artifact build-wine-tvos.yml wine-tvos-ntdll-unix-artifacts downloads/wine || true
           fetch_artifact build-dxmt-tvos.yml dxmt-tvos downloads/dxmt || true
+          fetch_artifact build-toolchains-tvos.yml toolchains-tvos downloads/toolchains || true
           echo "=== downloaded ==="
           find downloads -type f | head -40
 
@@ -60,8 +61,15 @@ jobs:
           # DXMT combined
           find downloads/dxmt -name "libdxmt_combined_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           find downloads/dxmt -name "libdxmt_unix_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
-          # GnuTLS/FFmpeg from toolchains artifact (inside wine artifact normally). Copy if present.
-          find downloads/wine toolchains -maxdepth 3 -name "libgnutls.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          # GnuTLS/FFmpeg from toolchains artifact
+          find downloads/toolchains -name "libgnutls.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libhogweed.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libnettle.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libgmp.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libavformat.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libavcodec.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libswresample.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/toolchains -name "libavutil.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           echo "=== staged app/Madeira ==="
           ls -la app/Madeira/*.a 2>/dev/null || echo "no .a staged"
           ls app/Madeira/arm64ec-windows/ | head

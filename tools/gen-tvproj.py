@@ -84,7 +84,7 @@ proj.append(f'\t\t{liblzma_bf} /* liblzma.tbd in Frameworks */ = {{isa = PBXBuil
 static_libs = [
     'libntdll_unix.a', 'libwineserver.a', 'libwin32u_unix.a',
     'libdxmt_combined_tvos.a',
-    'libFEXCore.a', 'libFEXCore_Base.a', 'libJemallocLibs.a',
+    'libFEXCore.a', 'libFEXCore_Base.a',
     'libfmt.a', 'libcephes_128bit.a', 'libxxhash.a', 'libsoftfloat_3e.a',
     'libgnutls.a', 'libhogweed.a', 'libnettle.a', 'libgmp.a',
     'libavformat.a', 'libavcodec.a', 'libswresample.a', 'libavutil.a',
