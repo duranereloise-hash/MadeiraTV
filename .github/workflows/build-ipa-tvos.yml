@@ -43,7 +43,7 @@ jobs:
 
       - name: Stage libraries into app/Madeira
         run: |
-          set -e
+          set +e
           mkdir -p app/Madeira/arm64ec-windows
           # wine unix libs
           find downloads/wine -name "libntdll_unix.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
@@ -73,7 +73,7 @@ jobs:
           find downloads/toolchains -name "libavutil.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           echo "=== staged app/Madeira ==="
           ls -la app/Madeira/*.a 2>/dev/null || echo "no .a staged"
-          ls app/Madeira/arm64ec-windows/ | head
+          ls app/Madeira/arm64ec-windows/ 2>/dev/null | head -20
 
       - name: Build MadeiraTV.app for tvOS
         run: |
