@@ -23,6 +23,7 @@ final class SteamTVLibrary: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var downloads: [UInt32: SteamDownloadProgress] = [:]
     @Published var error: String?
+    @Published var diagnostics: String?
     @Published private(set) var launchingID: UInt32?
 
     private let session = SteamSession()
@@ -337,8 +338,33 @@ _ = mkdir(current, 0o777)
                 DispatchQueue.main.async {
                     // Always clear the launcher spinner, success or failure.
                     self?.launchingID = nil
+                    if message == nil { self?.startRenderDiagnostics() }
                     completion(message)
                 }
+            }
+        }
+    }
+
+    /// After a successful launch: poll DXMT's present counter to detect a black
+    /// screen (0 presents = the game never created a swapchain / is not
+    /// rendering).
+    private func startRenderDiagnostics() {
+        let t0 = madeira_get_present_count()
+        diagnostics = "Запуск… (0 presents)"
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 4_000_000_000)
+            let p1 = madeira_get_present_count()
+            if p1 > t0 {
+                diagnostics = "Рендер активен (presents \(p1))"
+                return
+            }
+            diagnostics = "Нет кадров после 4с (presents \(p1))…"
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            let p2 = madeira_get_present_count()
+            if p2 > t0 {
+                diagnostics = "Рендер активен (presents \(p2))"
+            } else {
+                diagnostics = "Чёрный экран: 0 presents за 9с. Проверь remote-metal/слой."
             }
         }
     }
