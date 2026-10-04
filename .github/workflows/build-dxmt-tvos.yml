@@ -58,28 +58,10 @@ jobs:
           ar x ../libdxmt_unix_tvos.a
           # also pull in the madeira-ir/other objects from obj-tvos
           for o in ../obj-tvos/*.o; do [ -f "$o" ] && cp "$o" .; done
-          LLVMLIB="$PWD/../../../toolchains/llvm-tvos-build/lib"
-          # merge llvm: unpack only the archives airconv actually references
-          for lib in \
-            libLLVMCore.a libLLVMSupport.a libLLVMAnalysis.a libLLVMTarget.a \
-            libLLVMCodeGen.a libLLVMAsmParser.a libLLVMBitReader.a libLLVMBitWriter.a \
-            libLLVMBitstreamReader.a libLLVMInstCombine.a libLLVMMC.a libLLVMMCParser.a \
-            libLLVMScalarOpts.a libLLVMipo.a libLLVMObject.a libLLVMAggressiveInstCombine.a \
-            libLLVMTransformUtils.a libLLVMVectorize.a libLLVMSelectionDAG.a \
-            libLLVMPasses.a libLLVMTargetParser.a libLLVMIRReader.a \
-            libLLVMInstrumentation.a libLLVMGlobalISel.a libLLVMAsmPrinter.a \
-            libLLVMMIRParser.a libLLVMAArch64CodeGen.a libLLVMAArch64Desc.a \
-            libLLVMAArch64AsmParser.a libLLVMAArch64Info.a libLLVMAArch64Utils.a \
-            libLLVMAArch64Disassembler.a libLLVMCoroutines.a libLLVMDebugInfoDWARF.a \
-            libLLVMDebugInfoCodeView.a libLLVMDebugInfoMSF.a libLLVMDemangle.a \
-            libLLVMFrontendOpenMP.a libLLVMLinker.a libLLVMOption.a \
-            libLLVMProfileData.a libLLVMRemarks.a libLLVMTextAPI.a \
-            libLLVMBinaryFormat.a libLLVMSymbolize.a libLLVMDebugInfoPDB.a \
-            libLLVMCodeGenTypes.a libLLVMDebugInfoLogicalView.a libLLVMDebugInfoBTF.a \
-            libLLVMDebugInfoGSYM.a libLLVMCFIVerify.a; do
-            if [ -f "$LLVMLIB/$lib" ]; then
-              ar x "$LLVMLIB/$lib" 2>/dev/null || true
-            fi
+LLVMLIB="$PWD/../../../toolchains/llvm-tvos-build/lib"
+          # merge ALL LLVM archives (StringError/ECError/Support are in libLLVMSupport & co)
+          for a in "$LLVMLIB"/libLLVM*.a; do
+            [ -f "$a" ] && ar x "$a" 2>/dev/null || true
           done
           rm -f ../libdxmt_combined_tvos.a
           ar rcs ../libdxmt_combined_tvos.a *.o *.a 2>/dev/null || ar rcs ../libdxmt_combined_tvos.a *.o
