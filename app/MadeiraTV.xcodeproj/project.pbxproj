@@ -402,6 +402,13 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
+					"FEXCORE_PRESERVE_ALL_ATTR=",
+					"SOFTFLOAT_BUILTIN_CLZ=1",
+					"INLINE=static inline",
+					"INLINE_LEVEL=4",
+					"SOFTFLOAT_FAST_INT64=1",
+					"SOFTFLOAT_FAST_DIV32TO16=1",
+					"SOFTFLOAT_FAST_DIV64TO32=1",
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -492,6 +499,16 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "MadeiraTV/MadeiraTV-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"FEXCORE_PRESERVE_ALL_ATTR=",
+					"SOFTFLOAT_BUILTIN_CLZ=1",
+					"INLINE=static inline",
+					"INLINE_LEVEL=4",
+					"SOFTFLOAT_FAST_INT64=1",
+					"SOFTFLOAT_FAST_DIV32TO16=1",
+					"SOFTFLOAT_FAST_DIV64TO32=1",
+					"$(inherited)",
+				);
 				HEADER_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira", "$(SRCROOT)/MadeiraTV", "$(SRCROOT)/../FEX/FEXCore/include", "$(SRCROOT)/../FEX/FEXHeaderUtils", "$(SRCROOT)/../FEX/CodeEmitter", "$(SRCROOT)/../FEX/External/fmt/include", "$(SRCROOT)/../FEX/External/range-v3/include", "$(SRCROOT)/../FEX/External/unordered_dense/include", "$(SRCROOT)/../FEX/build-ios", "$(SRCROOT)/../FEX/build-ios/include", "$(SRCROOT)/../FEX/build-ios/FEXCore/Source", "$(SRCROOT)/../FEX", "$(SRCROOT)/../FEX/External/SoftFloat-3e/src", "$(SRCROOT)/../FEX/External/SoftFloat-3e/include/SoftFloat-3e");
 				LIBRARY_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/Madeira");
 			};
