@@ -31,13 +31,7 @@ struct TVHomeView: View {
                         .navigationTitle("Steam")
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
-                                Menu {
-                                    Text(steam.accountName ?? "")
-                                    Button("Обновить библиотеку") { steam.loadGames(interactive: true) }
-                                    Button("Выйти из Steam", role: .destructive) { steam.signOut() }
-                                } label: {
-                                    Image(systemName: "person.crop.circle")
-                                }
+                                TVAccountButton()
                             }
                         }
                 } else {
@@ -213,6 +207,64 @@ struct TVSignInView: View {
     }
 }
 
+// MARK: - Account
+
+struct TVAccountButton: View {
+    @EnvironmentObject private var steam: SteamTVLibrary
+    @State private var showAccount = false
+
+    var body: some View {
+        Button {
+            showAccount = true
+        } label: {
+            Image(systemName: "person.crop.circle")
+                .font(.title2)
+        }
+        .buttonStyle(.plain)
+        .sheet(isPresented: $showAccount) {
+            TVAccountSheet()
+        }
+    }
+}
+
+struct TVAccountSheet: View {
+    @EnvironmentObject private var steam: SteamTVLibrary
+    @Environment(\.dismiss) private var dismiss
+    @State private var busy = false
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(systemName: "person.crop.circle.fill")
+                .font(.system(size: 72))
+                .foregroundStyle(.tint)
+            Text(steam.accountName ?? "")
+                .font(.title2.bold())
+            if let error = steam.error {
+                Text(error)
+                    .font(.callout)
+                    .foregroundStyle(.red)
+            }
+            Button {
+                busy = true
+                steam.loadGames(interactive: true)
+                busy = false
+            } label: {
+                if busy { ProgressView() } else { Label("Обновить библиотеку", systemImage: "arrow.clockwise") }
+            }
+            .buttonStyle(.borderedProminent)
+            Button("Выйти из Steam", role: .destructive) {
+                steam.signOut()
+                dismiss()
+            }
+            .buttonStyle(.bordered)
+            Button("Готово") { dismiss() }
+                .buttonStyle(.plain)
+        }
+        .padding(48)
+        .frame(minWidth: 560, minHeight: 420)
+    }
+}
+
 // MARK: - Game grid
 
 struct TVGameGrid: View {
@@ -257,21 +309,40 @@ struct TVGameCard: View {
     let game: SteamAppInfo
     @State private var launchMessage: String?
 
+    private var heroURL: URL? { SteamTVLibrary.heroURL(for: game) }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             ZStack(alignment: .bottomLeading) {
                 RoundedRectangle(cornerRadius: 14)
                     .fill(.quaternary)
-                    .aspectRatio(1.6, contentMode: .fit)
+                AsyncImage(url: heroURL) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image.resizable().scaledToFill()
+                    case .failure:
+                        placeholder
+                    default:
+                        ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                }
+                .aspectRatio(1.6, contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
                 if let progress = steam.progress(game.appID) {
                     VStack(alignment: .leading, spacing: 6) {
-                        ProgressView(value: progress.fraction)
                         Text(progressText(progress))
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.white)
+                        if progress.phase == .preparing {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            ProgressView(value: progress.fraction)
+                                .tint(.white)
+                        }
                     }
                     .padding(12)
-                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8))
+                    .background(.black.opacity(0.65), in: RoundedRectangle(cornerRadius: 8))
                     .padding(10)
                 }
             }
@@ -279,7 +350,7 @@ struct TVGameCard: View {
                 .font(.headline)
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text(steam.isInstalled(game) ? "Установлена" : game.oslist.contains("macos") ? "Windows" : "Загрузить")
+            Text(statusText)
                 .font(.caption)
                 .foregroundStyle(.secondary)
             actionButton
@@ -287,6 +358,22 @@ struct TVGameCard: View {
         .padding(12)
         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 18))
         .buttonStyle(.card)
+    }
+
+    private var placeholder: some View {
+        ZStack {
+            Color.gray.opacity(0.3)
+            Image(systemName: "gamecontroller")
+                .font(.system(size: 44))
+                .foregroundStyle(.secondary)
+        }
+        .aspectRatio(1.6, contentMode: .fit)
+    }
+
+    private var statusText: String {
+        if steam.isInstalled(game) { return "Установлена" }
+        if !game.oslist.contains("windows") { return "Windows" }
+        return steam.progress(game.appID) == nil ? "Не установлена" : "Загрузка…"
     }
 
     @ViewBuilder
@@ -324,7 +411,7 @@ struct TVGameCard: View {
 
     private func progressText(_ p: SteamDownloadProgress) -> String {
         switch p.phase {
-        case .preparing: return "Подготовка…"
+        case .preparing: return "Подключение к Steam…"
         case .finishing: return "Завершение…"
         case .downloading:
             let pct = Int((p.fraction * 100).rounded())

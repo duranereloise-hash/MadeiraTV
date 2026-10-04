@@ -42,6 +42,14 @@ final class SteamTVLibrary: ObservableObject {
     static var steamApps: URL { SteamInstallPaths.steamApps(drive: drive) }
     static var steamPath: String { drive.path }
 
+    /// Wide Steam store hero (460×215), same CDN the iOS app uses.
+    static func heroURL(for app: SteamAppInfo) -> URL? {
+        if let header = app.headerImage, !header.isEmpty {
+            return URL(string: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/\(app.appID)/\(header)")
+        }
+        return URL(string: "https://cdn.cloudflare.steamstatic.com/steam/apps/\(app.appID)/library_hero.jpg")
+    }
+
     func start() {
         guard !started else { return }
         started = true
@@ -127,7 +135,7 @@ final class SteamTVLibrary: ObservableObject {
         downloads[app.appID] = SteamDownloadProgress()
         installTask = Task { @MainActor in
             do {
-                let url = try await downloader.install(app, steamApps: Self.steamApps, ownedDepots: { nil }) { [weak self] progress in
+                let url = try await downloader.install(app, steamApps: Self.steamApps, ownedDepots: { try? await self.fetcher.ownedDepotIDs() }) { [weak self] progress in
                     MainActor.assumeIsolated {
                         self?.downloads[app.appID] = progress
                     }
