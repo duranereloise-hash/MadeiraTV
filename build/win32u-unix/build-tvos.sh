@@ -144,13 +144,14 @@ echo "=== Building libwin32u_unix.a ==="
 ar rcs "$OBJ_DIR/libwin32u_unix.a" "$OBJ_DIR"/*.o
 
 # Merge the static freetype so the app link needs no project changes.
+# NOTE: freetype is staged separately in the IPA workflow (app/Madeira/
+# libfreetype.a) and force-loaded, because ntdll's dwrite also references FT_*.
 FREETYPE_LIB="$REPO_ROOT/toolchains/freetype-tvos/lib/libfreetype.a"
+echo "NOTE: libfreetype.a is linked separately by the app target (see app/Madeira/libfreetype.a); not merged here to avoid duplicate symbols."
 if [ -f "$FREETYPE_LIB" ]; then
-    libtool -static -o "$OBJ_DIR/libwin32u_unix.a" \
-        "$OBJ_DIR/libwin32u_unix.a" "$FREETYPE_LIB" 2>/dev/null
-    echo "merged libfreetype.a"
+    echo "freetype present at $FREETYPE_LIB (kept separate)"
 else
-    echo "WARNING: no libfreetype.a — fonts will be disabled (looked in $FREETYPE_LIB)"
+    echo "WARNING: no libfreetype.a — fonts will be disabled"
 fi
 
 echo "Copying to app..."
