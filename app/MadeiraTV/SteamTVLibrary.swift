@@ -34,12 +34,18 @@ final class SteamTVLibrary: ObservableObject {
     private var started = false
     private var shouldRefresh = false
 
-    /// Wine prefix (same layout as iOS: Documents/wine/drive_c).
-    static var drive: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("wine", isDirectory: true)
-            .appendingPathComponent("drive_c", isDirectory: true)
+    /// Base folder for the Wine prefix.
+    ///
+    /// tvOS: uses Library/Caches, not Documents. Some sideload installs on
+    /// tvOS do not materialise the sandbox Documents directory at all
+    /// (FileManager returns it but it does not exist and cannot be created —
+    /// ENOENT on mkdir '.../Documents/wine'). Library/Caches is always
+    /// present and writable on tvOS.
+    static var prefix: URL {
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        return base.appendingPathComponent("wine", isDirectory: true)
     }
+    static var drive: URL { prefix.appendingPathComponent("drive_c", isDirectory: true) }
     static var steamApps: URL { SteamInstallPaths.steamApps(drive: drive) }
     static var steamPath: String { drive.path }
 
