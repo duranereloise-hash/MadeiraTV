@@ -143,9 +143,25 @@ final class SteamTVLibrary: ObservableObject {
         // Whatever the template covered, ensure the top-level dirs exist.
         // createDirectory may fail inside Wine's tree when an intermediate
         // component already exists with restrictive mode, so use POSIX mkdir
-        // with an explicit 0777.
+        // with an explicit 0777, and make the whole tree writable.
         ensureDirectoryExists(Self.drive.path)
         ensureDirectoryExists(Self.steamApps.path)
+        makeAllWritable(Self.drive.path)
+    }
+
+    /// Recursively chmod the Wine tree so Steam downloads can always be
+    /// written: directories 0777, files 0666.
+    private func makeAllWritable(_ root: String) {
+        let fm = FileManager.default
+        let rootURL = URL(fileURLWithPath: root)
+        _ = chmod(root, 0o777)
+        guard let enumerator = fm.enumerator(at: rootURL, includingPropertiesForKeys: nil,
+                                             options: [.skipsHiddenFiles]) else { return }
+        for case let url as URL in enumerator {
+            let path = url.path
+            if url.hasDirectoryPath { _ = chmod(path, 0o777) }
+            else { _ = chmod(path, 0o666) }
+        }
     }
 
     /// mkdir -p with 0777, tolerant of existing dirs. Works around
@@ -193,6 +209,11 @@ final class SteamTVLibrary: ObservableObject {
                     try await group.next()
                     group.cancelAll()
                 }
+                // Pre-create the game's install + journal folders with 0777 so
+                // DepotDownloader's own createDirectory calls cannot fail.
+                let folderName = SteamInstallFiles.safeFolderName(app.installDir.isEmpty ? "app_\(app.appID)" : app.installDir)
+                ensureDirectoryExists(Self.steamApps.appendingPathComponent("common", isDirectory: true).appendingPathComponent(folderName, isDirectory: true).path)
+                ensureDirectoryExists(Self.steamApps.appendingPathComponent("downloading", isDirectory: true).appendingPathComponent("\(app.appID)", isDirectory: true).path)
                 let url = try await downloader.install(app, steamApps: Self.steamApps, ownedDepots: { try? await self.fetcher.ownedDepotIDs() }) { [weak self] progress in
                     MainActor.assumeIsolated {
                         self?.downloads[app.appID] = progress
