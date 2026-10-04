@@ -43,7 +43,7 @@ enum TVLogServer {
         LogStore.shared.log("[logserver] up, local IP: \(localIP() ?? "unknown")")
     }
 
-    @MainActor
+    /// Best-effort LAN IPv4 (en0/awdl0).
     static func localIP() -> String? {
         var address: String?
         var ifaddr: UnsafeMutablePointer<ifaddrs>?
