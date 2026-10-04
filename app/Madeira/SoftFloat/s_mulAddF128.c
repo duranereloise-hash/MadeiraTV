@@ -34,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =============================================================================*/
 
+#include "softfloat_fix_defs.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include "platform.h"
