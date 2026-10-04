@@ -1,0 +1,76 @@
+name: Build FEX for tvOS Simulator (probe)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fex-tvos-sim:
+    name: Build FEXCore static libs for tvOS Simulator
+    runs-on: macos-15
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Show environment
+        run: |
+          xcodebuild -version
+          cmake --version | head -2
+          xcrun --sdk appletvsimulator --show-sdk-version 2>/dev/null || echo "no simulator sdk"
+          pip3 install --quiet packaging setuptools 2>&1 | tail -2 || true
+
+      - name: FEX build-ios for tvOS Simulator
+        run: |
+          set -o pipefail
+          mkdir -p build
+          R="$(pwd)"
+          B="$R/FEX/build-sim"
+          CC_BIN="$(xcrun --sdk appletvsimulator --find clang)"
+          CXX_BIN="$(xcrun --sdk appletvsimulator --find clang++)"
+          echo "CC=$CC_BIN"
+          echo "CXX=$CXX_BIN"
+          cmake -S "$R/FEX" -B "$B" \
+            -DCMAKE_SYSTEM_NAME=tvOS \
+            -DCMAKE_SYSTEM_PROCESSOR=arm64 \
+            -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DCMAKE_OSX_SYSROOT=appletvsimulator \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=17.0 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER="$CC_BIN" \
+            -DCMAKE_CXX_COMPILER="$CXX_BIN" \
+            -DFEX_IOS_HOST_BUILD=ON \
+            -DTUNE_CPU=none \
+            -DCMAKE_C_FLAGS="-DFEX_IOS_HOST" \
+            -DCMAKE_CXX_FLAGS="-DFEX_IOS_HOST" \
+            -DBUILD_TESTING=OFF -DBUILD_THUNKS=OFF -DBUILD_FEXCONFIG=OFF \
+            -DBUILD_FEX_LINUX_TESTS=OFF -DENABLE_FEX_ALLOCATOR=OFF \
+            -DENABLE_ASSERTIONS=OFF -DENABLE_CLANG_THUNKS=ON \
+            -DENABLE_CCACHE=ON 2>&1 | tee build/fex-sim-config.log
+
+      - name: Build FEXCore
+        run: |
+          set -o pipefail
+          cmake --build "build/../FEX/build-sim" --target FEXCore FEXCore_Base 2>&1 | tee build/fex-sim-build.log
+
+      - name: Show output
+        if: always()
+        run: |
+          ls -la FEX/build-sim/FEXCore/Source/*.a 2>/dev/null || echo "no .a produced"
+          find FEX/build-sim/External -name "*.a" 2>/dev/null | head -20
+          tail -40 build/fex-sim-config.log build/fex-sim-build.log 2>/dev/null
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fex-tvos-sim-build-artifacts
+          path: |
+            FEX/build-sim/FEXCore/Source/*.a
+            FEX/build-sim/External/*/*.a
+            FEX/build-sim/External/*/cmake_unofficial/*.a
+            build/fex-sim-config.log
+            build/fex-sim-build.log
+          if-no-files-found: warn
