@@ -370,21 +370,36 @@ final class DepotDownloader {
             if comp.isEmpty { continue }
             if current.isEmpty { current = (isAbsolute ? "/" : "") + comp }
             else { current += "/" + comp }
-            _ = mkdir(current, 0o777)
-            _ = chmod(current, 0o777)
+            if current == "/" { continue }
+            let r = mkdir(current, 0o777)
+            if r != 0 {
+                // Already exists? Accept if it is a directory (a file in the
+                // way means the manifest lists a dir after a file with the
+                // same name; there is nothing we can create). ENOTDIR/EISDIR
+                // on the target are treated as "cannot make a dir here".
+                var st = stat()
+                if stat(current, &st) == 0, (st.st_mode & S_IFMT) == S_IFDIR {
+                    _ = chmod(current, 0o777)
+                    continue
+                }
+            } else {
+                _ = chmod(current, 0o777)
+            }
         }
     }
 
     /// Create or resize a file to its manifest length. Existing bytes below
     /// that length are kept so resumed and updated installs reuse them.
     private nonisolated static func sizeFile(_ path: String, to size: UInt64) throws {
+        // Guarantee the parent dir exists (ENOENT otherwise).
+        ensureDir(URL(fileURLWithPath: path).deletingLastPathComponent())
         let fd = open(path, O_WRONLY | O_CREAT, 0o644)
-        guard fd >= 0 else { throw SteamError.chunkDownloadFailed("Cannot create a game file (errno \(errno)).") }
+        guard fd >= 0 else { throw SteamError.chunkDownloadFailed("Cannot create a game file (errno \(errno), path=\(path)).") }
         defer { close(fd) }
         var info = stat()
         if fstat(fd, &info) == 0, UInt64(info.st_size) == size { return }
         guard ftruncate(fd, off_t(size)) == 0 else {
-            throw SteamError.chunkDownloadFailed("Cannot size a game file (errno \(errno)).")
+            throw SteamError.chunkDownloadFailed("Cannot size a game file (errno \(errno), path=\(path)).")
         }
     }
 
@@ -447,8 +462,9 @@ final class DepotDownloader {
     }
 
     private nonisolated static func write(_ data: Data, to path: String, offset: UInt64) throws {
+        ensureDir(URL(fileURLWithPath: path).deletingLastPathComponent())
         let fd = open(path, O_WRONLY)
-        guard fd >= 0 else { throw SteamError.chunkDownloadFailed("Cannot open a game file (errno \(errno)).") }
+        guard fd >= 0 else { throw SteamError.chunkDownloadFailed("Cannot open a game file (errno \(errno), path=\(path)).") }
         defer { close(fd) }
         try data.withUnsafeBytes { raw in
             var written = 0
