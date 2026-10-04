@@ -11,6 +11,7 @@
 import SwiftUI
 import Combine
 import Foundation
+import Darwin
 
 @MainActor
 final class SteamTVLibrary: ObservableObject {
@@ -140,8 +141,27 @@ final class SteamTVLibrary: ObservableObject {
         let prefix = Self.drive.deletingLastPathComponent().path  // Documents/wine
         madeira_seed_prefix_if_needed(prefix)
         // Whatever the template covered, ensure the top-level dirs exist.
-        try? FileManager.default.createDirectory(at: Self.drive, withIntermediateDirectories: true)
-        try? FileManager.default.createDirectory(at: Self.steamApps, withIntermediateDirectories: true)
+        // createDirectory may fail inside Wine's tree when an intermediate
+        // component already exists with restrictive mode, so use POSIX mkdir
+        // with an explicit 0777.
+        ensureDirectoryExists(Self.drive.path)
+        ensureDirectoryExists(Self.steamApps.path)
+    }
+
+    /// mkdir -p with 0777, tolerant of existing dirs. Works around
+    /// FileManager.createDirectory failures inside Wine's tree when an
+    /// intermediate component exists with restrictive permissions.
+    private func ensureDirectoryExists(_ path: String) {
+        let isAbsolute = path.hasPrefix("/")
+        let comps = path.split(separator: "/").map(String.init)
+        var current = ""
+        for comp in comps {
+            if comp.isEmpty { continue }
+            if current.isEmpty { current = (isAbsolute ? "/" : "") + comp }
+            else { current += "/" + comp }
+            _ = mkdir(current, 0o777)
+            _ = chmod(current, 0o777)
+        }
     }
 
     func isInstalled(_ app: SteamAppInfo) -> Bool {
@@ -157,8 +177,11 @@ final class SteamTVLibrary: ObservableObject {
                 // Lay down the Wine prefix first: without drive_c the download
                 // folder cannot be created (permission error inside "common").
                 seedPrefixIfNeeded()
-                // Ensure the Steam library folder exists on disk.
-                try FileManager.default.createDirectory(at: Self.steamApps, withIntermediateDirectories: true)
+                // Ensure the Steam library folder exists on disk (POSIX mkdir,
+                // tolerant of strict Wine tree permissions).
+                ensureDirectoryExists(Self.steamApps.path)
+                ensureDirectoryExists(Self.steamApps.appendingPathComponent("common", isDirectory: true).path)
+                ensureDirectoryExists(Self.steamApps.appendingPathComponent("downloading", isDirectory: true).path)
                 // Connect cap: if Steam does not answer within 25s, stop the
                 // endless "Подключение к Steam…" state with a visible error.
                 try await withThrowingTaskGroup(of: Void.self) { group in
