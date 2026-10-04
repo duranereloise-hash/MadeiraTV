@@ -39,6 +39,11 @@ portable = [
 ]
 
 # C shims used by ContentDecryptor (chunk_zip/lzma/zstd). chunk_zip.c needs zlib.
+winios_sources = [
+    ('Winios/Winios.m', 'sourcecode.c.objc'),
+    ('Winios/WiniosCursor.c', 'sourcecode.c.c'),
+    ('Winios/WiniosGamepad.c', 'sourcecode.c.c'),
+]
 c_files = [
     ('SwiftSteam/chunk_zip.c', 'sourcecode.c.c'),
     ('SwiftSteam/lzma_shim.c', 'sourcecode.c.c'),
@@ -123,6 +128,14 @@ assets_build = uid('bf-assets')
 assets_ref = uid('fr-assets')
 proj.append(f'\t\t{assets_build} /* Assets.xcassets in Resources */ = {{isa = PBXBuildFile; fileRef = {assets_ref} /* Assets.xcassets */; }};')
 proj.append('/* End PBXBuildFile section */')
+for f, lft in winios_sources:
+    name = os.path.basename(f)
+    wbf = uid('bf-w-' + f)
+    wfr = uid('fr-w-' + f)
+    build_files['w_' + f] = wbf
+    file_refs['w_' + f] = wfr
+    proj.append(f'\t\t{wbf} /* {name} in Sources */ = {{isa = PBXBuildFile; fileRef = {wfr} /* {name} */; }};')
+
 
 # --- PBXFileReference ---
 proj.append('\n/* Begin PBXFileReference section */')
@@ -149,6 +162,11 @@ for lib in static_libs:
     fr = static_fr[lib]
     proj.append(f'\t\t{fr} /* {lib} */ = {{isa = PBXFileReference; lastKnownFileType = archive.ar; name = "{lib}"; path = "Madeira/{lib}"; sourceTree = "<group>"; }};')
 proj.append('/* End PBXFileReference section */')
+for f, lft in winios_sources:
+    name = os.path.basename(f)
+    wfr = file_refs['w_' + f]
+    proj.append(f'\t\t{wfr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
+
 
 # --- PBXFrameworksBuildPhase ---
 frameworks_phase = uid('phase-fw')
@@ -305,6 +323,10 @@ for f in tv_files:
 for f, _ in c_files:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{build_files[f]} /* {name} in Sources */,')
+
+for f, lft in winios_sources:
+    name = os.path.basename(f)
+    proj.append(f'\t\t\t\t{build_files["w_" + f]} /* {name} in Sources */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')

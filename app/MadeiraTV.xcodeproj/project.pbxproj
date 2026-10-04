@@ -61,6 +61,9 @@
 		AD01FA7FCB1CC561E9D280E3 /* zstd_edu.c in Sources */ = {isa = PBXBuildFile; fileRef = A7CAF30D28FF3575292D95B2 /* zstd_edu.c */; };
 		A11EB7776D34457CEAA46BFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB59B26BFB7B055559A3E722 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
+		A6B00A04A571859A3B8C10B1 /* Winios.m in Sources */ = {isa = PBXBuildFile; fileRef = A65E088659F8354D8B50FCA6 /* Winios.m */; };
+		AA984EA37F52E50D68130CDF /* WiniosCursor.c in Sources */ = {isa = PBXBuildFile; fileRef = A4BEB375F1776554DA38A938 /* WiniosCursor.c */; };
+		A91A9658C27A85120B1A9F4A /* WiniosGamepad.c in Sources */ = {isa = PBXBuildFile; fileRef = A0EC266465F8C59BBB022B6A /* WiniosGamepad.c */; };
 
 /* Begin PBXFileReference section */
 		AF29EED48F2B3541CB78F60D /* SteamAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SteamAuthAPI.swift"; path = "SwiftSteam/Auth/SteamAuthAPI.swift"; sourceTree = "<group>"; };
@@ -119,6 +122,9 @@
 		A8C550AA0668857F6B00033B /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libswresample.a"; path = "Madeira/libswresample.a"; sourceTree = "<group>"; };
 		A9C1867FC92E3566FB23F7F9 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavutil.a"; path = "Madeira/libavutil.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+		A65E088659F8354D8B50FCA6 /* Winios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "Winios.m"; path = "Winios/Winios.m"; sourceTree = "<group>"; };
+		A4BEB375F1776554DA38A938 /* WiniosCursor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "WiniosCursor.c"; path = "Winios/WiniosCursor.c"; sourceTree = "<group>"; };
+		A0EC266465F8C59BBB022B6A /* WiniosGamepad.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "WiniosGamepad.c"; path = "Winios/WiniosGamepad.c"; sourceTree = "<group>"; };
 
 /* Begin PBXFrameworksBuildPhase section */
 		AAAA0C1F2D7B459FD9C7271C /* Frameworks */ = {
@@ -316,6 +322,9 @@
 				AB3A151A72D5C5C5E829B211 /* chunk_zip.c in Sources */,
 				AB324AAE719A150F3BC772E6 /* lzma_shim.c in Sources */,
 				AD01FA7FCB1CC561E9D280E3 /* zstd_edu.c in Sources */,
+				A6B00A04A571859A3B8C10B1 /* Winios.m in Sources */,
+				AA984EA37F52E50D68130CDF /* WiniosCursor.c in Sources */,
+				A91A9658C27A85120B1A9F4A /* WiniosGamepad.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
