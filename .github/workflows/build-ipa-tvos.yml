@@ -79,6 +79,11 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p build
+          echo "=== plutil lint ==="
+          plutil -lint app/MadeiraTV.xcodeproj/project.pbxproj || true
+          echo "=== xcodebuild -list ==="
+          xcodebuild -list -project app/MadeiraTV.xcodeproj 2>&1 | head -20 || true
+          echo "=== build ==="
           xcodebuild \
             -project app/MadeiraTV.xcodeproj \
             -scheme MadeiraTV \
