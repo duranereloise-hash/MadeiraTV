@@ -187,16 +187,16 @@ struct TVSignInView: View {
     private var passwordView: some View {
         VStack(spacing: 18) {
             TextField("Логин Steam", text: $account)
-                .textFieldStyle(.roundedBorder)
+                .textFieldStyle(.plain)
                 .focused($focus, equals: .account)
                 .frame(maxWidth: 520)
             SecureField("Пароль", text: $password)
-                .textFieldStyle(.roundedBorder)
+                .textFieldStyle(.plain)
                 .focused($focus, equals: .password)
                 .frame(maxWidth: 520)
             if let prompt = model.guardPrompt, let type = prompt.codeType {
                 TextField("Код Steam Guard", text: $code)
-                    .textFieldStyle(.roundedBorder)
+                    .textFieldStyle(.plain)
                     .focused($focus, equals: .code)
                     .frame(maxWidth: 520)
                     .onSubmit { model.submitGuardCode(code) }
@@ -300,7 +300,7 @@ struct TVGameCard: View {
                     launchMessage = message
                 }
             } label: {
-                if steam.launching == game.appID {
+                if steam.launchingID == game.appID {
                     ProgressView().frame(maxWidth: .infinity)
                 } else {
                     Label("Играть", systemImage: "play.fill").frame(maxWidth: .infinity)

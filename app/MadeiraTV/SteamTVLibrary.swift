@@ -100,7 +100,8 @@ final class SteamTVLibrary: ObservableObject {
             } catch is CancellationError {
             } catch {
                 if !Task.isCancelled {
-                    error = SteamSignIn.message(error)
+                    let message = SteamSignIn.message(error)
+                    self.error = message
                     SteamLog.event("[steam-tv] library failed reason=\(SteamSignIn.reason(error))")
                 }
             }
@@ -117,7 +118,7 @@ final class SteamTVLibrary: ObservableObject {
     // MARK: - Downloads
 
     func isInstalled(_ app: SteamAppInfo) -> Bool {
-        SteamInstallFiles.sizeOnDisk(appID: Int(app.appID), steamApps: steamApps) != nil
+        SteamInstallFiles.sizeOnDisk(appID: Int(app.appID), steamApps: Self.steamApps) != nil
     }
 
     func install(_ app: SteamAppInfo) {
@@ -126,7 +127,7 @@ final class SteamTVLibrary: ObservableObject {
         downloads[app.appID] = SteamDownloadProgress()
         installTask = Task { @MainActor in
             do {
-                let url = try await downloader.install(app, steamApps: steamApps, ownedDepots: { nil }) { [weak self] progress in
+                let url = try await downloader.install(app, steamApps: Self.steamApps, ownedDepots: { nil }) { [weak self] progress in
                     MainActor.assumeIsolated {
                         self?.downloads[app.appID] = progress
                     }
