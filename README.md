@@ -31,7 +31,7 @@ Mach-процессе. Этот репозиторий переносит тот
 | — FFmpeg (winegstreamer) | ✅ | LGPL-конфиг под tvOS |
 
 ### ⏳ Фаза 2 — остаток
-- **DXMT** (D3D9/10/11 → Metal) под tvOS — самый большой блок: требует сборку LLVM под tvOS
+- **DXMT** (D3D9/10/11 → Metal) под tvOS — идёт сборка LLVM-tvOS (последний тяжёлый компонент)
 - Слинковать весь стек в `MadeiraTV.xcodeproj`
 - JIT-запуск на Apple TV (через отладчик / StikDebug-аналог)
 - Ввод с геймпада в Windows-гостевую ОС (XInput)
@@ -54,7 +54,9 @@ xcodebuild -project app/MadeiraTV.xcodeproj \
 | `build-tvos.yml` | каркас app | `MadeiraTV.app` |
 | `build-fex-tvos.yml` | FEXCore под tvOS | `libFEXCore*.a`, External libs |
 | `build-toolchains-tvos.yml` | GnuTLS + FFmpeg (+ freetype) под tvOS | `toolchains/*-tvos` |
-| `build-wine-tvos.yml` | все toolchains + unix Wine | `libntdll_unix.a` |
+| `build-wine-tvos.yml` | toolchains + unix Wine + PE DLL | `lib*.a`, `arm64ec-windows/*.dll` |
+| `build-llvm-tvos.yml` | LLVM static libs под tvOS | `libLLVM*.a`, include |
+| `build-dxmt-tvos.yml` | DXMT (D3D → Metal) под tvOS | `libdxmt_unix_tvos.a` |
 
 ## tvOS-специфичные патчи
 
