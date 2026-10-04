@@ -159,6 +159,18 @@ for f, _ in c_files:
 assets_build = uid('bf-assets')
 assets_ref = uid('fr-assets')
 proj.append(f'\t\t{assets_build} /* Assets.xcassets in Resources */ = {{isa = PBXBuildFile; fileRef = {assets_ref} /* Assets.xcassets */; }};')
+
+# Windows PE bundles embed as folder resources so Wine can symlink system32
+# DLLs and launch the demo exe (cube.exe / cube-x64.exe) from the bundle.
+windows_bundles = ['aarch64-windows', 'arm64ec-windows']
+wbf_b = {}
+wfr_b = {}
+for wb in windows_bundles:
+    bf = uid('bf-res-' + wb)
+    fr = uid('fr-res-' + wb)
+    wbf_b[wb] = bf
+    wfr_b[wb] = fr
+    proj.append(f'\t\t{bf} /* {wb} in Resources */ = {{isa = PBXBuildFile; fileRef = {fr} /* {wb} */; }};')
 proj.append('/* End PBXBuildFile section */')
 for f, lft in winios_sources:
     name = os.path.basename(f)
@@ -192,6 +204,9 @@ for f, lft in c_files:
     fr = file_refs[f]
     proj.append(f'\t\t{fr} /* {name} */ = {{isa = PBXFileReference; lastKnownFileType = {lft}; name = "{name}"; path = "{f}"; sourceTree = "<group>"; }};')
 proj.append(f'\t\t{assets_ref} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; }};')
+for wb in windows_bundles:
+    fr = wfr_b[wb]
+    proj.append(f'\t\t{fr} /* {wb} */ = {{isa = PBXFileReference; lastKnownFileType = folder; path = "{wb}"; sourceTree = "<group>"; }};')
 info_ref = uid('fr-info')
 proj.append(f'\t\t{info_ref} /* Info-TVP.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info-TVP.plist; sourceTree = "<group>"; }};')
 product_ref = uid('fr-app')
@@ -261,6 +276,8 @@ for f, _ in winios_sources:
 for f, _ in platform_objc_sources + platform_mm_sources + platform_c_sources + softfloat_fix_sources:
     name = os.path.basename(f)
     proj.append(f'\t\t\t\t{file_refs["p_" + f]} /* {name} */,')
+for wb in windows_bundles:
+    proj.append(f'\t\t\t\t{wfr_b[wb]} /* {wb} */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\tpath = Madeira;')
 proj.append('\t\t\tsourceTree = "<group>";')
@@ -354,6 +371,8 @@ proj.append('\t\t\tisa = PBXResourcesBuildPhase;')
 proj.append('\t\t\tbuildActionMask = 2147483647;')
 proj.append('\t\t\tfiles = (')
 proj.append(f'\t\t\t\t{assets_build} /* Assets.xcassets in Resources */,')
+for wb in windows_bundles:
+    proj.append(f'\t\t\t\t{wbf_b[wb]} /* {wb} in Resources */,')
 proj.append('\t\t\t);')
 proj.append('\t\t\trunOnlyForDeploymentPostprocessing = 0;')
 proj.append('\t\t};')

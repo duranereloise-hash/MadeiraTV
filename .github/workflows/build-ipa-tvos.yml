@@ -87,6 +87,26 @@ jobs:
           ls -la app/Madeira/*.a 2>/dev/null || echo "no .a staged"
           ls app/Madeira/arm64ec-windows/ 2>/dev/null | head -20
 
+      - name: Fetch Windows PE bundles (aarch64 + arm64ec) from release
+        run: |
+          set -e
+          # aarch64-windows is not produced by CI (dxmt PE + wine full build are
+          # local-only); arm64ec comes partially from the wine artifact. Top up
+          # both from the published windows-bundles-v1 release so cube.exe and
+          # the full system DLL set are present in the bundle.
+          mkdir -p app/Madeira/aarch64-windows app/Madeira/arm64ec-windows bundles
+          curl -sSL -o bundles/aarch64.zip \
+            https://github.com/duranereloise-hash/MadeiraTV/releases/download/windows-bundles-v1/aarch64-windows.zip
+          curl -sSL -o bundles/arm64ec.zip \
+            https://github.com/duranereloise-hash/MadeiraTV/releases/download/windows-bundles-v1/arm64ec-windows.zip
+          (cd bundles && unzip -o -q aarch64.zip && unzip -o -q arm64ec.zip)
+          # Copy into app/Madeira (does not overwrite CI-built DLLs unless zip lacks them?)
+          cp -R bundles/aarch64-windows/. app/Madeira/aarch64-windows/ 2>/dev/null || true
+          cp -R bundles/arm64ec-windows/. app/Madeira/arm64ec-windows/ 2>/dev/null || true
+          echo "aarch64-windows: $(ls app/Madeira/aarch64-windows | wc -l) files"
+          echo "arm64ec-windows: $(ls app/Madeira/arm64ec-windows | wc -l) files"
+          ls -la app/Madeira/aarch64-windows/cube.exe app/Madeira/arm64ec-windows/cube-x64.exe 2>/dev/null || echo "WARNING: cube exe missing!"
+
       - name: Build MadeiraTV.app for tvOS
         run: |
           set -o pipefail

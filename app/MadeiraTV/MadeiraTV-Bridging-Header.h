@@ -6,4 +6,8 @@
 #import "SwiftSteam/lzma_shim.h"
 #import "SwiftSteam/zstd_edu.h"
 
+// Wine bootstrap bridges (used by TVSessionModel to start a real session).
+#import "WineServerBridge.h"
+#import "WineProcessBridge.h"
+
 #include <stdint.h>
