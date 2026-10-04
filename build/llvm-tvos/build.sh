@@ -1,24 +1,15 @@
 #!/bin/bash
 # Build LLVM (headers + static libs) for **tvOS** arm64 — needed by DXMT's
-# airconv (DXBC->IR compiler). Mirrors the iOS recipe from BUILDING.md with
-# the sysroot swapped to appletvos. The full LLVM build is heavy (~30-60min);
-# we only need libLLVM + a few tools airconv links against.
-#
-# Recipe (from docs/BUILDING.md, iOS form):
-#   cmake -S llvm-project/llvm -B llvm-tvos-build \
-#     -DCMAKE_SYSTEM_NAME=tvOS -DCMAKE_OSX_ARCHITECTURES=arm64 \
-#     -DCMAKE_OSX_SYSROOT=appletvos -DCMAKE_BUILD_TYPE=Release \
-#     -DLLVM_HOST_TRIPLE=arm64-apple-tvos17.0 \
-#     -DLLVM_DEFAULT_TARGET_TRIPLE=arm64-apple-tvos17.0 \
-#     -DLLVM_TARGET_ARCH=host -DLLVM_TARGETS_TO_BUILD= \
-#     -DLLVM_ENABLE_PROJECTS= -DLLVM_BUILD_TOOLS=Off \
-#     -DLLVM_INCLUDE_TESTS=Off -DLLVM_ENABLE_ZLIB=Off
+# airconv (DXBC->IR compiler). Cross-compiling LLVM needs a HOST llvm-tblgen
+# to generate the .inc files (GenVT.inc etc); it is built in a separate native
+# tree and passed to the tvOS configure via -DLLVM_TABLEGEN.
 set -e
 
 BUILD_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$BUILD_DIR/../.." && pwd)"
 LLVM_SRC="$REPO_ROOT/toolchains/llvm-project"
 LLVM_BUILD="$REPO_ROOT/toolchains/llvm-tvos-build"
+HOST_BUILD="$REPO_ROOT/toolchains/llvm-host-build"
 LLVM_VERSION=18
 
 if [ ! -d "$LLVM_SRC/llvm" ]; then
@@ -28,6 +19,28 @@ if [ ! -d "$LLVM_SRC/llvm" ]; then
         https://github.com/llvm/llvm-project.git "$LLVM_SRC" 2>&1 | tail -3
 fi
 
+JOBS=$(sysctl -n hw.ncpu)
+
+# ---------- host llvm-tblgen (native macOS) --------------------------------
+mkdir -p "$HOST_BUILD"
+if [ ! -f "$HOST_BUILD/bin/llvm-tblgen" ]; then
+    echo "=== building HOST llvm-tblgen ==="
+    cmake -S "$LLVM_SRC/llvm" -B "$HOST_BUILD" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_TARGETS_TO_BUILD="AArch64" \
+        -DLLVM_ENABLE_PROJECTS="" \
+        -DLLVM_BUILD_TOOLS=Off \
+        -DLLVM_BUILD_UTILS=Off \
+        -DLLVM_INCLUDE_TESTS=Off \
+        -DLLVM_INCLUDE_BENCHMARKS=Off \
+        -DLLVM_INCLUDE_EXAMPLES=Off \
+        -DLLVM_ENABLE_ZLIB=Off \
+        -DLLVM_ENABLE_ZSTD=Off 2>&1 | tail -10
+    cmake --build "$HOST_BUILD" --target llvm-tblgen -j$JOBS 2>&1 | tail -10
+fi
+ls "$HOST_BUILD/bin/llvm-tblgen" >/dev/null && echo "host tblgen OK" || echo "NO host tblgen"
+
+# ---------- tvOS configure ------------------------------------------------
 mkdir -p "$LLVM_BUILD"
 cd "$LLVM_BUILD"
 cmake -S "$LLVM_SRC/llvm" -B . \
@@ -54,10 +67,8 @@ echo "=== building LLVM (tvOS) ==="
 # fork()/execv/execve and task_{set,get}_exception_ports are TVOS_PROHIBITED;
 # patch the Unix support sources so they do not break the build on tvOS.
 python3 "$REPO_ROOT/tools/patch_llvm_tvos.py" "$LLVM_SRC/llvm/lib/Support/Unix" || true
-# 'llvm-libs' target does not exist in this configuration; the default target
-# builds every static library (tools/tests are off).
-cmake --build . -j$(sysctl -n hw.ncpu) 2>&1 | tail -25
+cmake --build . -j$JOBS 2>&1 | tail -25
 
 echo "=== result ==="
-ls -la lib/libLLVM* 2>/dev/null | head
+ls -la lib/libLLVM* 2>/dev/null | head -40
 echo "LLVM_BUILD=$LLVM_BUILD"
