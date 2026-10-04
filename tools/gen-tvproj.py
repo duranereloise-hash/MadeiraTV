@@ -83,7 +83,7 @@ proj.append(f'\t\t{liblzma_bf} /* liblzma.tbd in Frameworks */ = {{isa = PBXBuil
 # Static libraries built by the Phase 2 toolchain, staged in app/Madeira/.
 static_libs = [
     'libntdll_unix.a', 'libwineserver.a', 'libwin32u_unix.a',
-    'libdxmt_combined_tvos.a',
+    'libdxmt_combined_tvos.a', 'libllvm_tvos.a',
     'libFEXCore.a', 'libFEXCore_Base.a',
     'libfmt.a', 'libcephes_128bit.a', 'libxxhash.a', 'libsoftfloat_3e.a',
     'libgnutls.a', 'libhogweed.a', 'libnettle.a', 'libgmp.a',

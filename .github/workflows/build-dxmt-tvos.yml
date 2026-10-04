@@ -1,4 +1,4 @@
-name: Build DXMT for tvOS (Phase 2, step 4)
+﻿name: Build DXMT for tvOS (Phase 2, step 4)
 
 on:
   workflow_dispatch:
@@ -49,30 +49,29 @@ jobs:
           MADEIRA_ALLOW_NO_D3D12=1 bash build/dxmt-ios/build-tvos.sh 2>&1 | tee build/dxmt-tvos.log
           echo "=== rc=${PIPESTATUS[0]} ==="
 
-      - name: Build libdxmt_combined_tvos.a (DXMT + LLVM)
+      - name: Build libdxmt_combined_tvos.a + libllvm_tvos.a
         run: |
           set -o pipefail
+          LLVMLIB="$PWD/toolchains/llvm-tvos-build/lib"
           # Merge DXMT unix objects with every LLVM archive airconv needs.
           mkdir -p build/dxmt-ios/combined
           cd build/dxmt-ios/combined
           ar x ../libdxmt_unix_tvos.a
-          # also pull in the madeira-ir/other objects from obj-tvos
           for o in ../obj-tvos/*.o; do [ -f "$o" ] && cp "$o" .; done
-          LLVMLIB="$PWD/../../../toolchains/llvm-tvos-build/lib"
-          # merge ALL LLVM archives (StringError/ECError/Support are in libLLVMSupport & co)
-          for a in "$LLVMLIB"/libLLVM*.a; do
-            [ -f "$a" ] && ar x "$a" 2>/dev/null || true
-          done
-          rm -f ../libdxmt_combined_tvos.a
-          ar rcs ../libdxmt_combined_tvos.a *.o *.a 2>/dev/null || ar rcs ../libdxmt_combined_tvos.a *.o
-          ls -la ../libdxmt_combined_tvos.a
+          ar rcs ../../dxmt-ios/libdxmt_combined_tvos.a *.o || true
+          # Build a pure LLVM aggregate (all libLLVM*.a) as its own archive
+          LLVMLIST=""
+          for a in "$LLVMLIB"/libLLVM*.a; do [ -f "$a" ] && LLVMLIST="$LLVMLIST $a"; done
+          libtool -static -o ../../dxmt-ios/libllvm_tvos.a $LLVMLIST
+          ls -la ../../dxmt-ios/libdxmt_combined_tvos.a ../../dxmt-ios/libllvm_tvos.a
           cd "$GITHUB_WORKSPACE"
-          echo "combined built"
+          echo "combined + llvm built"
 
       - name: List outputs
         run: |
           ls -la build/dxmt-ios/libdxmt_unix_tvos.a 2>/dev/null || echo "no dxmt unix lib"
-          ls -la build/dxmt-ios/libdxmt_combined_tvos.a 2>/dev/null || echo "no combined lib"
+          ls -la build/dxmt-ios/libdxmt_combined_tvos.a
+            build/dxmt-ios/libllvm_tvos.a 2>/dev/null || echo "no combined lib"
           find build/dxmt-ios/obj-tvos -name '*.o' | wc -l
           tail -30 build/dxmt-tvos.log 2>/dev/null
 
@@ -84,6 +83,7 @@ jobs:
           path: |
             build/dxmt-ios/libdxmt_unix_tvos.a
             build/dxmt-ios/libdxmt_combined_tvos.a
+            build/dxmt-ios/libllvm_tvos.a
             build/dxmt-ios/obj-tvos/*.err
             build/dxmt-tvos.log
             build/llvm-tvos.log

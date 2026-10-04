@@ -1,4 +1,4 @@
-name: Build MadeiraTV IPA (link everything for tvOS)
+﻿name: Build MadeiraTV IPA (link everything for tvOS)
 
 on:
   workflow_dispatch:
@@ -60,6 +60,7 @@ jobs:
           find downloads/fex -name "libsoftfloat_3e.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           # DXMT combined
           find downloads/dxmt -name "libdxmt_combined_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
+          find downloads/dxmt -name "libllvm_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           find downloads/dxmt -name "libdxmt_unix_tvos.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true
           # GnuTLS/FFmpeg from toolchains artifact
           find downloads/toolchains -name "libgnutls.a" -exec cp {} app/Madeira/ \; 2>/dev/null || true

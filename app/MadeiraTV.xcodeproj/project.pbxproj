@@ -13,6 +13,7 @@
 		ACC1043E224C45CB6B1778A5 /* libwineserver.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A352ABBF281B056789A87551 /* libwineserver.a */; };
 		A330D2D8CAB535B8490F6353 /* libwin32u_unix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC16B617A5B6B5FFBAD480A3 /* libwin32u_unix.a */; };
 		A1D0F1413240E5B3AB3CEF49 /* libdxmt_combined_tvos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD9E90409B7D7566BB92375D /* libdxmt_combined_tvos.a */; };
+		A2169E1F7A50E540AB543F88 /* libllvm_tvos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A50616CF11D525440BD26F4A /* libllvm_tvos.a */; };
 		ACB76E60E7E77524E9FC767D /* libFEXCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF830C081F1A5505BBC8EB32 /* libFEXCore.a */; };
 		A756ACCDDFAC85C34873FE6B /* libFEXCore_Base.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA215055A5B0D55059ABAD18 /* libFEXCore_Base.a */; };
 		ADD060DB527E55ED1BB7CB2D /* libfmt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C199263D230565695757F6 /* libfmt.a */; };
@@ -102,6 +103,7 @@
 		A352ABBF281B056789A87551 /* libwineserver.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwineserver.a"; path = "Madeira/libwineserver.a"; sourceTree = "<group>"; };
 		AC16B617A5B6B5FFBAD480A3 /* libwin32u_unix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libwin32u_unix.a"; path = "Madeira/libwin32u_unix.a"; sourceTree = "<group>"; };
 		AD9E90409B7D7566BB92375D /* libdxmt_combined_tvos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libdxmt_combined_tvos.a"; path = "Madeira/libdxmt_combined_tvos.a"; sourceTree = "<group>"; };
+		A50616CF11D525440BD26F4A /* libllvm_tvos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libllvm_tvos.a"; path = "Madeira/libllvm_tvos.a"; sourceTree = "<group>"; };
 		AF830C081F1A5505BBC8EB32 /* libFEXCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libFEXCore.a"; path = "Madeira/libFEXCore.a"; sourceTree = "<group>"; };
 		AA215055A5B0D55059ABAD18 /* libFEXCore_Base.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libFEXCore_Base.a"; path = "Madeira/libFEXCore_Base.a"; sourceTree = "<group>"; };
 		A8C199263D230565695757F6 /* libfmt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfmt.a"; path = "Madeira/libfmt.a"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				ACC1043E224C45CB6B1778A5 /* libwineserver.a in Frameworks */,
 				A330D2D8CAB535B8490F6353 /* libwin32u_unix.a in Frameworks */,
 				A1D0F1413240E5B3AB3CEF49 /* libdxmt_combined_tvos.a in Frameworks */,
+				A2169E1F7A50E540AB543F88 /* libllvm_tvos.a in Frameworks */,
 				ACB76E60E7E77524E9FC767D /* libFEXCore.a in Frameworks */,
 				A756ACCDDFAC85C34873FE6B /* libFEXCore_Base.a in Frameworks */,
 				ADD060DB527E55ED1BB7CB2D /* libfmt.a in Frameworks */,
