@@ -79,6 +79,12 @@ proj.append(f'\t\t{libz_bf} /* libz.tbd in Frameworks */ = {{isa = PBXBuildFile;
 liblzma_bf = uid('bf-liblzma')
 liblzma_fr = uid('fr-liblzma')
 proj.append(f'\t\t{liblzma_bf} /* liblzma.tbd in Frameworks */ = {{isa = PBXBuildFile; fileRef = {liblzma_fr} /* liblzma.tbd */; }};')
+libcxx_bf = uid('bf-libcxx')
+libcxx_fr = uid('fr-libcxx')
+libcxxabi_bf = uid('bf-libcxxabi')
+libcxxabi_fr = uid('fr-libcxxabi')
+proj.append(f'\t\t{libcxx_bf} /* libc++.tbd in Frameworks */ = {{isa = PBXBuildFile; fileRef = {libcxx_fr} /* libc++.tbd */; }};')
+proj.append(f'\t\t{libcxxabi_bf} /* libc++abi.tbd in Frameworks */ = {{isa = PBXBuildFile; fileRef = {libcxxabi_fr} /* libc++abi.tbd */; }};')
 
 # Static libraries built by the Phase 2 toolchain, staged in app/Madeira/.
 static_libs = [
@@ -144,6 +150,8 @@ product_ref = uid('fr-app')
 proj.append(f'\t\t{product_ref} /* MadeiraTV.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadeiraTV.app; sourceTree = BUILT_PRODUCTS_DIR; }};')
 proj.append(f'\t\t{libz_fr} /* libz.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; }};')
 proj.append(f'\t\t{liblzma_fr} /* liblzma.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; }};')
+proj.append(f'\t\t{libcxx_fr} /* libc++.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = usr/lib/libc++.tbd; sourceTree = SDKROOT; }};')
+proj.append(f'\t\t{libcxxabi_fr} /* libc++abi.tbd */ = {{isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = usr/lib/libc++abi.tbd; sourceTree = SDKROOT; }};')
 for lib in static_libs:
     fr = static_fr[lib]
     proj.append(f'\t\t{fr} /* {lib} */ = {{isa = PBXFileReference; lastKnownFileType = archive.ar; name = "{lib}"; path = "Madeira/{lib}"; sourceTree = "<group>"; }};')
@@ -158,6 +166,8 @@ proj.append('\t\t\tbuildActionMask = 2147483647;')
 proj.append('\t\t\tfiles = (')
 proj.append(f'\t\t\t\t{libz_bf} /* libz.tbd in Frameworks */,')
 proj.append(f'\t\t\t\t{liblzma_bf} /* liblzma.tbd in Frameworks */,')
+proj.append(f'\t\t\t\t{libcxx_bf} /* libc++.tbd in Frameworks */,')
+proj.append(f'\t\t\t\t{libcxxabi_bf} /* libc++abi.tbd in Frameworks */,')
 for lib in static_libs:
     proj.append(f'\t\t\t\t{static_bf[lib]} /* {lib} in Frameworks */,')
 proj.append('\t\t\t);')
