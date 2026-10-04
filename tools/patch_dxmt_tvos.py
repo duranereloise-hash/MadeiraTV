@@ -35,10 +35,33 @@ src = re.sub(
     r"(layer\.wantsExtendedDynamicRangeContent \? screen\.maximumExtendedDynamicRangeColorComponentValue : 1\.0;)",
     r"#if !TARGET_OS_TV\n  \1\n#else\n  1.0\n#endif", src)
 
+# task_get_special_port is TVOS_PROHIBITED in the SDK but exists in the kernel;
+# provide a dlsym shim right after the mach include.
+TGSP = """#if TARGET_OS_TV && defined(__APPLE__)
+#include <dlfcn.h>
+#define task_get_special_port madeira_tvos_task_get_special_port
+static inline kern_return_t madeira_tvos_task_get_special_port(mach_port_t task,
+                                                               int which_port,
+                                                               mach_port_t *port)
+{
+    typedef kern_return_t (*fn_t)(mach_port_t, int, mach_port_t *);
+    static fn_t fn;
+    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, \"task_get_special_port\");
+    if (!fn) return KERN_FAILURE;
+    return fn(task, which_port, port);
+}
+#endif
+"""
+anchor = "#include <TargetConditionals.h>\n"
+if anchor in src:
+    src = src.replace(anchor, anchor + TGSP, 1)
+elif "#include <dlfcn.h>" in src:
+    src = src.replace("#include <dlfcn.h>", "#include <dlfcn.h>\n" + TGSP, 1)
+
 if src != orig:
     with open(path, "w", encoding="utf-8") as f:
         f.write(src)
-    print("patched TARGET_OS_IOS -> (TARGET_OS_IOS || TARGET_OS_TV) + EDR guards")
+    print("patched TARGET_OS_IOS -> (TARGET_OS_IOS || TARGET_OS_TV) + EDR guards + task_get_special_port shim")
 else:
     print("no changes; maybe already patched differently")
     sys.exit(0)
