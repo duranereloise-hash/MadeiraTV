@@ -99,10 +99,15 @@ jobs:
             https://github.com/duranereloise-hash/MadeiraTV/releases/download/windows-bundles-v1/aarch64-windows.zip
           curl -sSL -o bundles/arm64ec.zip \
             https://github.com/duranereloise-hash/MadeiraTV/releases/download/windows-bundles-v1/arm64ec-windows.zip
-          (cd bundles && unzip -o -q aarch64.zip && unzip -o -q arm64ec.zip)
-          # Copy into app/Madeira (does not overwrite CI-built DLLs unless zip lacks them?)
-          cp -R bundles/aarch64-windows/. app/Madeira/aarch64-windows/ 2>/dev/null || true
-          cp -R bundles/arm64ec-windows/. app/Madeira/arm64ec-windows/ 2>/dev/null || true
+          ls -la bundles/
+          # zips contain the bundle contents at the archive root
+          mkdir -p bundles/aarch64 bundles/arm64ec
+          (cd bundles && unzip -o -q aarch64.zip -d aarch64)
+          (cd bundles && unzip -o -q arm64ec.zip -d arm64ec)
+          ls bundles/aarch64 | head -3
+          ls bundles/arm64ec | head -3
+          cp -R bundles/aarch64/. app/Madeira/aarch64-windows/ 2>/dev/null || true
+          cp -R bundles/arm64ec/. app/Madeira/arm64ec-windows/ 2>/dev/null || true
           echo "aarch64-windows: $(ls app/Madeira/aarch64-windows | wc -l) files"
           echo "arm64ec-windows: $(ls app/Madeira/arm64ec-windows | wc -l) files"
           ls -la app/Madeira/aarch64-windows/cube.exe app/Madeira/arm64ec-windows/cube-x64.exe 2>/dev/null || echo "WARNING: cube exe missing!"
