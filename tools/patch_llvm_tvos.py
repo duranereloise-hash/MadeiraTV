@@ -78,10 +78,31 @@ if os.path.exists(proc_inc):
         # Align the shim right below the mach includes.
         anchor = "#include <mach/mach.h>\n"
         if anchor in psrc:
-            psrc = psrc.replace(anchor, anchor + repl, 1)
+            # task_get_exception_ports is also TVOS_PROHIBITED; shim it too.
+            getter = (
+                "#if defined(__APPLE__) && defined(TARGET_OS_TV) && TARGET_OS_TV\n"
+                "#define task_get_exception_ports madeira_tvos_task_get_exception_ports\n"
+                "static inline kern_return_t madeira_tvos_task_get_exception_ports(\n"
+                "    mach_port_t task, exception_mask_t exception_mask,\n"
+                "    exception_mask_array_t masks, mach_msg_type_number_t *masks_count,\n"
+                "    exception_handler_array_t old_handlers, exception_behavior_array_t old_behaviors,\n"
+                "    thread_state_flavor_array_t old_flavors)\n"
+                "{\n"
+                "    typedef kern_return_t (*fn_t)(mach_port_t, exception_mask_t,\n"
+                "        exception_mask_array_t, mach_msg_type_number_t *,\n"
+                "        exception_handler_array_t, exception_behavior_array_t,\n"
+                "        thread_state_flavor_array_t);\n"
+                "    static fn_t fn;\n"
+                "    if (!fn) fn = (fn_t)dlsym(RTLD_DEFAULT, \"task_get_exception_ports\");\n"
+                "    if (!fn) return KERN_FAILURE;\n"
+                "    return fn(task, exception_mask, masks, masks_count, old_handlers, old_behaviors, old_flavors);\n"
+                "}\n"
+                "#endif\n"
+            )
+            psrc = psrc.replace(anchor, anchor + repl + getter, 1)
             with open(proc_inc, "w", encoding="utf-8") as f:
                 f.write(psrc)
-            print("patched task_set_exception_ports out for tvOS")
+            print("patched task_{set,get}_exception_ports out for tvOS")
         else:
             print("WARN: mach/mach.h include not found in Process.inc")
     elif "madeira_tvos_task_set_exception_ports" in psrc:
