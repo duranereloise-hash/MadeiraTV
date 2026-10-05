@@ -34,21 +34,17 @@ enum CrashCatcher {
 
     static func install() {
         NSSetUncaughtExceptionHandler { exception in
-            let desc = "\(exception.name) \(exception.reason ?? "") \(exception.callStackSymbols.joined(separator: "\n"))"
-            write("[NSException] \(desc)")
+            let desc = "\(exception.name) \(exception.reason ?? "")"
+            CrashCatcher.write("[NSException] \(desc)")
+            CrashCatcher.write(exception.callStackSymbols.joined(separator: "\n"))
         }
         let sigs: [Int32] = [SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV, SIGTRAP, SIGSYS]
         for s in sigs {
-            signal(s) { sig in
-                write("[signal] \(sig)")
-                // reset to default and re-raise so the app still dies
-                signal(sig, SIG_DFL)
-                raise(sig)
-            }
+            signal(s, crashSignalHandler)
         }
     }
 
-    private static func write(_ msg: String) {
+    static func write(_ msg: String) {
         let line = "[\(Date())] \(msg)\n"
         if let h = try? FileHandle(forWritingTo: logURL) {
             h.seekToEndOfFile()
@@ -58,6 +54,12 @@ enum CrashCatcher {
             try? line.data(using: .utf8)?.write(to: logURL, options: .atomic)
         }
     }
+}
+
+private func crashSignalHandler(_ sig: Int32) {
+    CrashCatcher.write("[signal] \(sig)")
+    signal(sig, SIG_DFL)
+    raise(sig)
 }
 
 /// Minimal GCController observer so gamepads/MFi/Siri Remote are recognised.
