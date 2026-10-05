@@ -436,7 +436,24 @@ void madeira_seed_prefix_if_needed(const char *prefix_path) {
         [fm createDirectoryAtPath:dosdev withIntermediateDirectories:YES attributes:nil error:nil];
         NSString *cLink = [dosdev stringByAppendingPathComponent:@"c:"];
         [fm removeItemAtPath:cLink error:nil];
-        [fm createSymbolicLinkAtPath:cLink withDestinationPath:@"../drive_c" error:nil];
+        NSError *linkErr = nil;
+        BOOL linkOK = [fm createSymbolicLinkAtPath:cLink withDestinationPath:@"../drive_c" error:&linkErr];
+        dprintf(STDERR_FILENO, "[seed] dosdevices/c: symlink -> ../drive_c ok=%d err=%@\n",
+                linkOK ? 1 : 0, linkErr ? linkErr.localizedDescription.UTF8String : "-");
+        {
+            NSString *zLink = [dosdev stringByAppendingPathComponent:@"z:"];
+            [fm removeItemAtPath:zLink error:nil];
+            NSError *zErr = nil;
+            BOOL zOK = [fm createSymbolicLinkAtPath:zLink withDestinationPath:@"/" error:&zErr];
+            dprintf(STDERR_FILENO, "[seed] dosdevices/z: symlink -> / ok=%d err=%@\n",
+                    zOK ? 1 : 0, zErr ? zErr.localizedDescription.UTF8String : "-");
+        }
+        {
+            NSArray *entries = [fm contentsOfDirectoryAtPath:dosdev error:nil];
+            dprintf(STDERR_FILENO, "[seed] dosdevices listing: %lu entries (%s)\n",
+                    (unsigned long)(entries ? entries.count : 0),
+                    entries ? [[entries componentsJoinedByString:@","] UTF8String] : "N/A");
+        }
 
         /* ml666: repair the usersmadeira escaping damage BEFORE anything reads
          * the registry, then the (now scoped) ml581 legacy cleanup. */
