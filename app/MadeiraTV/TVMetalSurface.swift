@@ -68,4 +68,9 @@ final class TVMetalSurface: UIView {
         Self.registered = true
         madeira_display_set_layer(metalLayer)
     }
+
+    /// Remove the surface from the window so the SwiftUI menu is visible again.
+    func hide() {
+        removeFromSuperview()
+    }
 }

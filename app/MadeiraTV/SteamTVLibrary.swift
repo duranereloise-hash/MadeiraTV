@@ -25,6 +25,7 @@ final class SteamTVLibrary: ObservableObject {
     @Published var error: String?
     @Published var diagnostics: String?
     @Published private(set) var launchingID: UInt32?
+    @Published private(set) var sessionActive = false
 
     private let session = SteamSession()
     private lazy var fetcher = SteamLibraryFetcher(session: session)
@@ -94,6 +95,27 @@ final class SteamTVLibrary: ObservableObject {
         downloads = [:]
         error = nil
         SteamLog.event("[steam-tv] signed out")
+    }
+
+    /// Stops a running game session and returns to the menu. Called from the
+    /// Siri Remote Menu button via .onExitCommand.
+    func stopGame() {
+        guard sessionActive || wineserver_is_running() != 0 || wine_process_is_running() != 0 else { return }
+        diagnostics = "Stopping…"
+        DispatchQueue.global(qos: .userInitiated).async {
+            if wine_process_is_running() != 0 {
+                // No forced-kill API; signal the server which stops the client.
+            }
+            if wineserver_is_running() != 0 {
+                wineserver_stop()
+            }
+            DispatchQueue.main.async {
+                self.sessionActive = false
+                self.diagnostics = nil
+                TVMetalSurface.shared.hide()
+                SteamLog.event("[steam-tv] game stopped, back to menu")
+            }
+        }
     }
 
     /// Owned Windows games + what is already installed on disk.
@@ -358,7 +380,10 @@ _ = mkdir(current, 0o777)
                 DispatchQueue.main.async {
                     // Always clear the launcher spinner, success or failure.
                     self?.launchingID = nil
-                    if message == nil { self?.startRenderDiagnostics() }
+                    if message == nil {
+                        self?.sessionActive = true
+                        self?.startRenderDiagnostics()
+                    }
                     completion(message)
                 }
             }

@@ -32,6 +32,11 @@ struct TVHomeView: View {
             }
         }
         .onAppear { steam.start() }
+        .onExitCommand {
+            if steam.sessionActive {
+                steam.stopGame()
+            }
+        }
     }
 }
 
