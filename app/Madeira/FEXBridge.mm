@@ -44,7 +44,6 @@
 #include <thread>
 #include <execinfo.h>
 #include <signal.h>
-#include <sys/ptrace.h>
 
 // Embedded x86-64 ELF binary (Hello World, statically linked)
 #include "hello_x86.h"
@@ -254,13 +253,11 @@ extern "C" bool fex_ensure_jit_pool(void) {
     return jit_pool_init();
 }
 
-// Ask the kernel to mark this process as debugged (CS_DEBUGGED). On sideloaded
-// apps carrying get-task-allow this unlocks MAP_JIT and executable memory.
-// Calls may return errors while sandboxed; the caller retries after an
-// external JIT enabler acts.
+// Ask the kernel to mark this process as debugged (CS_DEBUGGED). tvOS has no
+// ptrace(PT_TRACE_ME) header; on iOS-family it's what an external JIT enabler
+// (JitStreamer/localdevvpn) does for us. Here we just report unsupported.
 extern "C" int madeira_self_ptrace(void) {
-    int r = ptrace(PT_TRACE_ME, 0, NULL, 0);
-    return r == 0 ? 0 : errno;
+    return -1;  // ptrace not available on tvOS; JIT relies on MeloNX pool
 }
 
 // ---------------------------------------------------------------------------
