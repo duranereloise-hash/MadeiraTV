@@ -136,8 +136,16 @@ final class SteamTVLibrary: ObservableObject {
 
     /// Whether an app has a Windows depot / can install on tvOS's Wine.
     private static func isWindowsApp(_ app: SteamAppInfo) -> Bool {
-        if app.oslist.contains("windows") { return true }
-        return app.depots.contains { ($0.oslist.isEmpty || $0.oslist.contains("windows")) }
+        guard app.oslist.contains("windows") || app.depots.contains(where: { $0.oslist.isEmpty || $0.oslist.contains("windows") }) else {
+            return false
+        }
+        // Skip 32-bit-only games: the tvOS bundle carries no i386-windows
+        // (WoW64) set, so Wine cannot load them (black screen / no render).
+        // A game with at least one 64-bit Windows depot is fine.
+        return app.depots.contains { d in
+            (d.oslist.isEmpty || d.oslist.contains("windows")) &&
+                (d.osarch.isEmpty || d.osarch == "64")
+        }
     }
 
     // MARK: - Downloads
@@ -320,13 +328,27 @@ _ = mkdir(current, 0o777)
             TVMetalSurface.shared.registerDisplay()
             DispatchQueue.global(qos: .userInitiated).async {
                 let message: String?
+                // Restart a clean wineserver: previous attempts may have left a
+                // wedged server (client stuck in 'waiting for request_fd').
+                if wineserver_is_running() != 0 {
+                    wineserver_stop()
+                    Thread.sleep(forTimeInterval: 1.0)
+                }
                 let ws = wineserver_start(prefix)
                 if ws != 0 {
                     message = "wineserver failed (\(ws))"
                 } else {
-                    Thread.sleep(forTimeInterval: 1.0)
-                    if wineserver_is_running() == 0 {
-                        message = "wineserver is not ready"
+                    // Give wineserver time to finish init (registry seed etc.)
+                    // before injecting the client socket; 1s was too short and
+                    // the client wedged in 'waiting for request_fd'.
+                    var ready = false
+                    for _ in 0..<4 {
+                        Thread.sleep(forTimeInterval: 1.0)
+                        if wineserver_is_running() != 0 { ready = true; break }
+                    }
+                    SteamLog.event("[steam-tv] wineserver ready=\(ready)")
+                    if !ready {
+                        message = "wineserver did not become ready"
                     } else {
                         setenv("MADEIRA_EXE", exe, 1)
                         setenv("MADEIRA_WORKDIR", workdir, 1)
