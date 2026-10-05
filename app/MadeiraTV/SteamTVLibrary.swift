@@ -225,6 +225,7 @@ final class SteamTVLibrary: ObservableObject {
         let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
         let path = base.appendingPathComponent("madeira-log.txt").path
         let fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0o644)
+        CrashCatcher.write("[launch] redirectLogToFile fd=\(fd) path=\(path)")
         guard fd >= 0 else { return }
         dup2(fd, STDOUT_FILENO)
         dup2(fd, STDERR_FILENO)
@@ -443,13 +444,17 @@ _ = mkdir(current, 0o777)
                 let jitOff = fex_get_jit_write_offset()
                 let jitOK = jitOff != 0
                 SteamLog.event("[steam-tv] JIT offset=\(jitOff) enabled=\(jitOK)")
+                CrashCatcher.write("[launch] bg: jit ok=\(jitOK) - dispatching to main")
                 DispatchQueue.main.async {
+                    CrashCatcher.write("[launch] main: begin post-launch UI")
                     self?.launchingID = nil
                     self?.jitStatus = jitOK ? .enabled : .disabled
                     if message == nil {
                         self?.sessionActive = true
+                        CrashCatcher.write("[launch] main: sessionActive set, starting render diag")
                         self?.startRenderDiagnostics()
                     }
+                    CrashCatcher.write("[launch] main: completion")
                     completion(message)
                 }
             }
