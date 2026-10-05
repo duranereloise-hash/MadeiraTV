@@ -29,6 +29,12 @@
 #include <os/log.h>
 #include <pthread.h>
 
+// MAP_JIT is exposed on Darwin when _PTHREAD_JIT_MAP is on; tvOS headers may
+// not define it. 0x800 is the stable MAP_JIT value across macOS/iOS/tvOS.
+#ifndef MAP_JIT
+#define MAP_JIT 0x800
+#endif
+
 #include <atomic>
 #include <csetjmp>
 #include <cstdio>
@@ -117,7 +123,45 @@ static bool jit_pool_init(void) {
     size_t size = JIT_POOL_SIZE;
     mach_port_t task = mach_task_self();
 
-    // Try the MeloNX dual-map FIRST: it does not depend on an attached
+    // 0) Preferred on tvOS/iOS sandbox: MAP_JIT + pthread_jit_write_protect.
+    //    This is the route MeloNX/Cemu use with the com.apple.security.cs.
+    //    allow-jit entitlement (already in Madeira.entitlements). It does not
+    //    need a debugger.
+    {
+        fex_log("Trying MAP_JIT pool (%zu MB)", size >> 20);
+        void *jit = mmap(NULL, size, PROT_READ | PROT_WRITE | PROT_EXECUTE,
+                         MAP_ANON | MAP_PRIVATE | MAP_JIT, -1, 0);
+        if (jit != MAP_FAILED) {
+            // RW alias for writing generated code.
+            vm_address_t rw_addr = 0;
+            vm_prot_t cur = 0, max = 0;
+            kern_return_t kr = vm_remap(task, &rw_addr, size, 0, VM_FLAGS_ANYWHERE,
+                                        task, (vm_address_t)jit, FALSE, &cur, &max, VM_INHERIT_NONE);
+            if (kr == KERN_SUCCESS) {
+                kr = vm_protect(task, rw_addr, size, FALSE, VM_PROT_READ | VM_PROT_WRITE);
+                if (kr == KERN_SUCCESS) {
+                    pthread_jit_write_protect_np(false);  // allow writing code
+                    g_jit_rx_base = jit;
+                    g_jit_rw_base = reinterpret_cast<void*>(rw_addr);
+                    g_jit_pool_size = size;
+                    int64_t off = reinterpret_cast<intptr_t>(rw_addr) - reinterpret_cast<intptr_t>(jit);
+                    FEXCore::DualMap::WriteOffset = off;
+                    fex_log("MAP_JIT pool: RX=%p RW=%p size=%zu WriteOffset=%lld (jit_enabled)",
+                            g_jit_rx_base, g_jit_rw_base, g_jit_pool_size, (long long)off);
+                    return true;
+                }
+                vm_deallocate(task, rw_addr, size);
+                fex_log("MAP_JIT vm_protect RW failed (kr=%d)", kr);
+            } else {
+                fex_log("MAP_JIT vm_remap RW failed (kr=%d)", kr);
+            }
+            munmap(jit, size);
+        } else {
+            fex_log("MAP_JIT mmap failed (errno=%d) — sandbox may reject; trying MeloNX", errno);
+        }
+    }
+
+    // Try the MeloNX dual-map SECOND: it does not depend on an attached
     // debugger. jit26_prepare_region()/BRK #0xf00d only works with a
     // StikDebug debugger attached; on a bare sideloaded tvOS install the
     // debugger path returned NULL and the JIT pool never came up.
