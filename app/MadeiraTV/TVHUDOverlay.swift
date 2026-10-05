@@ -86,30 +86,13 @@ struct TVHUDOverlay: View {
     }
 
     private var cpuInfo: String {
-        var info = host_basic_info_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<host_basic_info_data_t>.size / MemoryLayout<integer_t>.size)
-        let kr = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) {
-                host_info(mach_host_self(), HOST_BASIC_INFO, $0, &count)
-            }
-        }
-        guard kr == KERN_SUCCESS else { return "n/a" }
-        let cores = info.max_cpus
+        let cores = ProcessInfo.processInfo.activeProcessorCount
         return "\(cores) cores"
     }
 
     private var ramInfo: String {
-        var stats = vm_statistics64_data_t()
-        var count = mach_msg_type_number_t(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
-        let kr = withUnsafeMutablePointer(to: &stats) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) {
-                host_statistics64(mach_host_self(), HOST_VM_INFO64, $0, &count)
-            }
-        }
-        guard kr == KERN_SUCCESS else { return "n/a" }
-        let pageSize = UInt64(vm_kernel_page_size)
-        let freeMB = UInt64(stats.free_count) * pageSize / 1_048_576
-        let activeMB = UInt64(stats.active_count) * pageSize / 1_048_576
-        return "free \(freeMB) MB / active \(activeMB) MB"
+        let avail = os_proc_available_memory()
+        let availMB = UInt64(avail) / 1_048_576
+        return "avail \(availMB) MB"
     }
 }
