@@ -410,6 +410,8 @@ _ = mkdir(current, 0o777)
                 let message: String?
                 // Capture FEX/Wine C logs to madeira-log.txt from the start.
                 self?.redirectLogToFile()
+                setenv("MADEIRA_DEBUG_VERBOSE", "1", 1)   // wineserver fd/inject traces
+                setenv("WINEDEBUG", "err+all,err-virtual", 1)
                 // wineserver_start is idempotent: returns 0 if already running.
                 let ws = wineserver_start(prefix)
                 if ws != 0 {
