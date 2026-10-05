@@ -940,6 +940,23 @@ static void acquire_lock(void)
     }
 
     if ((fd = socket( AF_UNIX, SOCK_STREAM, 0 )) == -1) fatal_error( "socket: %s\n", strerror( errno ));
+#ifdef WINE_IOS
+    /* tvOS sandbox forbids bind() on AF_UNIX sockets in the app container
+     * ("bind: Operation not permitted"). All client connections arrive via
+     * the app bridge's socketpair injection (g_injected_client_fd ->
+     * master_socket_handle_client), so the master socket only needs a valid
+     * fd for the poll array — it never listens. Fabricate it from an
+     * unbound socketpair so bind() is never attempted. */
+    {
+        int spar[2];
+        if (socketpair( AF_UNIX, SOCK_STREAM, 0, spar ) == -1)
+            fatal_error( "socketpair: %s\n", strerror( errno ));
+        close( spar[1] );  /* keep one end; the peer end is unused */
+        fd = spar[0];
+        fcntl( fd, F_SETFL, O_NONBLOCK );
+        ws_log("[wineserver] acquire_lock: iOS master socket (socketpair) fd=%d NONBLOCK — bind skipped", fd);
+    }
+#else
     addr.sun_family = AF_UNIX;
     strcpy( addr.sun_path, server_socket_name );
     slen = sizeof(addr) - sizeof(addr.sun_path) + strlen(addr.sun_path) + 1;
@@ -966,6 +983,7 @@ static void acquire_lock(void)
     /* iOS: make master socket non-blocking so accept() never blocks */
     fcntl( fd, F_SETFL, O_NONBLOCK );
     ws_log("[wineserver] acquire_lock: listening on fd=%d (NONBLOCK), server_dir=%s", fd, server_dir);
+#endif
 
     if (!(master_socket = alloc_object( &master_socket_ops )) ||
         !(master_socket->fd = create_anonymous_fd( &master_socket_fd_ops, fd, &master_socket->obj, 0 )))
