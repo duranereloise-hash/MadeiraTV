@@ -47,6 +47,10 @@ extern void wineserver_log_set_file(const char *path);
 // Set NLS directory for wineserver (defined in unicode_ios.c)
 extern void wineserver_set_nls_dir(const char *path);
 
+// Shared crash breadcrumb writer (WineProcessBridge.m) — write to the same
+// Caches/crash.log CrashCatcher uses, so a SIGKILL leaves a timestamped tail.
+extern void madeira_crash_log(const char *fmt, ...);
+
 // Override wineserver's fatal_error to use logging and pthread_exit instead of exit(1)
 void fatal_error( const char *err, ... ) {
     va_list args;
@@ -73,6 +77,7 @@ static char *g_prefix_path = NULL;
 
 static void *wineserver_thread_func(void *arg) {
     @autoreleasepool {
+        madeira_crash_log("[ws] wineserver_thread entered");
         // Set up file-based logging. Use Caches (not Documents): on tvOS a
         // free-provisioning sideload does not guarantee Documents is writable,
         // and this thread's logs (ws_log: inject_client_fd, poll-loop, INIT)
@@ -81,6 +86,7 @@ static void *wineserver_thread_func(void *arg) {
         // server markers land in the log TVLogServer already serves.
         NSString *docs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
         NSString *logPath = [docs stringByAppendingPathComponent:@"madeira-log.txt"];
+        madeira_crash_log("[ws] log path=%s", logPath.UTF8String);
         pthread_mutex_lock(&g_ws_bridge_log_mutex);
         if (g_ws_bridge_log) fclose(g_ws_bridge_log);
         g_ws_bridge_log = fopen(logPath.UTF8String, "a");
@@ -126,7 +132,9 @@ static void *wineserver_thread_func(void *arg) {
         int argc = 2;
 
         wine_log_msg("Calling wineserver_main...");
+        madeira_crash_log("[ws] calling wineserver_main");
         int ret = wineserver_main(argc, argv);
+        madeira_crash_log("[ws] wineserver_main returned %d", ret);
         wine_log_msg("wineserver_main returned: %d", ret);
 
         g_wineserver_running = 0;
