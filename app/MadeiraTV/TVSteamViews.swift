@@ -32,6 +32,12 @@ struct TVHomeView: View {
             }
         }
         .onAppear { steam.start() }
+        .overlay {
+            if steam.sessionActive && TVSettings.showHUD {
+                TVHUDOverlay()
+                    .allowsHitTesting(false)
+            }
+        }
         .onExitCommand {
             if steam.sessionActive {
                 steam.stopGame()
@@ -47,6 +53,7 @@ struct TVHeader: View {
     @State private var showAccount = false
     @State private var showLogs = false
     @State private var showError = false
+    @State private var showSettings = false
 
     private var jitDot: some View {
         HStack(spacing: 6) {
@@ -91,6 +98,17 @@ struct TVHeader: View {
             .buttonStyle(.plain)
             .sheet(isPresented: $showLogs) {
                 TVLogView()
+            }
+            Button {
+                showSettings = true
+            } label: {
+                Image(systemName: "gearshape.fill")
+                    .font(.title2)
+                    .padding(12)
+            }
+            .buttonStyle(.plain)
+            .sheet(isPresented: $showSettings) {
+                TVSettingsView()
             }
             Button {
                 showAccount = true

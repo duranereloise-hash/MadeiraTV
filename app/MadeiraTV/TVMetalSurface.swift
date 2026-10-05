@@ -55,7 +55,10 @@ final class TVMetalSurface: UIView {
         guard let window else { return }
         if superview !== window {
             removeFromSuperview()
-            window.addSubview(self)
+            // Insert at index 0 so any SwiftUI overlay (HUD, dialogs) drawn on
+            // top of the window stays ABOVE the Metal surface; without this the
+            // raw CAMetalLayer host obscures the overlay.
+            window.insertSubview(self, at: 0)
         }
         frame = window.bounds
     }

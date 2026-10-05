@@ -60,7 +60,9 @@
 		A9F71A7DCA7FD5F40ABA9EEC /* TVSteamViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2AFC27B555B150F1AF5EA34 /* TVSteamViews.swift */; };
 		A70E6DDBD88F156359539FDC /* SteamTVLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF47DB1CE5E3C50EA9E3FD87 /* SteamTVLibrary.swift */; };
 		A4B926B799D5B55BBBD55AEA /* TVMetalSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75BE97F25AB15F86AAB035F /* TVMetalSurface.swift */; };
-		A9512BE4AE9A654B7A36676F /* TVLogServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3930FEDDD69B50CFBA5F8C2 /* TVLogServer.swift */; };
+		A0000000000000000000C1 /* TVHUDOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000B1 /* TVHUDOverlay.swift */; };
+		A0000000000000000000C2 /* TVSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0000000000000000000B2 /* TVSettings.swift */; };
+ fileRef = A3930FEDDD69B50CFBA5F8C2 /* TVLogServer.swift */; };
 		AB3A151A72D5C5C5E829B211 /* chunk_zip.c in Sources */ = {isa = PBXBuildFile; fileRef = AB95E09B3B0B254BB94AAE94 /* chunk_zip.c */; };
 		AB324AAE719A150F3BC772E6 /* lzma_shim.c in Sources */ = {isa = PBXBuildFile; fileRef = AD0227EA22C2A58738380D34 /* lzma_shim.c */; };
 		AD01FA7FCB1CC561E9D280E3 /* zstd_edu.c in Sources */ = {isa = PBXBuildFile; fileRef = A7CAF30D28FF3575292D95B2 /* zstd_edu.c */; };
@@ -118,7 +120,9 @@
 		A2AFC27B555B150F1AF5EA34 /* TVSteamViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSteamViews.swift"; sourceTree = "<group>"; };
 		AF47DB1CE5E3C50EA9E3FD87 /* SteamTVLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SteamTVLibrary.swift"; sourceTree = "<group>"; };
 		A75BE97F25AB15F86AAB035F /* TVMetalSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVMetalSurface.swift"; sourceTree = "<group>"; };
-		A3930FEDDD69B50CFBA5F8C2 /* TVLogServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVLogServer.swift"; sourceTree = "<group>"; };
+		A0000000000000000000B1 /* TVHUDOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVHUDOverlay.swift"; sourceTree = "<group>"; };
+		A0000000000000000000B2 /* TVSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSettings.swift"; sourceTree = "<group>"; };
+ lastKnownFileType = sourcecode.swift; path = "TVLogServer.swift"; sourceTree = "<group>"; };
 		AB95E09B3B0B254BB94AAE94 /* chunk_zip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "chunk_zip.c"; path = "SwiftSteam/chunk_zip.c"; sourceTree = "<group>"; };
 		AD0227EA22C2A58738380D34 /* lzma_shim.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "lzma_shim.c"; path = "SwiftSteam/lzma_shim.c"; sourceTree = "<group>"; };
 		A7CAF30D28FF3575292D95B2 /* zstd_edu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "zstd_edu.c"; path = "SwiftSteam/zstd_edu.c"; sourceTree = "<group>"; };
@@ -273,7 +277,8 @@
 				A2AFC27B555B150F1AF5EA34 /* TVSteamViews.swift */,
 				AF47DB1CE5E3C50EA9E3FD87 /* SteamTVLibrary.swift */,
 				A75BE97F25AB15F86AAB035F /* TVMetalSurface.swift */,
-				A3930FEDDD69B50CFBA5F8C2 /* TVLogServer.swift */,
+						A0000000000000000000B1 /* TVHUDOverlay.swift */,
+		A0000000000000000000B2 /* TVSettings.swift */,
 				AB59B26BFB7B055559A3E722 /* Assets.xcassets */,
 				A70AAA1F1EE26514085DD238 /* Info-TVP.plist */,
 			);
@@ -392,7 +397,8 @@
 				A9F71A7DCA7FD5F40ABA9EEC /* TVSteamViews.swift in Sources */,
 				A70E6DDBD88F156359539FDC /* SteamTVLibrary.swift in Sources */,
 				A4B926B799D5B55BBBD55AEA /* TVMetalSurface.swift in Sources */,
-				A9512BE4AE9A654B7A36676F /* TVLogServer.swift in Sources */,
+						A0000000000000000000C1 /* TVHUDOverlay.swift in Sources */,
+		A0000000000000000000C2 /* TVSettings.swift in Sources */,
 				AB3A151A72D5C5C5E829B211 /* chunk_zip.c in Sources */,
 				AB324AAE719A150F3BC772E6 /* lzma_shim.c in Sources */,
 				AD01FA7FCB1CC561E9D280E3 /* zstd_edu.c in Sources */,
