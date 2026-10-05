@@ -28,6 +28,44 @@
 #include <sys/sysctl.h>
 
 #include "WineProcessBridge.h"
+/* ---- crash breadcrumb (C side) --------------------------------------- */
+/* Writes a line to Library/Caches/crash.log, the same file CrashCatcher
+ * (MadeiraTVApp.swift) uses. C threads (wine_process_thread,
+ * wineserver_thread_func, timeout handlers) can't easily reach Swift, so
+ * this gives us a signal-path-independent death trace even for SIGKILL. */
+static const char *madeira_crash_path(void)
+{
+    static char path[1024];
+    static int init;
+    if (!init)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        if (paths.count)
+        {
+            snprintf(path, sizeof(path), "%s/crash.log",
+                     [paths[0] UTF8String]);
+            init = 1;
+        }
+    }
+    return init ? path : NULL;
+}
+
+void madeira_crash_log(const char *fmt, ...)
+{
+    const char *p = madeira_crash_path();
+    if (!p) return;
+    va_list args;
+    va_start(args, fmt);
+    char buf[1024];
+    vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+    int fd = open(p, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    if (fd < 0) return;
+    char line[1280];
+    int n = snprintf(line, sizeof(line), "[%.0f] %s\n", [[NSDate date] timeIntervalSince1970], buf);
+    if (n > 0) write(fd, line, n);
+    close(fd);
+}
 #include "WineServerBridge.h"
 #include "PrefixExtractor.h"
 #include "FEXBridge.h"  // fex_get_jit_write_offset()
@@ -792,8 +830,27 @@ static void madeira_publish_host_probe(void)
     dprintf(STDERR_FILENO, "[WineProc] FEX host feature probe: %s\n", buf);
 }
 
+/* Crash heartbeat: one line per second into crash.log while the wine
+ * process is alive, so even a SIGKILL leaves a timestamped death point
+ * (a signal handler can't help there). Detached; stops itself when the
+ * app process dies. */
+static void *madeira_hb_main(void *arg)
+{
+    (void)arg;
+    static volatile int stop;
+    int i = 0;
+    while (!stop && i < 600)
+    {
+        madeira_crash_log("[hb] wine-process-alive %d", i);
+        i++;
+        for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
+    }
+    return NULL;
+}
+
 static void *wine_process_thread(void *arg) {
     @autoreleasepool {
+        madeira_crash_log("[wine] wine_process_thread entered");
         /* Perf: the guest main thread runs ON this pthread. Promote to
          * USER_INTERACTIVE so it schedules on P-cores with minimal kernel
          * timer coalescing (same rationale as start_thread in
@@ -805,7 +862,9 @@ static void *wine_process_thread(void *arg) {
          * server loads the registry. Kept here as a safety net for any path
          * that reaches Wine without going through wineserver_start() — the
          * stamp probe makes it a no-op stat once the prefix exists. */
+        madeira_crash_log("[wine] before seed_prefix");
         madeira_seed_prefix_if_needed(g_prefix_path);
+        madeira_crash_log("[wine] after seed_prefix");
 
         // Set environment for Wine
         setenv("WINEPREFIX", g_prefix_path, 1);
@@ -1541,6 +1600,7 @@ static void *wine_process_thread(void *arg) {
         wine_ios_exit_initialized = 1;
 
         LOG("Calling __wine_main...");
+        madeira_crash_log("[wine] calling __wine_main argc=%d", argc);
 
         /* WoW64: publish the main image's machine so the unix side reserves
          * this process's guest window before its first TEB, and hand FEX's
@@ -1549,13 +1609,16 @@ static void *wine_process_thread(void *arg) {
         if (has_i386_set) madeira_publish_host_probe();
 
         if (setjmp(wine_ios_exit_jmpbuf) == 0) {
+            madeira_crash_log("[wine] __wine_main ENTER");
             __wine_main(argc, argv);
+            madeira_crash_log("[wine] __wine_main returned normally");
             dprintf(STDERR_FILENO, "[WineProc] __wine_main returned normally\n");
         } else {
+            madeira_crash_log("[wine] __wine_main longjmp exit=%d", wine_ios_exit_code);
             dprintf(STDERR_FILENO, "[WineProc] Wine exited with code %d (caught by longjmp)\n", wine_ios_exit_code);
         }
 
-        g_wine_running = 0;
+        madeira_crash_log("[wine] g_wine_running=0, stop wineserver");
 
         // Stop wineserver to prevent CPU spin (iOS kills for excessive CPU)
         dprintf(STDERR_FILENO, "[WineProc] stopping wineserver...\n");
@@ -1591,6 +1654,17 @@ int wine_process_start(const char *prefix_path) {
     LOG("Starting Wine process with prefix: %{public}s", prefix_path);
 
     g_wine_running = 1;
+
+    /* Crash heartbeat: one line per second into crash.log while the wine
+     * process is alive, so even a SIGKILL leaves a timestamped death point
+     * (a signal handler can't help there). Detached; stops itself when the
+     * app process dies. */
+    {
+        static pthread_t hb_thread;
+        pthread_t t;
+        if (pthread_create(&t, NULL, &madeira_hb_main, NULL) == 0)
+            hb_thread = t;
+    }
 
     // Create socketpair to bypass broken iOS UDS accept()
     // pair[0] = wineserver side (injected as client fd)
