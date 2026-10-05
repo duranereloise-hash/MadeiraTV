@@ -73,8 +73,13 @@ static char *g_prefix_path = NULL;
 
 static void *wineserver_thread_func(void *arg) {
     @autoreleasepool {
-        // Set up file-based logging
-        NSString *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+        // Set up file-based logging. Use Caches (not Documents): on tvOS a
+        // free-provisioning sideload does not guarantee Documents is writable,
+        // and this thread's logs (ws_log: inject_client_fd, poll-loop, INIT)
+        // previously vanished into an unwritable Documents/madeira-log.txt.
+        // Caches is the same directory the client-side wine_log_write uses, so
+        // server markers land in the log TVLogServer already serves.
+        NSString *docs = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
         NSString *logPath = [docs stringByAppendingPathComponent:@"madeira-log.txt"];
         pthread_mutex_lock(&g_ws_bridge_log_mutex);
         if (g_ws_bridge_log) fclose(g_ws_bridge_log);
