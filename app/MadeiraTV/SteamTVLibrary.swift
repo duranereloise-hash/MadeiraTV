@@ -363,7 +363,7 @@ _ = mkdir(current, 0o777)
             DispatchQueue.global(qos: .userInitiated).async {
                 let message: String?
                 // Capture FEX/Wine C logs to madeira-log.txt from the start.
-                self.redirectLogToFile()
+                self?.redirectLogToFile()
                 // Restart a clean wineserver: previous attempts may have left a
                 // wedged server (client stuck in 'waiting for request_fd').
                 if wineserver_is_running() != 0 {
