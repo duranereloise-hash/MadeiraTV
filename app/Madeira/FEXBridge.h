@@ -17,6 +17,12 @@ bool fex_initialize(void);
 // the pool is ready.
 bool fex_ensure_jit_pool(void);
 
+// In-process JIT self-arm: asks the kernel to mark this process as debugged
+// (CS_DEBUGGED) via ptrace(PT_TRACE_ME), which is what unlocks MAP_JIT +
+// executable memory for sideloaded apps carrying get-task-allow. Returns
+// errno-ish: 0 = ok, negative = failure. Safe to call repeatedly.
+int madeira_self_ptrace(void);
+
 // Shut down FEXCore and free resources.
 void fex_shutdown(void);
 

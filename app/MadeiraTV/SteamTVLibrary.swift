@@ -94,9 +94,13 @@ final class SteamTVLibrary: ObservableObject {
     }
 
     private func jitArmPass(label: String) {
+        // Self-arm: ptrace(PT_TRACE_ME) marks the process CS_DEBUGGED, which
+        // unlocks MAP_JIT for a get-task-allow sideloaded app. May fail while
+        // sandboxed, but costs nothing to retry.
+        let tr = madeira_self_ptrace()
         let ok = fex_ensure_jit_pool()
         let off = fex_get_jit_write_offset()
-        SteamLog.event("[steam-tv] JIT \(label) ok=\(ok) offset=\(off)")
+        SteamLog.event("[steam-tv] JIT \(label) ptrace=\(tr) ok=\(ok) offset=\(off)")
         let enabled = ok && off != 0
         DispatchQueue.main.async { [weak self] in
             self?.jitStatus = enabled ? .enabled : .disabled
