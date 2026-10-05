@@ -338,17 +338,15 @@ _ = mkdir(current, 0o777)
                 if ws != 0 {
                     message = "wineserver failed (\(ws))"
                 } else {
-                    // Give wineserver time to finish init (registry seed etc.)
-                    // before injecting the client socket; 1s was too short and
-                    // the client wedged in 'waiting for request_fd'.
-                    var ready = false
-                    for _ in 0..<4 {
-                        Thread.sleep(forTimeInterval: 1.0)
-                        if wineserver_is_running() != 0 { ready = true; break }
-                    }
-                    SteamLog.event("[steam-tv] wineserver ready=\(ready)")
-                    if !ready {
-                        message = "wineserver did not become ready"
+                    // wineserver_is_running() flips true immediately, but real
+                    // init (registry seed, socket ready) takes longer; the
+                    // client then wedges in 'waiting for request_fd'. Give the
+                    // server a solid fixed window before we spawn the client.
+                    SteamLog.event("[steam-tv] wineserver starting, waiting 6s for init")
+                    Thread.sleep(forTimeInterval: 6.0)
+                    SteamLog.event("[steam-tv] wineserver running=\(wineserver_is_running())")
+                    if wineserver_is_running() == 0 {
+                        message = "wineserver did not stay up"
                     } else {
                         setenv("MADEIRA_EXE", exe, 1)
                         setenv("MADEIRA_WORKDIR", workdir, 1)

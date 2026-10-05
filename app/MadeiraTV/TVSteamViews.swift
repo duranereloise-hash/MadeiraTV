@@ -325,6 +325,14 @@ struct TVGameGrid: View {
         GridItem(.adaptive(minimum: 300, maximum: 360), spacing: 28)
     ]
 
+    private var installed: [SteamAppInfo] {
+        steam.games.filter { steam.isInstalled($0) }
+    }
+
+    private var notInstalled: [SteamAppInfo] {
+        steam.games.filter { !steam.isInstalled($0) }
+    }
+
     var body: some View {
         Group {
             if steam.loading && steam.games.isEmpty {
@@ -347,16 +355,82 @@ struct TVGameGrid: View {
                 }
             } else {
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 32) {
-                        ForEach(steam.games, id: \.appID) { game in
-                            TVGameCard(game: game)
+                    VStack(alignment: .leading, spacing: 28) {
+                        if !installed.isEmpty {
+                            Text("Installed")
+                                .font(.title2.bold())
+                                .padding(.horizontal, 48)
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack(spacing: 24) {
+                                    ForEach(installed, id: \.appID) { game in
+                                        TVInstalledCard(game: game)
+                                    }
+                                }
+                                .padding(.horizontal, 48)
+                            }
                         }
+                        Text("Library")
+                            .font(.title2.bold())
+                            .padding(.horizontal, 48)
+                            .padding(.top, installed.isEmpty ? 0 : 8)
+                        LazyVGrid(columns: columns, spacing: 32) {
+                            ForEach(notInstalled.isEmpty ? steam.games : notInstalled, id: \.appID) { game in
+                                TVGameCard(game: game)
+                            }
+                        }
+                        .padding(.horizontal, 48)
                     }
-                    .padding(.horizontal, 48)
                     .padding(.vertical, 32)
                 }
             }
         }
+    }
+}
+
+/// Compact horizontal card used in the "Installed" carousel.
+struct TVInstalledCard: View {
+    @EnvironmentObject private var steam: SteamTVLibrary
+    let game: SteamAppInfo
+    @State private var launchMessage: String?
+
+    private var heroURL: URL? { SteamTVLibrary.heroURL(for: game) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            AsyncImage(url: heroURL) { phase in
+                switch phase {
+                case .success(let image): image.resizable().scaledToFill()
+                case .failure: Color.gray.opacity(0.3)
+                default: ProgressView()
+                }
+            }
+            .frame(width: 220, height: 124)
+            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            Text(game.name)
+                .font(.subheadline.bold())
+                .lineLimit(1)
+                .frame(width: 220, alignment: .leading)
+            Button {
+                steam.launch(game) { message in
+                    launchMessage = message
+                }
+            } label: {
+                if steam.launchingID == game.appID {
+                    ProgressView().frame(maxWidth: .infinity)
+                } else {
+                    Label("Play", systemImage: "play.fill").frame(maxWidth: .infinity)
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .alert("Launch", isPresented: Binding(get: { launchMessage != nil }, set: { if !$0 { launchMessage = nil } })) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(launchMessage ?? "")
+            }
+        }
+        .padding(10)
+        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 16))
     }
 }
 
