@@ -109,8 +109,12 @@ enum TVLogServer {
         case "/all":
             let l = read(LogStore.logFileURL)
             let w = read(LogStore.logFileURL.deletingLastPathComponent().appendingPathComponent("madeira-log.txt"))
-            let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-            let s = docs?.appendingPathComponent("madeira-log.txt").map(read) ?? ""
+            let s: String
+            if let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                s = read(docs.appendingPathComponent("madeira-log.txt"))
+            } else {
+                s = ""
+            }
             return ("=== log.txt ===\n\(l)\n\n=== madeira-log.txt (Caches) ===\n\(w)\n\n=== madeira-log.txt (Documents/wineserver) ===\n\(s)", "text/plain; charset=utf-8")
         case "/ip":
             if let ip = localIP() {
