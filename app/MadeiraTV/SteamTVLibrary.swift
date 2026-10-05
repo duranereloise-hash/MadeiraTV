@@ -172,6 +172,18 @@ final class SteamTVLibrary: ObservableObject {
 
     // MARK: - Downloads
 
+    /// Redirect stdout+stderr to Library/Caches/madeira-log.txt so FEX/Wine
+    /// C logs are captured from the very first moment (they are produced
+    /// before WineProcessBridge's own redirect runs).
+    private func redirectLogToFile() {
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let path = base.appendingPathComponent("madeira-log.txt").path
+        let fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0o644)
+        guard fd >= 0 else { return }
+        dup2(fd, STDOUT_FILENO)
+        dup2(fd, STDERR_FILENO)
+    }
+
     /// Creates the Wine prefix (drive_c, dosdevices, registry template) if the
     /// prefix-template.tar.gz resource is present, or at least the drive_c dir.
     private func seedPrefixIfNeeded() {
@@ -350,6 +362,8 @@ _ = mkdir(current, 0o777)
             TVMetalSurface.shared.registerDisplay()
             DispatchQueue.global(qos: .userInitiated).async {
                 let message: String?
+                // Capture FEX/Wine C logs to madeira-log.txt from the start.
+                self.redirectLogToFile()
                 // Restart a clean wineserver: previous attempts may have left a
                 // wedged server (client stuck in 'waiting for request_fd').
                 if wineserver_is_running() != 0 {
