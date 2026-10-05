@@ -1587,9 +1587,11 @@ int wine_process_start(const char *prefix_path) {
     LOG("socketpair created: server_fd=%d, client_fd=%d", pair[0], pair[1]);
 
     // Set env var for ntdll to pick up instead of server_connect()
-    // Must use WINESERVERSOCKET — that's what Wine's server_init_process() checks
+    // Must use WINE_IOS_FD_SOCKET — that's what our ntdll server_ios.c now
+    // checks (build/ntdll-unix/server_ios.c:3843). Set both names for safety.
     char fd_str[16];
     snprintf(fd_str, sizeof(fd_str), "%d", pair[1]);
+    setenv("WINE_IOS_FD_SOCKET", fd_str, 1);
     setenv("WINESERVERSOCKET", fd_str, 1);
 
     // Inject wineserver side — the event loop will pick this up
