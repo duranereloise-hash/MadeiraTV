@@ -247,6 +247,12 @@ static bool jit_pool_init(void) {
     return true;
 }
 
+// Public: initialize just the JIT pool early (app start). Does not start the
+// full FEXCore engine; that still happens in wine_process_thread.
+extern "C" bool fex_ensure_jit_pool(void) {
+    return jit_pool_init();
+}
+
 // ---------------------------------------------------------------------------
 // Custom mmap/munmap hooks for FEXCore
 // ---------------------------------------------------------------------------

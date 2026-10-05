@@ -72,6 +72,42 @@ final class SteamTVLibrary: ObservableObject {
             MainActor.assumeIsolated { self?.signInChanged() }
         }
         refreshSignIn()
+        primeJIT()
+    }
+
+    /// Try to create the JIT pool immediately on app start (not first launch).
+    /// Then keep re-arming in the background: when an external JIT enabler
+    /// (LocalDevVPN / JitStreamer) attaches a debugger, CS_DEBUGGED gets set
+    /// and the MAP_JIT/debugger path starts succeeding — the dot flips green
+    /// on its own without restarting the app.
+    private func primeJIT() {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.redirectLogToFile()
+            self?.jitArmPass(label: "prime")
+            var attempts = 0
+            while !(self?.jitStatus.isEnabled ?? false) && attempts < 200 {
+                Thread.sleep(forTimeInterval: 3.0)
+                attempts += 1
+                self?.jitArmPass(label: "rearm-\(attempts)")
+            }
+        }
+    }
+
+    private func jitArmPass(label: String) {
+        let ok = fex_ensure_jit_pool()
+        let off = fex_get_jit_write_offset()
+        SteamLog.event("[steam-tv] JIT \(label) ok=\(ok) offset=\(off)")
+        let enabled = ok && off != 0
+        DispatchQueue.main.async { [weak self] in
+            self?.jitStatus = enabled ? .enabled : .disabled
+        }
+    }
+
+    /// Called from the log-server /jit route (external JIT enabler).
+    func rearmJIT() {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.jitArmPass(label: "route")
+        }
     }
 
     private func refreshSignIn() {

@@ -12,6 +12,11 @@ extern "C" {
 // Returns true on success.
 bool fex_initialize(void);
 
+// Initialize only the JIT pool (MAP_JIT/MeloNX dual-map). Safe to call on
+// app start so the pool exists before the first game launch; returns true if
+// the pool is ready.
+bool fex_ensure_jit_pool(void);
+
 // Shut down FEXCore and free resources.
 void fex_shutdown(void);
 

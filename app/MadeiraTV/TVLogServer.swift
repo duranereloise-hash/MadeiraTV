@@ -112,6 +112,16 @@ enum TVLogServer {
             return ("{\"ip\": null}", "application/json")
         case "/health":
             return ("{\"ok\": true}", "application/json")
+        case "/jit":
+            // External JIT enabler (LocalDevVPN/JitStreamer) hooks this to
+            // request a JIT re-arm after attaching a debugger.
+            SteamTVLibrary.shared.rearmJIT()
+            let off = fex_get_jit_write_offset()
+            let enabled = off != 0
+            return ("{\"jit\": \(enabled), \"offset\": \(off)}", "application/json")
+        case "/jitstatus":
+            let off = fex_get_jit_write_offset()
+            return ("{\"jit\": \(off != 0), \"offset\": \(off)}", "application/json")
         default:
             return ("not found", "text/plain")
         }
