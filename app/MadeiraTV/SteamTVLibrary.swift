@@ -26,6 +26,12 @@ final class SteamTVLibrary: ObservableObject {
     @Published var diagnostics: String?
     @Published private(set) var launchingID: UInt32?
     @Published private(set) var sessionActive = false
+    @Published private(set) var jitStatus: JITStatus = .unknown
+
+    enum JITStatus: Equatable {
+        case unknown, enabled, disabled
+        var isEnabled: Bool { self == .enabled }
+    }
 
     private let session = SteamSession()
     private lazy var fetcher = SteamLibraryFetcher(session: session)
@@ -364,20 +370,11 @@ _ = mkdir(current, 0o777)
                 let message: String?
                 // Capture FEX/Wine C logs to madeira-log.txt from the start.
                 self?.redirectLogToFile()
-                // Restart a clean wineserver: previous attempts may have left a
-                // wedged server (client stuck in 'waiting for request_fd').
-                if wineserver_is_running() != 0 {
-                    wineserver_stop()
-                    Thread.sleep(forTimeInterval: 1.0)
-                }
+                // wineserver_start is idempotent: returns 0 if already running.
                 let ws = wineserver_start(prefix)
                 if ws != 0 {
                     message = "wineserver failed (\(ws))"
                 } else {
-                    // wineserver_is_running() flips true immediately, but real
-                    // init (registry seed, socket ready) takes longer; the
-                    // client then wedges in 'waiting for request_fd'. Give the
-                    // server a solid fixed window before we spawn the client.
                     SteamLog.event("[steam-tv] wineserver starting, waiting 6s for init")
                     Thread.sleep(forTimeInterval: 6.0)
                     SteamLog.event("[steam-tv] wineserver running=\(wineserver_is_running())")
@@ -391,9 +388,14 @@ _ = mkdir(current, 0o777)
                         message = wp != 0 ? "Wine process failed (\(wp))" : nil
                     }
                 }
+                // JIT pool status: fex_get_jit_write_offset() != 0 means the
+                // dual-map pool exists (MeloNX or debugger path succeeded).
+                let jitOff = fex_get_jit_write_offset()
+                let jitOK = jitOff != 0
+                SteamLog.event("[steam-tv] JIT offset=\(jitOff) enabled=\(jitOK)")
                 DispatchQueue.main.async {
-                    // Always clear the launcher spinner, success or failure.
                     self?.launchingID = nil
+                    self?.jitStatus = jitOK ? .enabled : .disabled
                     if message == nil {
                         self?.sessionActive = true
                         self?.startRenderDiagnostics()

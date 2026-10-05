@@ -48,10 +48,38 @@ struct TVHeader: View {
     @State private var showLogs = false
     @State private var showError = false
 
+    private var jitDot: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(jitColor)
+                .frame(width: 14, height: 14)
+            Text(jitLabel)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var jitColor: Color {
+        switch steam.jitStatus {
+        case .enabled: return .green
+        case .disabled: return .red
+        case .unknown: return .gray
+        }
+    }
+
+    private var jitLabel: String {
+        switch steam.jitStatus {
+        case .enabled: return "JIT OK"
+        case .disabled: return "JIT OFF"
+        case .unknown: return "JIT …"
+        }
+    }
+
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text("Steam")
                 .font(.system(size: 40, weight: .bold))
+            jitDot
             Spacer()
             Button {
                 showLogs = true
