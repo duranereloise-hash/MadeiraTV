@@ -129,7 +129,7 @@ static bool jit_pool_init(void) {
     //    need a debugger.
     {
         fex_log("Trying MAP_JIT pool (%zu MB)", size >> 20);
-        void *jit = mmap(NULL, size, PROT_READ | PROT_WRITE | PROT_EXECUTE,
+        void *jit = mmap(NULL, size, PROT_READ | PROT_WRITE | PROT_EXEC,
                          MAP_ANON | MAP_PRIVATE | MAP_JIT, -1, 0);
         if (jit != MAP_FAILED) {
             // RW alias for writing generated code.
@@ -140,11 +140,10 @@ static bool jit_pool_init(void) {
             if (kr == KERN_SUCCESS) {
                 kr = vm_protect(task, rw_addr, size, FALSE, VM_PROT_READ | VM_PROT_WRITE);
                 if (kr == KERN_SUCCESS) {
-                    pthread_jit_write_protect_np(false);  // allow writing code
                     g_jit_rx_base = jit;
                     g_jit_rw_base = reinterpret_cast<void*>(rw_addr);
                     g_jit_pool_size = size;
-                    int64_t off = reinterpret_cast<intptr_t>(rw_addr) - reinterpret_cast<intptr_t>(jit);
+                    int64_t off = static_cast<int64_t>(rw_addr) - reinterpret_cast<intptr_t>(jit);
                     FEXCore::DualMap::WriteOffset = off;
                     fex_log("MAP_JIT pool: RX=%p RW=%p size=%zu WriteOffset=%lld (jit_enabled)",
                             g_jit_rx_base, g_jit_rw_base, g_jit_pool_size, (long long)off);
