@@ -7,7 +7,8 @@
 //
 //   GET /log          -> Library/Caches/log.txt
 //   GET /wine         -> Library/Caches/madeira-log.txt
-//   GET /all          -> both, concatenated
+//   GET /srv          -> Documents/madeira-log.txt (wineserver ws_log output)
+//   GET /all          -> log.txt + Caches/madeira-log.txt + Documents/madeira-log.txt
 //   GET /ip           -> JSON { "ip": "..." }
 //   GET /health       -> JSON { "ok": true }
 //
@@ -101,10 +102,16 @@ enum TVLogServer {
         case "/wine":
             let w = LogStore.logFileURL.deletingLastPathComponent().appendingPathComponent("madeira-log.txt")
             return (read(w), "text/plain; charset=utf-8")
+        case "/srv":
+            let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            let path = docs?.appendingPathComponent("madeira-log.txt")
+            return (path.map(read) ?? "", "text/plain; charset=utf-8")
         case "/all":
             let l = read(LogStore.logFileURL)
             let w = read(LogStore.logFileURL.deletingLastPathComponent().appendingPathComponent("madeira-log.txt"))
-            return ("=== log.txt ===\n\(l)\n\n=== madeira-log.txt ===\n\(w)", "text/plain; charset=utf-8")
+            let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            let s = docs?.appendingPathComponent("madeira-log.txt").map(read) ?? ""
+            return ("=== log.txt ===\n\(l)\n\n=== madeira-log.txt (Caches) ===\n\(w)\n\n=== madeira-log.txt (Documents/wineserver) ===\n\(s)", "text/plain; charset=utf-8")
         case "/ip":
             if let ip = localIP() {
                 return ("{\"ip\": \"\(ip)\"}", "application/json")
