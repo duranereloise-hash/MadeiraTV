@@ -8,6 +8,7 @@
 //   GET /log          -> Library/Caches/log.txt
 //   GET /wine         -> Library/Caches/madeira-log.txt
 //   GET /srv          -> Documents/madeira-log.txt (wineserver ws_log output)
+//   GET /crash        -> Library/Caches/crash.log (CrashCatcher output)
 //   GET /all          -> log.txt + Caches/madeira-log.txt + Documents/madeira-log.txt
 //   GET /ip           -> JSON { "ip": "..." }
 //   GET /health       -> JSON { "ok": true }
@@ -106,6 +107,8 @@ enum TVLogServer {
             let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
             let path = docs?.appendingPathComponent("madeira-log.txt")
             return (path.map(read) ?? "", "text/plain; charset=utf-8")
+        case "/crash":
+            return (read(CrashCatcher.logURL), "text/plain; charset=utf-8")
         case "/all":
             let l = read(LogStore.logFileURL)
             let w = read(LogStore.logFileURL.deletingLastPathComponent().appendingPathComponent("madeira-log.txt"))

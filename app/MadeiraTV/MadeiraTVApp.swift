@@ -1,9 +1,14 @@
 import SwiftUI
 import GameController
+import Darwin
 
 @main
 struct MadeiraTVApp: App {
     @StateObject private var steam = SteamTVLibrary.shared
+
+    init() {
+        CrashCatcher.install()
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +19,43 @@ struct MadeiraTVApp: App {
                     steam.start()
                     TVLogServer.start()
                 }
+        }
+    }
+}
+
+/// Minimal crash logger: writes an ObjC-exception/Unix-signal death note to
+/// Library/Caches/crash.log (always writable on tvOS) so a hard kill (e.g.
+/// the 5-7s crash after Play) leaves a breadcrumb the TVLogServer can serve.
+enum CrashCatcher {
+    static let logURL: URL = {
+        let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        return base.appendingPathComponent("crash.log")
+    }()
+
+    static func install() {
+        NSSetUncaughtExceptionHandler { exception in
+            let desc = "\(exception.name) \(exception.reason ?? "") \(exception.callStackSymbols.joined(separator: "\n"))"
+            write("[NSException] \(desc)")
+        }
+        let sigs: [Int32] = [SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV, SIGTRAP, SIGSYS]
+        for s in sigs {
+            signal(s) { sig in
+                write("[signal] \(sig)")
+                // reset to default and re-raise so the app still dies
+                signal(sig, SIG_DFL)
+                raise(sig)
+            }
+        }
+    }
+
+    private static func write(_ msg: String) {
+        let line = "[\(Date())] \(msg)\n"
+        if let h = try? FileHandle(forWritingTo: logURL) {
+            h.seekToEndOfFile()
+            h.write(line.data(using: .utf8) ?? Data())
+            try? h.close()
+        } else {
+            try? line.data(using: .utf8)?.write(to: logURL, options: .atomic)
         }
     }
 }
