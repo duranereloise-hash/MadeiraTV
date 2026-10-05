@@ -545,9 +545,9 @@ static void madeira_link_syswow64(NSFileManager *fm, NSString *prefix, NSString 
     {
         if ([f hasPrefix:@"."]) continue;
         NSString *dst = [farmDir stringByAppendingPathComponent:f];
-        [fm removeItemAtPath:dst error:nil];  /* self-heal stale links on reinstall */
-        if ([fm createSymbolicLinkAtPath:dst
-                     withDestinationPath:[source stringByAppendingPathComponent:f] error:nil])
+        [fm removeItemAtPath:dst error:nil];  /* self-heal stale copies on reinstall */
+        NSError *copyErr = nil;
+        if ([fm copyItemAtPath:[source stringByAppendingPathComponent:f] toPath:dst error:&copyErr])
             linked++;
     }
     dprintf(STDERR_FILENO, "[WineProc] Farm syswow64: %d links -> i386-windows\n", linked);
@@ -574,7 +574,8 @@ static void madeira_link_syswow64_wbem(NSFileManager *fm, NSString *prefix, NSSt
         NSString *dst = [dir stringByAppendingPathComponent:n];
         [fm removeItemAtPath:dst error:nil];
         if (![fm fileExistsAtPath:src]) continue;
-        if ([fm createSymbolicLinkAtPath:dst withDestinationPath:src error:nil]) linked++;
+        NSError *copyErr = nil;
+        if ([fm copyItemAtPath:src toPath:dst error:&copyErr]) linked++;
     }
     dprintf(STDERR_FILENO, "[WineProc] syswow64\\wbem: %d/%zu links\n",
             linked, sizeof(wbem) / sizeof(wbem[0]));
@@ -717,7 +718,8 @@ static void madeira_seed_winsxs_x86(NSFileManager *fm, NSString *prefix, NSStrin
                               [NSString stringWithUTF8String:def->files[f].in_assembly]];
             [fm removeItemAtPath:link error:nil];  /* the bundle path changes on reinstall */
             if (![fm fileExistsAtPath:src]) continue;
-            if (![fm createSymbolicLinkAtPath:link withDestinationPath:src error:nil]) { ok = NO; break; }
+            NSError *copyErr = nil;
+            if (![fm copyItemAtPath:src toPath:link error:&copyErr]) { ok = NO; break; }
             if (body)
                 [text appendFormat:@"  <file name=\"%s\">\n%s  </file>\n", def->files[f].in_assembly, body];
             else
@@ -1187,10 +1189,17 @@ static void *wine_process_thread(void *arg) {
             for (NSString *dll in dlls) {
                 NSString *src = [dllSource stringByAppendingPathComponent:dll];
                 NSString *dst = [sys32Dir stringByAppendingPathComponent:dll];
-                // Remove stale symlinks and re-create (bundle path changes on reinstall)
+                // tvOS sandbox rejects symlinks that point into the app bundle
+                // (createSymbolicLink returns NO, system32 stays empty and the
+                // game never loads). Copy the file instead.
                 [fm removeItemAtPath:dst error:nil];
-                if ([fm createSymbolicLinkAtPath:dst withDestinationPath:src error:nil])
+                NSError *copyErr = nil;
+                if ([fm copyItemAtPath:src toPath:dst error:&copyErr]) {
                     linked++;
+                } else {
+                    dprintf(STDERR_FILENO, "[WineProc] copy fail %s -> %s (%s)\n",
+                            src.UTF8String, dst.UTF8String, copyErr.localizedDescription.UTF8String ?: "?");
+                }
             }
             LOG("Symlinked %d DLLs from %{public}s to %{public}s", linked, bundle_subdir, sys32Dir.UTF8String);
             dprintf(STDERR_FILENO, "[WineProc] Symlinked %d DLLs from %s -> sys32\n", linked, bundle_subdir);
@@ -1221,7 +1230,8 @@ static void *wine_process_thread(void *arg) {
                     // the main pass does.
                     [fm removeItemAtPath:dst error:nil];
                     NSString *src = [otherSource stringByAppendingPathComponent:f];
-                    if ([fm createSymbolicLinkAtPath:dst withDestinationPath:src error:nil])
+                    NSError *copyErr = nil;
+                    if ([fm copyItemAtPath:src toPath:dst error:&copyErr])
                         crossLinked++;
                 }
                 dprintf(STDERR_FILENO, "[WineProc] Cross-linked %d non-colliding files from %s -> sys32\n",
@@ -1249,9 +1259,10 @@ static void *wine_process_thread(void *arg) {
                     int farmLinked = 0;
                     for (NSString *f in files) {
                         NSString *dst = [farmDir stringByAppendingPathComponent:f];
-                        [fm removeItemAtPath:dst error:nil];  // self-heal stale links on reinstall
+                        [fm removeItemAtPath:dst error:nil];  // self-heal stale copies on reinstall
                         NSString *src = [archSource stringByAppendingPathComponent:f];
-                        if ([fm createSymbolicLinkAtPath:dst withDestinationPath:src error:nil])
+                        NSError *copyErr = nil;
+                        if ([fm copyItemAtPath:src toPath:dst error:&copyErr])
                             farmLinked++;
                     }
                     dprintf(STDERR_FILENO, "[WineProc] Farm %s: %d links -> %s\n",
@@ -1381,7 +1392,8 @@ static void *wine_process_thread(void *arg) {
                     NSString *src = [vcrtSource stringByAppendingPathComponent:dll];
                     NSString *dst = [sys32Dir stringByAppendingPathComponent:dll];
                     [fm removeItemAtPath:dst error:nil];
-                    if ([fm createSymbolicLinkAtPath:dst withDestinationPath:src error:nil])
+                    NSError *copyErr = nil;
+                    if ([fm copyItemAtPath:src toPath:dst error:&copyErr])
                         vcrtLinked++;
                 }
                 LOG("Symlinked %d MS VC++ Runtime DLLs (x86_64 native) over arm64ec builtins, skipped %d", vcrtLinked, vcrtSkipped);
