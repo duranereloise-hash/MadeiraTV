@@ -404,29 +404,37 @@ _ = mkdir(current, 0o777)
         // the main thread (required before the first D3D11 swapchain), then
         // start Wine in the background.
         DispatchQueue.main.async { [weak self] in
+            CrashCatcher.write("[launch] main: attachToKeyWindow")
             TVMetalSurface.shared.attachToKeyWindow()
+            CrashCatcher.write("[launch] main: registerDisplay")
             TVMetalSurface.shared.registerDisplay()
             DispatchQueue.global(qos: .userInitiated).async {
                 let message: String?
                 // Capture FEX/Wine C logs to madeira-log.txt from the start.
+                CrashCatcher.write("[launch] bg: redirectLogToFile")
                 self?.redirectLogToFile()
                 setenv("MADEIRA_DEBUG_VERBOSE", "1", 1)   // wineserver fd/inject traces
                 setenv("WINEDEBUG", "err+all,err-virtual", 1)
                 // wineserver_start is idempotent: returns 0 if already running.
+                CrashCatcher.write("[launch] bg: wineserver_start")
                 let ws = wineserver_start(prefix)
                 if ws != 0 {
                     message = "wineserver failed (\(ws))"
+                    CrashCatcher.write("[launch] bg: wineserver_start FAILED rc=\(ws)")
                 } else {
                     SteamLog.event("[steam-tv] wineserver starting, waiting 6s for init")
                     Thread.sleep(forTimeInterval: 6.0)
                     SteamLog.event("[steam-tv] wineserver running=\(wineserver_is_running())")
+                    CrashCatcher.write("[launch] after 6s wineserver running=\(wineserver_is_running())")
                     if wineserver_is_running() == 0 {
                         message = "wineserver did not stay up"
                     } else {
                         setenv("MADEIRA_EXE", exe, 1)
                         setenv("MADEIRA_WORKDIR", workdir, 1)
+                        CrashCatcher.write("[launch] bg: wine_process_start exe=\(exe)")
                         let wp = wine_process_start(prefix)
                         SteamLog.event("[steam-tv] launch app=\(app.appID) exe=\(exe) rc=\(wp)")
+                        CrashCatcher.write("[launch] bg: wine_process_start rc=\(wp)")
                         message = wp != 0 ? "Wine process failed (\(wp))" : nil
                     }
                 }
