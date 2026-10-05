@@ -546,6 +546,10 @@ int send_client_fd( struct process *process, int fd, obj_handle_t handle )
 
     ret = sendmsg( get_unix_fd( process->msg_fd ), &msghdr, 0 );
 
+    ws_log("[REQFD][SERVER] sendmsg ret=%d expected=%lu errno=%d fd=%d handle=0x%x proc=%04x msg_fd_unix=%d",
+           ret, (unsigned long)sizeof(handle), errno, fd, handle,
+           process->id, get_unix_fd( process->msg_fd ));
+
     ws_log("[wineserver] send_client_fd: sendmsg returned %d (expected %lu) errno=%d",
            ret, (unsigned long)sizeof(handle), errno);
 

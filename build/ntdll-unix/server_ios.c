@@ -2777,6 +2777,10 @@ int wine_server_receive_fd( obj_handle_t *handle )
     vec.iov_base = (void *)handle;
     vec.iov_len  = sizeof(*handle);
 
+#ifdef WINE_IOS
+    wine_log_write("[REQFD][CLIENT] recvmsg on sock=%d pid=%d", ios_current_fd_socket(), getpid());
+#endif
+
     for (;;)
     {
 #ifdef WINE_IOS
@@ -2808,6 +2812,7 @@ int wine_server_receive_fd( obj_handle_t *handle )
             {
                 static volatile int fd_recv_logged = 0;
                 int fdl = fd_recv_logged;
+                wine_log_write("[REQFD][CLIENT] recvmsg rc=%d fd=%d handle=0x%x flags=0x%x sock=%d", ret, fd, *handle, msghdr.msg_flags, recv_sock);
                 if (fd == -1 || fdl < 8 || (msghdr.msg_flags & MSG_CTRUNC))
                 {
                     if (fdl < 40)
