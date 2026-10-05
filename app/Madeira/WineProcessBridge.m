@@ -1186,13 +1186,20 @@ static void *wine_process_thread(void *arg) {
 
             NSArray *dlls = [fm contentsOfDirectoryAtPath:dllSource error:nil];
             int linked = 0;
+            int skippedExisting = 0;
             for (NSString *dll in dlls) {
                 NSString *src = [dllSource stringByAppendingPathComponent:dll];
                 NSString *dst = [sys32Dir stringByAppendingPathComponent:dll];
-                // tvOS sandbox rejects symlinks that point into the app bundle
-                // (createSymbolicLink returns NO, system32 stays empty and the
-                // game never loads). Copy the file instead.
-                [fm removeItemAtPath:dst error:nil];
+                // tvOS sandbox rejects symlinks into the app bundle; copy the
+                // file. Copy ONCE: system32 is stable between launches, so a
+                // re-copy every launch fills Caches ("not enough space") and
+                // breaks the game. Only (re)copy when the destination is
+                // missing or stale.
+                NSDictionary *dstAttr = [fm attributesOfItemAtPath:dst error:nil];
+                if (dstAttr) {
+                    skippedExisting++;
+                    continue;   // already staged on a previous launch
+                }
                 NSError *copyErr = nil;
                 if ([fm copyItemAtPath:src toPath:dst error:&copyErr]) {
                     linked++;
@@ -1201,7 +1208,7 @@ static void *wine_process_thread(void *arg) {
                             src.UTF8String, dst.UTF8String, copyErr.localizedDescription.UTF8String ?: "?");
                 }
             }
-            LOG("Symlinked %d DLLs from %{public}s to %{public}s", linked, bundle_subdir, sys32Dir.UTF8String);
+            LOG("Copied %d DLLs from %{public}s to %{public}s (skipped %d already staged)", linked, bundle_subdir, sys32Dir.UTF8String, skippedExisting);
             dprintf(STDERR_FILENO, "[WineProc] Symlinked %d DLLs from %s -> sys32\n", linked, bundle_subdir);
 
             // X3 mixed-mode: also link NON-COLLIDING files from the other
@@ -1259,7 +1266,7 @@ static void *wine_process_thread(void *arg) {
                     int farmLinked = 0;
                     for (NSString *f in files) {
                         NSString *dst = [farmDir stringByAppendingPathComponent:f];
-                        [fm removeItemAtPath:dst error:nil];  // self-heal stale copies on reinstall
+                        if ([fm fileExistsAtPath:dst]) continue;  // already staged
                         NSString *src = [archSource stringByAppendingPathComponent:f];
                         NSError *copyErr = nil;
                         if ([fm copyItemAtPath:src toPath:dst error:&copyErr])
