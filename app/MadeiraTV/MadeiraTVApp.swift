@@ -7,7 +7,9 @@ struct MadeiraTVApp: App {
     @StateObject private var steam = SteamTVLibrary.shared
 
     init() {
+        #if DEBUG
         CrashCatcher.install()
+        #endif
     }
 
     var body: some Scene {
@@ -23,9 +25,10 @@ struct MadeiraTVApp: App {
     }
 }
 
-/// Minimal crash logger: writes an ObjC-exception/Unix-signal death note to
-/// Library/Caches/crash.log (always writable on tvOS) so a hard kill (e.g.
-/// the 5-7s crash after Play) leaves a breadcrumb the TVLogServer can serve.
+/// Minimal crash logger: writes an ObjC-exception/Unix-signal death note plus
+/// a backtrace to Library/Caches/crash.log (always writable on tvOS) so a hard
+/// kill (e.g. the 5-7s crash after Play) leaves a breadcrumb the TVLogServer
+/// can serve.
 enum CrashCatcher {
     static let logURL: URL = {
         let base = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
@@ -36,6 +39,7 @@ enum CrashCatcher {
         NSSetUncaughtExceptionHandler { exception in
             let desc = "\(exception.name) \(exception.reason ?? "")"
             CrashCatcher.write("[NSException] \(desc)")
+            CrashCatcher.write("-- stack --")
             CrashCatcher.write(exception.callStackSymbols.joined(separator: "\n"))
         }
         let sigs: [Int32] = [SIGABRT, SIGBUS, SIGFPE, SIGILL, SIGSEGV, SIGTRAP, SIGSYS]
@@ -54,10 +58,23 @@ enum CrashCatcher {
             try? line.data(using: .utf8)?.write(to: logURL, options: .atomic)
         }
     }
+
+    static func writeBacktrace() {
+        let count = 64
+        var callstack = [UnsafeMutableRawPointer?](repeating: nil, count: count)
+        let frames = backtrace(&callstack, Int32(count))
+        if let syms = backtrace_symbols(&callstack, frames) {
+            for i in 0..<Int(frames) {
+                if let s = syms[i] { CrashCatcher.write(String(cString: s)) }
+            }
+        }
+    }
 }
 
 private func crashSignalHandler(_ sig: Int32) {
     CrashCatcher.write("[signal] \(sig)")
+    CrashCatcher.write("-- stack --")
+    CrashCatcher.writeBacktrace()
     signal(sig, SIG_DFL)
     raise(sig)
 }
