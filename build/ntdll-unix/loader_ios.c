@@ -3818,9 +3818,10 @@ DECLSPEC_EXPORT void wine_ios_child_main( int argc, char *argv[], int child_fd_s
  */
 DECLSPEC_EXPORT void __wine_main( int argc, char *argv[] )
 {
+    extern void madeira_crash_log(const char *fmt, ...);
     main_argc = argc;
     main_argv = argv;
-
+    madeira_crash_log("[wine] __wine_main: init_paths");
     init_paths();
 #ifndef WINE_IOS
     if (!getenv( "WINELOADERNOEXEC" ) || argc <= 1) check_command_line( argc, argv );
@@ -3837,11 +3838,15 @@ DECLSPEC_EXPORT void __wine_main( int argc, char *argv[] )
     set_max_limit( RLIMIT_NICE );
 #endif
 
+    madeira_crash_log("[wine] __wine_main: virtual_init");
     virtual_init();
+    madeira_crash_log("[wine] __wine_main: init_environment");
     init_environment();
+    madeira_crash_log("[wine] __wine_main: start_main_thread");
 
 #if defined(__APPLE__) && !defined(WINE_IOS)
     apple_main_thread();
 #endif
     start_main_thread();
+    madeira_crash_log("[wine] __wine_main: start_main_thread returned");
 }

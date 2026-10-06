@@ -38,26 +38,26 @@ struct TVHUDOverlay: View {
             row("Uptime", String(format: "%.0f s", -started.timeIntervalSinceNow))
             if let d = steam.diagnostics { row("Render", d) }
             row("WServer", wsState)
-            row("  ├ alive", boolDot(wineserver_is_running() != 0))
-            row("  ├ main", boolDot(g_ws_main_entered != 0))
-            row("  └ ready", boolDot(g_ws_in_mainloop != 0))
-            row("Wine proc", boolDot(wine_process_is_running() != 0))
-            row("JIT", steam.jitStatus == .enabled ? "enabled (offset -67108864)" : steam.jitStatus == .disabled ? "disabled" : "unknown")
+            row(" alive", boolDot(wineserver_is_running() != 0))
+            row(" main", boolDot(g_ws_main_entered != 0))
+            row(" ready", boolDot(g_ws_in_mainloop != 0))
+            row("Wine", boolDot(wine_process_is_running() != 0))
+            row("JIT", steam.jitStatus == .enabled ? "enabled" : steam.jitStatus == .disabled ? "disabled" : "unknown")
             row("CPU", cpuInfo)
             row("RAM", ramInfo)
         }
-        .font(.system(.callout, design: .monospaced))
-        .padding(18)
-        .frame(minWidth: 340, alignment: .leading)
-        .background(.black.opacity(0.72), in: RoundedRectangle(cornerRadius: 14))
+        .font(.system(.subheadline, design: .monospaced))
+        .padding(14)
+        .frame(minWidth: 300, alignment: .leading)
+        .background(.black.opacity(0.72), in: RoundedRectangle(cornerRadius: 12))
         .overlay(alignment: .topLeading) {
             Text("Madeira TV HUD")
                 .font(.caption2.bold())
                 .foregroundStyle(.secondary)
-                .padding(.leading, 20)
-                .padding(.top, 4)
+                .padding(.leading, 16)
+                .padding(.top, 3)
         }
-        .padding(24)
+        .padding(16)
         .onReceive(timer) { _ in
             let now = Date()
             let p = madeira_get_present_count()
@@ -72,8 +72,8 @@ struct TVHUDOverlay: View {
 
     func row(_ label: String, _ value: String) -> some View {
         HStack(alignment: .firstTextBaseline) {
-            Text(label).foregroundStyle(.secondary).frame(width: 70, alignment: .leading)
-            Text(value).lineLimit(1).truncationMode(.middle)
+            Text(label).foregroundStyle(.secondary).frame(width: 56, alignment: .leading)
+            Text(value).lineLimit(1).truncationMode(.tail).layoutPriority(1)
             Spacer(minLength: 0)
         }
     }
