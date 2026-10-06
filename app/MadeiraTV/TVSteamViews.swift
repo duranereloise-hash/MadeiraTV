@@ -12,6 +12,63 @@
 
 import SwiftUI
 
+// MARK: - Liquid Glass (tvOS 17-safe approximation)
+
+/// tvOS 17 has no native `glassEffect` (added in tvOS 26). These helpers
+/// reproduce the Liquid Glass look with materials plus a specular rim so the
+/// menu reads as liquid glass on current boxes and degrades gracefully on
+/// older ones. Swap `.liquidGlassBackground` for `.glassEffect` if/when the
+/// deployment target rises to tvOS 26.
+enum LiquidGlass {
+    static let corner: CGFloat = 24
+}
+
+extension View {
+    /// Frosted, translucent panel with a specular top edge and a soft depth shadow.
+    func liquidGlassBackground(
+        cornerRadius: CGFloat = LiquidGlass.corner,
+        fill: Material = .regularMaterial
+    ) -> some View {
+        background {
+            ZStack {
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .fill(fill)
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                .white.opacity(0.12),
+                                .white.opacity(0.0),
+                                .white.opacity(0.0),
+                                .black.opacity(0.06)
+                            ],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    )
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [.white.opacity(0.30), .white.opacity(0.04), .black.opacity(0.25)],
+                            startPoint: .topLeading, endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.2
+                    )
+            }
+        }
+        .shadow(color: .black.opacity(0.30), radius: 22, y: 16)
+    }
+
+    /// A floating glass "pill" for action items (account button, etc.).
+    func liquidGlassPill() -> some View {
+        background {
+            Capsule().fill(.ultraThinMaterial)
+                .background(Capsule().fill(.white.opacity(0.08)))
+        }
+        .overlay { Capsule().strokeBorder(.white.opacity(0.22), lineWidth: 1) }
+        .shadow(color: .black.opacity(0.25), radius: 14, y: 10)
+    }
+}
+
 struct TVHomeView: View {
     @EnvironmentObject private var steam: SteamTVLibrary
 
@@ -127,7 +184,7 @@ struct TVHeader: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
-                .background(.quaternary.opacity(0.6), in: Capsule())
+                .liquidGlassPill()
             }
             .buttonStyle(.plain)
         }
@@ -190,7 +247,9 @@ struct TVSignInGate: View {
             }
             .buttonStyle(.borderedProminent)
         }
-        .padding()
+        .padding(40)
+        .frame(maxWidth: 880)
+        .liquidGlassBackground(cornerRadius: 44)
         .sheet(isPresented: $showSignIn) {
             TVSignInView()
         }
@@ -370,6 +429,7 @@ struct TVAccountSheet: View {
         }
         .padding(48)
         .frame(minWidth: 560, minHeight: 440)
+        .liquidGlassBackground(cornerRadius: 44)
     }
 }
 
@@ -486,8 +546,8 @@ struct TVInstalledCard: View {
                 Text(launchMessage ?? "")
             }
         }
-        .padding(10)
-        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 16))
+        .padding(12)
+        .liquidGlassBackground(cornerRadius: 18)
     }
 }
 
@@ -512,8 +572,8 @@ struct TVGameCard: View {
                 .lineLimit(1)
             actionButton
         }
-        .padding(10)
-        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 18))
+        .padding(14)
+        .liquidGlassBackground(cornerRadius: 20)
     }
 
     private var artwork: some View {

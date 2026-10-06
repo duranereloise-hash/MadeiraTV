@@ -1,70 +1,132 @@
-name: Build tvOS (Phase 1)
+name: Build tvOS IPA
 
+# Manual run, or automatically on changes that touch the app or this workflow.
+# Prebuilt Wine/DXMT/FEX archives are committed in-tree, so xcodebuild only
+# compiles the Swift/ObjC app and links the parked libs (no submodule build).
+#
+# Signing is opt-in and account-specific:
+#   - By default it archives with CODE_SIGNING_ALLOWED=NO and ships an unsigned
+#     .ipa you can sign locally for sideloading (get-task-allow + allow-jit).
+#   - Set "signed" to true (or run on push) and add the secrets below to get a
+#     development-signed .ipa:
+#       TVOS_P12_B64       base64 of a .p12 export of your Apple TV cert
+#       TVOS_P12_PASSWORD  password for that .p12
+#       TVOS_PROFILE_B64   base64 of the .mobileprovision you sideload with
+#       TVOS_TEAM_ID       your 10-char Developer Team ID
 on:
   workflow_dispatch:
+    inputs:
+      signed:
+        description: 'Produce a SIGNED ipa (requires cert/profile secrets)'
+        required: false
+        default: false
+        type: boolean
+  push:
+    paths:
+      - 'app/**'
+      - '.github/workflows/build-tvos.yml'
+
+env:
+  PROJECT: app/MadeiraTV.xcodeproj
+  SCHEME: MadeiraTV
+  ARCHIVE: build/MadeiraTV.xcarchive
+  TVOS_TEAM_ID: ${{ secrets.TVOS_TEAM_ID }}
 
 jobs:
-  build-tvos:
-    name: Build MadeiraTV.app for tvOS
-    runs-on: macos-15
-    timeout-minutes: 60
+  build:
+    runs-on: macos-latest
     steps:
-      - name: Checkout
+      - name: Cancel superseded builds
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Check out
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # Archives are committed; leave submodules (wine/dxmt/FEX) alone.
+          submodules: false
 
       - name: Select Xcode
         run: |
+          if [ -d /Applications/Xcode_16.2.app ]; then
+            sudo xcode-select -s /Applications/Xcode_16.2.app
+          elif [ -d /Applications/Xcode_16.1.app ]; then
+            sudo xcode-select -s /Applications/Xcode_16.1.app
+          fi
           xcodebuild -version
-          xcrun --sdk appletvos --show-sdk-version 2>/dev/null || echo "no tvos sdk visible"
 
-      - name: List available SDKs
-        run: xcodebuild -showsdks
+      - name: Import signing certificate (opt-in)
+        if: ${{ inputs.signed == 'true' && secrets.TVOS_P12_B64 != '' }}
+        env:
+          P12_B64: ${{ secrets.TVOS_P12_B64 }}
+          P12_PASS: ${{ secrets.TVOS_P12_PASSWORD }}
+        run: |
+          echo "$P12_B64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          KEYCHAIN="$RUNNER_TEMP/madeira.keychain-db"
+          security create-keychain -p temp "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p temp "$KEYCHAIN"
+          security import "$RUNNER_TEMP/cert.p12" -P "$P12_PASS" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -s -k temp "$KEYCHAIN" || true
 
-      - name: Build (tvOS Simulator, debug)
+      - name: Install provisioning profile (opt-in)
+        if: ${{ inputs.signed == 'true' && secrets.TVOS_PROFILE_B64 != '' }}
+        env:
+          PROFILE_B64: ${{ secrets.TVOS_PROFILE_B64 }}
+        run: |
+          echo "$PROFILE_B64" | base64 --decode > "$RUNNER_TEMP/tv.mobileprovision"
+          PROFILE_DIR="$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
+          mkdir -p "$PROFILE_DIR"
+          UUID=$(grep -a -A1 '<key>UUID</key>' "$RUNNER_TEMP/tv.mobileprovision" | sed -n '2p' | sed -E 's/.*<string>(.*)<\/string>.*/\1/')
+          cp "$RUNNER_TEMP/tv.mobileprovision" "$PROFILE_DIR/$UUID.mobileprovision"
+          echo "Installed provisioning profile $UUID"
+
+      - name: Archive (tvOS device)
+        env:
+          SIGNED: ${{ inputs.signed }}
         run: |
           set -o pipefail
-          mkdir -p build
-          xcodebuild \
-            -project app/MadeiraTV.xcodeproj \
-            -scheme MadeiraTV \
-            -configuration Debug \
-            -destination 'generic/platform=tvOS Simulator' \
-            -derivedDataPath build/DerivedDataTV \
-            build \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO | tee build/tvos-build-sim.log
-
-      - name: Build (tvOS device, no signing)
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          mkdir -p build
-          xcodebuild \
-            -project app/MadeiraTV.xcodeproj \
-            -scheme MadeiraTV \
-            -configuration Debug \
+          if [ "$SIGNED" = "true" ]; then
+            ARGS="-allowProvisioningUpdates"
+            if [ -n "$TVOS_TEAM_ID" ]; then ARGS="$ARGS DEVELOPMENT_TEAM=$TVOS_TEAM_ID"; fi
+          else
+            ARGS="CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO"
+          fi
+          xcodebuild -project "$PROJECT" -scheme "$SCHEME" \
             -destination 'generic/platform=tvOS' \
-            -derivedDataPath build/DerivedDataTV \
-            build \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO | tee build/tvos-build-dev.log
+            -configuration Release \
+            -archivePath "$ARCHIVE" \
+            $ARGS archive
 
-      - name: Verify products
+      - name: Produce unsigned .ipa
         run: |
-          find build/DerivedDataTV/Build/Products -name "*.app" -maxdepth 5
-          echo "--- sizes ---"
-          du -sh build/DerivedDataTV/Build/Products/*/MadeiraTV.app 2>/dev/null || true
+          APP_SRC="$ARCHIVE/Products/Applications/MadeiraTV.app"
+          if [ ! -d "$APP_SRC" ]; then echo "::error::app not found in archive"; exit 1; fi
+          DST="build/ipa/Payload/MadeiraTV.app"
+          mkdir -p "$(dirname "$DST")"
+          cp -R "$APP_SRC" "$DST"
+          ( cd build/ipa && zip -qry MadeiraTV-unsigned.ipa Payload )
 
-      - name: Upload app bundles
-        if: always()
+      - name: Export signed IPA (opt-in)
+        if: ${{ inputs.signed == 'true' && secrets.TVOS_P12_B64 != '' }}
+        run: |
+          /usr/libexec/PlistBuddy build/ExportOptions.plist \
+            -c "Add :method string development" \
+            -c "Add :signingStyle string manual" \
+            -c "Add :compileBitcode bool false" \
+            -c "Add :stripSwiftSymbols bool true"
+          xcodebuild -exportArchive -archivePath "$ARCHIVE" \
+            -exportOptionsPlist build/ExportOptions.plist \
+            -exportPath build/ipa-signed
+          cp build/ipa-signed/*.ipa build/ipa/MadeiraTV-signed.ipa
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MadeiraTV-app-tvos
+          name: MadeiraTV-tvOS
           path: |
-            build/DerivedDataTV/Build/Products/Debug-appletvsimulator/MadeiraTV.app
-            build/DerivedDataTV/Build/Products/Debug-appletvos/MadeiraTV.app
-            build/tvos-build-sim.log
-            build/tvos-build-dev.log
-          if-no-files-found: warn
+            build/ipa/*.ipa
+            build/MadeiraTV.xcarchive
+          if-no-files-found: error
