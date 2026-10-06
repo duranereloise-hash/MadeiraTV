@@ -428,12 +428,11 @@ _ = mkdir(current, 0o777)
                 // game's first D3D11 swapchain can end up at 0 presents (black screen).
                 // Use the TV's native 4K size (Apple TV 4K); ChangeDisplaySettings by
                 // the game still overrides afterwards.
-                {
-                    let w = 1920, h = 1080
-                    setenv("MADEIRA_SCREEN_W", String(w), 1)
-                    setenv("MADEIRA_SCREEN_H", String(h), 1)
-                    winios_display_mode_changed(Int32(w), Int32(h))
-                }
+                let screenW: Int32 = 1920
+                let screenH: Int32 = 1080
+                setenv("MADEIRA_SCREEN_W", "\(screenW)", 1)
+                setenv("MADEIRA_SCREEN_H", "\(screenH)", 1)
+                winios_display_mode_changed(screenW, screenH)
                 // wineserver_start is idempotent: returns 0 if already running.
                 CrashCatcher.write("[launch] bg: wineserver_start")
                 let ws = wineserver_start(prefix)
