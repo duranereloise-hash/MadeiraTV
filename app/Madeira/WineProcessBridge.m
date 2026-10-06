@@ -59,12 +59,20 @@ void madeira_crash_log(const char *fmt, ...)
     char buf[1024];
     vsnprintf(buf, sizeof(buf), fmt, args);
     va_end(args);
-    int fd = open(p, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    static int fd = -1;
+    if (fd < 0) fd = open(p, O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (fd < 0) return;
+    static uint64_t last_sync_ns = 0;
     char line[1280];
     int n = snprintf(line, sizeof(line), "[%.0f] %s\n", [[NSDate date] timeIntervalSince1970], buf);
-    if (n > 0 && write(fd, line, n) == n) fsync(fd);   /* flush so a SIGKILL still leaves the last line on disk */
-    close(fd);
+    uint64_t now_ns = clock_gettime_nsec_np(CLOCK_MONOTONIC);
+    /* fsync is slow on tvOS flash (10s of ms to longer); doing it per line
+     * stalls the 1s heartbeat (crash.log goes silent after ~2 lines).
+     * Throttle to once per ~500ms; a SIGKILL loses at most that window. */
+    if (n > 0 && write(fd, line, n) == n && (now_ns - last_sync_ns) > 500000000ull) {
+        fsync(fd);
+        last_sync_ns = now_ns;
+    }
 }
 #include "WineServerBridge.h"
 #include "PrefixExtractor.h"
