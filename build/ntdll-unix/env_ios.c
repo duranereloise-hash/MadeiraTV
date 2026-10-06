@@ -1017,7 +1017,29 @@ static void add_path_var( WCHAR **env, SIZE_T *pos, SIZE_T *size, const char *na
 {
     WCHAR *nt_name = NULL;
 
-    if (path && unix_to_nt_file_name( path, &nt_name, FILE_OPEN )) return;
+    /* ml1166: never abort here. unix_to_nt_file_name() can reach an abort()
+     * inside NtQueryDirectoryFile (wine server dir lookup) for unix paths
+     * that the in-process server can't resolve to an NT name. On iOS that
+     * kills the whole boot in add_dynamic_environment during unix_init_startup_info.
+     * If resolution fails, build a \??\<unixpath> NT name directly (Wine's
+     * NT namespace alias for "raw unix path") and continue. Returning NULL is
+     * also safe (append_envW just drops the var). */
+    if (path && unix_to_nt_file_name( path, &nt_name, FILE_OPEN ))
+    {
+#ifdef WINE_IOS
+        size_t len = strlen( path );
+        nt_name = malloc( (len + 5) * sizeof(WCHAR) );
+        if (nt_name)
+        {
+            nt_name[0] = '\\'; nt_name[1] = '?'; nt_name[2] = '?';
+            nt_name[3] = '\\';
+            for (size_t i = 0; i < len; i++) nt_name[4 + i] = path[i];
+            nt_name[4 + len] = 0;
+        }
+#else
+        return;
+#endif
+    }
     append_envW( env, pos, size, name, nt_name );
     free( nt_name );
 }
