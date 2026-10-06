@@ -416,6 +416,10 @@ _ = mkdir(current, 0o777)
                 self?.redirectLogToFile()
                 setenv("MADEIRA_DEBUG_VERBOSE", "1", 1)   // wineserver fd/inject traces
                 setenv("WINEDEBUG", "err+all,err-virtual", 1)
+                // Publish the crash.log path to C (JIT-EXEC-FAULT etc. dump
+                // there so the marker survives the tvOS SIGKILL and is served
+                // over HTTP as /crash).
+                setenv("MADEIRA_CRASH_LOG", CrashCatcher.logURL.path, 1)
                 // wineserver_start is idempotent: returns 0 if already running.
                 CrashCatcher.write("[launch] bg: wineserver_start")
                 let ws = wineserver_start(prefix)

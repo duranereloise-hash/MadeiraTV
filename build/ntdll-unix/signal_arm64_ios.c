@@ -7182,7 +7182,8 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                 mach_port_t bo = MACH_PORT_NULL;
                 int rerr = mach_vm_region(mach_task_self(), &ea, &es, VM_REGION_BASIC_INFO_64,
                                           (vm_region_info_t)&bi, &bc, &bo);
-                fprintf(stderr,
+                char ml1160_line[512];
+                snprintf(ml1160_line, sizeof(ml1160_line),
                     "[JIT-EXEC-FAULT] pc=0x%llx fault=0x%llx pool_mod=0x%llx..0x%llx "
                     "region=0x%llx..0x%llx prot=0x%x max=0x%x rerr=%d %s ml1160\n",
                     (unsigned long long)arm_thread_state64_get_pc(*state), fv,
@@ -7190,6 +7191,21 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                     (unsigned long long)ea, (unsigned long long)(rerr == KERN_SUCCESS ? es : 0),
                     (unsigned int)bi.protection, (unsigned int)bi.max_protection, rerr,
                     mbase ? "POOL-COPIED" : "NOT-IN-POOL (file-backed probe)");
+                fprintf(stderr, "%s", ml1160_line);
+                /* ml1161: also append to crash.log (CrashCatcher path, published by
+                 * Swift via MADEIRA_CRASH_LOG) so the marker survives the tvOS
+                 * CODESIGNING/SIGKILL which never reaches the CrashCatcher signal
+                 * handler, and is served over HTTP as /crash. Open-append-close. */
+                {
+                    const char *cp = getenv("MADEIRA_CRASH_LOG");
+                    if (cp && *cp) {
+                        FILE *cf = fopen(cp, "a");
+                        if (cf) {
+                            fputs(ml1160_line, cf);
+                            fclose(cf);
+                        }
+                    }
+                }
             }
         }
 
