@@ -37,8 +37,12 @@ struct TVHUDOverlay: View {
 
             row("Uptime", String(format: "%.0f s", -started.timeIntervalSinceNow))
             if let d = steam.diagnostics { row("Render", d) }
-            row("Wine", wineState)
-            row("JIT", steam.jitStatus == .enabled ? "enabled (offset \(-67108864))" : steam.jitStatus == .disabled ? "disabled" : "unknown")
+            row("WServer", wsState)
+            row("  ├ alive", boolDot(wineserver_is_running() != 0))
+            row("  ├ main", boolDot(g_ws_main_entered != 0))
+            row("  └ ready", boolDot(g_ws_in_mainloop != 0))
+            row("Wine proc", boolDot(wine_process_is_running() != 0))
+            row("JIT", steam.jitStatus == .enabled ? "enabled (offset -67108864)" : steam.jitStatus == .disabled ? "disabled" : "unknown")
             row("CPU", cpuInfo)
             row("RAM", ramInfo)
         }
@@ -74,16 +78,14 @@ struct TVHUDOverlay: View {
         }
     }
 
-    private var wineState: String {
-        let ws = wineserver_is_running() != 0
-        let wp = wine_process_is_running() != 0
-        switch (ws, wp) {
-        case (true, true): return "server+process alive"
-        case (true, false): return "server only"
-        case (false, true): return "process only (stale!)"
-        case (false, false): return "none running"
-        }
+    private var wsState: String {
+        guard wineserver_is_running() != 0 else { return "dead" }
+        if g_ws_in_mainloop != 0 { return "ready" }
+        if g_ws_main_entered != 0 { return "initializing" }
+        return "thread alive"
     }
+
+    private func boolDot(_ on: Bool) -> String { on ? "● on" : "○ off" }
 
     private var cpuInfo: String {
         let cores = ProcessInfo.processInfo.activeProcessorCount

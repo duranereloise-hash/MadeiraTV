@@ -19,4 +19,8 @@
 // DXMT present counter (defined in libdxmt) — for diagnosing black screens.
 uint64_t madeira_get_present_count(void);
 
+// Wineserver lifecycle stages (set by build/wineserver/main_ios.c)
+extern int g_ws_main_entered;
+extern int g_ws_in_mainloop;
+
 #include <stdint.h>
