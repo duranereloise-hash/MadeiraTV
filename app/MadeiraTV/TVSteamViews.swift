@@ -31,6 +31,12 @@ struct TVHomeView: View {
                     .onAppear { steam.loadGames(interactive: true) }
             }
         }
+        // While a game is running the bare CAMetalLayer (TVMetalSurface) is
+        // inserted at window index 0 UNDER this SwiftUI content. Hiding the
+        // content (and disabling its hit-testing) lets the game show through
+        // while the HUD overlay stays visible on top.
+        .opacity(steam.sessionActive ? 0 : 1)
+        .allowsHitTesting(!steam.sessionActive)
         .onAppear { steam.start() }
         .overlay {
             if steam.sessionActive && TVSettings.showHUD {
