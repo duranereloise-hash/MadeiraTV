@@ -858,11 +858,34 @@ static void *madeira_hb_main(void *arg)
     int i = 0;
     while (!stop && i < 600)
     {
-        madeira_crash_log("[hb] host=1 wine=%d server=%d dxmt=%llu winios=%llu",
+        /* ml1168: sample the guest main Wine pthread (the one running
+         * __wine_main/start_main_thread/signal_start_thread) and print its PC
+         * so a black screen with dxmt=0 names WHICH native function the main
+         * thread is parked in. crash.log is the only channel guaranteed to be
+         * served; madeira_log/stderr is unreachable. */
+        uint64_t hb_pc = 0, hb_lr = 0;
+        pthread_t mainp = g_wine_thread;
+        if (mainp)
+        {
+            mach_port_t mt = pthread_mach_thread_np(mainp);
+            arm_thread_state64_t st;
+            mach_msg_type_number_t cnt = ARM_THREAD_STATE64_COUNT;
+            if (thread_suspend(mt) == KERN_SUCCESS)
+            {
+                if (thread_get_state(mt, ARM_THREAD_STATE64, (thread_state_t)&st, &cnt) == KERN_SUCCESS)
+                {
+                    hb_pc = arm_thread_state64_get_pc(st);
+                    hb_lr = arm_thread_state64_get_lr(st);
+                }
+                thread_resume(mt);
+            }
+        }
+        madeira_crash_log("[hb] host=1 wine=%d server=%d dxmt=%llu winios=%llu pc=0x%llx lr=0x%llx",
                           wine_process_is_running(),
                           wineserver_is_running(),
                           (unsigned long long)madeira_get_present_count(),
-                          winios_surface_present_count());
+                          winios_surface_present_count(),
+                          (unsigned long long)hb_pc, (unsigned long long)hb_lr);
         i++;
         for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
     }
