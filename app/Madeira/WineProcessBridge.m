@@ -6,8 +6,10 @@
 #import <os/log.h>
 #import <pthread.h>
 #import <mach/mach.h>
-#import <mach/mach_vm.h>
 #import <dlfcn.h>
+/* mach_vm.h is "unsupported" in the tvOS SDK; declared manually like in JITAllocator.c. */
+extern kern_return_t mach_vm_read_overwrite(vm_map_t, mach_vm_address_t, mach_vm_size_t,
+                                            mach_vm_address_t, mach_vm_size_t *);
 #import "WineProcessBridge.h"
 /* AVFoundation: AVAudioSession activation for the Tier-2 audio driver
  * (audio_null_ios.c RemoteIO backend). AudioToolbox: pulls the framework
