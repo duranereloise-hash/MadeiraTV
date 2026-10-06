@@ -420,6 +420,20 @@ _ = mkdir(current, 0o777)
                 // there so the marker survives the tvOS SIGKILL and is served
                 // over HTTP as /crash).
                 setenv("MADEIRA_CRASH_LOG", CrashCatcher.logURL.path, 1)
+                // ml1167: seed the virtual monitor BEFORE wineserver/Wine start,
+                // exactly like the iOS front end does for desktop sessions
+                // (ContentView.swift sets MADEIRA_SCREEN_W/H + winios_display_mode_changed
+                // before launch). Without them the DXMT headless monitor defaults to
+                // 1024x768 and winios composites to an unseeded desktop rect, so a
+                // game's first D3D11 swapchain can end up at 0 presents (black screen).
+                // Use the TV's native 4K size (Apple TV 4K); ChangeDisplaySettings by
+                // the game still overrides afterwards.
+                {
+                    let w = 1920, h = 1080
+                    setenv("MADEIRA_SCREEN_W", String(w), 1)
+                    setenv("MADEIRA_SCREEN_H", String(h), 1)
+                    winios_display_mode_changed(Int32(w), Int32(h))
+                }
                 // wineserver_start is idempotent: returns 0 if already running.
                 CrashCatcher.write("[launch] bg: wineserver_start")
                 let ws = wineserver_start(prefix)
