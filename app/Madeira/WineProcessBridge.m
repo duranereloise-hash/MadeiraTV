@@ -875,43 +875,38 @@ static void *madeira_hb_main(void *arg)
             mach_port_t mt = pthread_mach_thread_np(mainp);
             arm_thread_state64_t st;
             mach_msg_type_number_t cnt = ARM_THREAD_STATE64_COUNT;
-            if (thread_suspend(mt) == KERN_SUCCESS)
+            /* ml1173: NO thread_suspend here. Suspending the main thread right
+             * during load_ntdll / boot can stall it (a suspend landing in a
+             * critical boot section then resume racing the loader) — the boots
+             * that previously progressed now hang at load_ntdll. Use a
+             * non-suspending snapshot instead; it may race the PC but never
+             * blocks the guest. */
+            if (thread_get_state(mt, ARM_THREAD_STATE64, (thread_state_t)&st, &cnt) == KERN_SUCCESS)
             {
-                if (thread_get_state(mt, ARM_THREAD_STATE64, (thread_state_t)&st, &cnt) == KERN_SUCCESS)
+                hb_pc = arm_thread_state64_get_pc(st);
+                hb_lr = arm_thread_state64_get_lr(st);
+                uint64_t fp_walk = arm_thread_state64_get_fp(st);
+                if (fp_walk > 0x1000)
                 {
-                    hb_pc = arm_thread_state64_get_pc(st);
-                    hb_lr = arm_thread_state64_get_lr(st);
-                    /* ml1169: walk the FP chain too. The stable pc (0x1d0144d94
-                     * on GD) is a guest/PE address we can't symbolise here, but
-                     * LR + FP walk gives native callers (dispatcher, loader.c,
-                     * ntdll fns) that dladdr() CAN name. */
-                    uint64_t fp_walk = arm_thread_state64_get_fp(st);
-                    if (fp_walk > 0x1000)
+                    char line[700]; int ln = 0;
+                    ln += snprintf(line + ln, sizeof(line) - ln, "[hb-bt]");
+                    for (int f = 0; f < 8 && fp_walk > 0x1000; f++)
                     {
-                        char line[700]; int ln = 0;
-                        ln += snprintf(line + ln, sizeof(line) - ln, "[hb-bt]");
-                        for (int f = 0; f < 8 && fp_walk > 0x1000; f++)
-                        {
-                            uint64_t fb[2]; mach_vm_size_t got = 0;
-                            if (mach_vm_read_overwrite(mach_task_self(), (mach_vm_address_t)fp_walk, 16,
-                                                       (mach_vm_address_t)fb, &got) != KERN_SUCCESS || got != 16)
-                                break;
-                            Dl_info di;
-                            if (dladdr((void *)(uintptr_t)fb[1], &di) && di.dli_sname)
-                                ln += snprintf(line + ln, sizeof(line) - ln, " %s+0x%llx",
-                                               di.dli_sname, (unsigned long long)(fb[1] - (uintptr_t)di.dli_saddr));
-                            else
-                                ln += snprintf(line + ln, sizeof(line) - ln, " 0x%llx", (unsigned long long)fb[1]);
-                            if (fb[0] <= fp_walk) break;
-                            fp_walk = fb[0];
-                        }
-madeira_crash_log("%s", line);
+                        uint64_t fb[2]; mach_vm_size_t got = 0;
+                        if (mach_vm_read_overwrite(mach_task_self(), (mach_vm_address_t)fp_walk, 16,
+                                                   (mach_vm_address_t)fb, &got) != KERN_SUCCESS || got != 16)
+                            break;
+                        Dl_info di;
+                        if (dladdr((void *)(uintptr_t)fb[1], &di) && di.dli_sname)
+                            ln += snprintf(line + ln, sizeof(line) - ln, " %s+0x%llx",
+                                           di.dli_sname, (unsigned long long)(fb[1] - (uintptr_t)di.dli_saddr));
+                        else
+                            ln += snprintf(line + ln, sizeof(line) - ln, " 0x%llx", (unsigned long long)fb[1]);
+                        if (fb[0] <= fp_walk) break;
+                        fp_walk = fb[0];
+                    }
+                    madeira_crash_log("%s", line);
                 }
-                /* ml1172: reverse-translate the JIT-pool PC to the guest RIP
-                 * and its PE module, so heartbeat names the Windows function
-                 * the main thread is actually in (instead of an opaque pool
-                 * address). ios_jit_reverse_translate lives in the ntdll-unix
-                 * static lib and accepts a host PC inside a JIT block. */
                 {
                     extern uint64_t ios_jit_reverse_translate(uint64_t addr, uint64_t *module_base);
                     uint64_t hb_mod = 0;
@@ -922,8 +917,6 @@ madeira_crash_log("%s", line);
                                           (unsigned long long)hb_mod,
                                           (unsigned long long)hb_pc);
                 }
-                }
-                thread_resume(mt);
             }
         }
         madeira_crash_log("[hb] host=1 wine=%d server=%d dxmt=%llu winios=%llu pc=0x%llx lr=0x%llx",
