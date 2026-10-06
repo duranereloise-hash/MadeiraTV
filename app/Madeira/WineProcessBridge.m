@@ -905,8 +905,23 @@ static void *madeira_hb_main(void *arg)
                             if (fb[0] <= fp_walk) break;
                             fp_walk = fb[0];
                         }
-                        madeira_crash_log("%s", line);
-                    }
+madeira_crash_log("%s", line);
+                }
+                /* ml1172: reverse-translate the JIT-pool PC to the guest RIP
+                 * and its PE module, so heartbeat names the Windows function
+                 * the main thread is actually in (instead of an opaque pool
+                 * address). ios_jit_reverse_translate lives in the ntdll-unix
+                 * static lib and accepts a host PC inside a JIT block. */
+                {
+                    extern uint64_t ios_jit_reverse_translate(uint64_t addr, uint64_t *module_base);
+                    uint64_t hb_mod = 0;
+                    uint64_t hb_rip = ios_jit_reverse_translate(hb_pc, &hb_mod);
+                    if (hb_rip)
+                        madeira_crash_log("[hb-guest] rip=0x%llx module=0x%llx (native_pc=0x%llx)",
+                                          (unsigned long long)hb_rip,
+                                          (unsigned long long)hb_mod,
+                                          (unsigned long long)hb_pc);
+                }
                 }
                 thread_resume(mt);
             }
