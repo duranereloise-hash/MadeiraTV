@@ -173,7 +173,7 @@ static macdrv_metal_view my_view_create_metal_view(macdrv_view v, macdrv_metal_d
     (void)d;
     { extern void madeira_crash_log(const char *fmt, ...);
       madeira_crash_log("[render] my_view_create_metal_view hwnd=%p desktop=%d layer=%p",
-                        v, madeira_desktop_mode(), (void*)g_layer); }
+                        v, madeira_desktop_mode(), (void *)(__bridge void *)g_layer); }
     if (madeira_desktop_mode()) {
         CAMetalLayer *layer = winios_metal_layer_for_hwnd((void *)v);
         if (!layer) {
