@@ -63,7 +63,7 @@ void madeira_crash_log(const char *fmt, ...)
     if (fd < 0) return;
     char line[1280];
     int n = snprintf(line, sizeof(line), "[%.0f] %s\n", [[NSDate date] timeIntervalSince1970], buf);
-    if (n > 0) write(fd, line, n);
+    if (n > 0 && write(fd, line, n) == n) fsync(fd);   /* flush so a SIGKILL still leaves the last line on disk */
     close(fd);
 }
 #include "WineServerBridge.h"
@@ -834,6 +834,15 @@ static void madeira_publish_host_probe(void)
  * process is alive, so even a SIGKILL leaves a timestamped death point
  * (a signal handler can't help there). Detached; stops itself when the
  * app process dies. */
+/*
+ * 4-vector heartbeat so a stuck render is told apart from a dead process:
+ * host (=this thread alive) / wine (=wine_process_is_running) /
+ * server (=wineserver_is_running) / dxmt+winios (present counters).
+ * host=1 wine=1 server=1 dxmt=0 winios=0  -> guest never reached first DXMT
+ * present; dxmt>0 winios=0                -> host-side surface dead-end.
+ */
+extern uint64_t madeira_get_present_count(void);
+extern unsigned long long winios_surface_present_count(void);
 static void *madeira_hb_main(void *arg)
 {
     (void)arg;
@@ -841,7 +850,11 @@ static void *madeira_hb_main(void *arg)
     int i = 0;
     while (!stop && i < 600)
     {
-        madeira_crash_log("[hb] wine-process-alive %d", i);
+        madeira_crash_log("[hb] host=1 wine=%d server=%d dxmt=%llu winios=%llu",
+                          wine_process_is_running(),
+                          wineserver_is_running(),
+                          (unsigned long long)madeira_get_present_count(),
+                          winios_surface_present_count());
         i++;
         for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
     }
