@@ -171,6 +171,9 @@ static void my_release_metal_device(macdrv_metal_device d) {
 // compositor. Game mode: the fullscreen singleton, exactly as before.
 static macdrv_metal_view my_view_create_metal_view(macdrv_view v, macdrv_metal_device d) {
     (void)d;
+    { extern void madeira_crash_log(const char *fmt, ...);
+      madeira_crash_log("[render] my_view_create_metal_view hwnd=%p desktop=%d layer=%p",
+                        v, madeira_desktop_mode(), (void*)g_layer); }
     if (madeira_desktop_mode()) {
         CAMetalLayer *layer = winios_metal_layer_for_hwnd((void *)v);
         if (!layer) {
