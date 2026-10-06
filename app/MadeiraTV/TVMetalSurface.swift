@@ -26,6 +26,12 @@ final class TVMetalSurface: UIView {
         isUserInteractionEnabled = false   // clicks go through to SwiftUI
         backgroundColor = .black
         metalLayer.device = MTLCreateSystemDefaultDevice()
+        if metalLayer.device == nil {
+            CrashCatcher.write("[render] FATAL: MTLCreateSystemDefaultDevice() = nil — no Metal device on tvOS")
+            NSLog("[render] FATAL: no Metal device")
+        } else {
+            CrashCatcher.write("[render] Metal device OK: \(metalLayer.device!.name)")
+        }
         metalLayer.pixelFormat = .bgra8Unorm
         metalLayer.framebufferOnly = true
         // The same MeloNX trick as iOS: if the private display-sync selector
@@ -69,6 +75,7 @@ final class TVMetalSurface: UIView {
     func registerDisplay() {
         guard !Self.registered else { return }
         Self.registered = true
+        CrashCatcher.write("[render] registerDisplay: layer=\(String(describing: metalLayer)) dev=\(String(describing: metalLayer.device?.name)) size=\(metalLayer.drawableSize)")
         madeira_display_set_layer(metalLayer)
     }
 
