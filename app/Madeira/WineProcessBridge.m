@@ -6,6 +6,8 @@
 #import <os/log.h>
 #import <pthread.h>
 #import <mach/mach.h>
+#import <mach/mach_vm.h>
+#import <dlfcn.h>
 #import "WineProcessBridge.h"
 /* AVFoundation: AVAudioSession activation for the Tier-2 audio driver
  * (audio_null_ios.c RemoteIO backend). AudioToolbox: pulls the framework
