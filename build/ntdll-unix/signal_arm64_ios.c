@@ -7149,6 +7149,50 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
         else rec.ExceptionInformation[0] = EXCEPTION_READ_FAULT;
         rec.ExceptionInformation[1] = fault_addr;
 
+        /* ml1160: NAME the region a guest INSTRUCTION-FETCH faulted on.
+         *
+         * tvOS 27 keeps killing Madeira with CODESIGNING/"Invalid Page" on a
+         * guest execute from a deterministic file-backed VA (2026-10-06,
+         * pc=0x717fd32d18 in mapped file 0x717fce0000-0x717fd70000, twice).
+         * The key discriminator is whether the loader has a JIT-pool copy
+         * (ios_jit_mappings) for that VA: if os_jit_module_base_for_va()
+         * returns 0, the guest is executing a module .text that was NEVER
+         * copied into the pool and remains a raw file-backed, non-exec page.
+         * Log the faulting PC, that decision, and the region, exactly once
+         * per distinct address (bounded) so the next crash names the module.
+         * Runs on the exception-server thread, so dprintf/ERR are off-limit;
+         * fprintf(STDERR) is used here exactly like the stale-heal path. */
+        if (rec.ExceptionInformation[0] == EXCEPTION_EXECUTE_FAULT)
+        {
+            static uint64_t log_addrs[32];
+            static int      log_n = 0;
+            int li, red = 0;
+            uint64_t fv = (uint64_t)fault_addr;
+            for (li = 0; li < log_n; li++) if (log_addrs[li] == fv) red = 1;
+            if (!red && log_n < 32)
+            {
+                extern unsigned long long ios_jit_module_base_for_va(unsigned long long,
+                                                                      unsigned long long *);
+                log_addrs[log_n++] = fv;
+                unsigned long long msize = 0, mbase = ios_jit_module_base_for_va(fv, &msize);
+                mach_vm_address_t ea = (mach_vm_address_t)fv;
+                mach_vm_size_t    es = 0;
+                vm_region_basic_info_data_64_t bi; memset(&bi, 0, sizeof(bi));
+                mach_msg_type_number_t bc = VM_REGION_BASIC_INFO_COUNT_64;
+                mach_port_t bo = MACH_PORT_NULL;
+                int rerr = mach_vm_region(mach_task_self(), &ea, &es, VM_REGION_BASIC_INFO_64,
+                                          (vm_region_info_t)&bi, &bc, &bo);
+                fprintf(stderr,
+                    "[JIT-EXEC-FAULT] pc=0x%llx fault=0x%llx pool_mod=0x%llx..0x%llx "
+                    "region=0x%llx..0x%llx prot=0x%x max=0x%x rerr=%d %s ml1160\n",
+                    (unsigned long long)arm_thread_state64_get_pc(*state), fv,
+                    mbase, mbase ? mbase + msize : 0ull,
+                    (unsigned long long)ea, (unsigned long long)(rerr == KERN_SUCCESS ? es : 0),
+                    (unsigned int)bi.protection, (unsigned int)bi.max_protection, rerr,
+                    mbase ? "POOL-COPIED" : "NOT-IN-POOL (file-backed probe)");
+            }
+        }
+
         /* iOS-Madeira 2026-09-19 [unaligned-atomic]: AN ALIGNMENT FAULT IS NOT
          * AN ACCESS VIOLATION, ON EITHER DELIVERY PATH.
          *
