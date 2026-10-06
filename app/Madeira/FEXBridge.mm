@@ -38,6 +38,7 @@
 #include <atomic>
 #include <csetjmp>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <mutex>
 #include <stdexcept>
@@ -82,8 +83,27 @@ static void fex_log(const char *fmt, ...) {
 // JIT Memory Pool
 // Dual-mapped: RX pages (from debugger) + RW pages (via vm_remap)
 // ---------------------------------------------------------------------------
-static constexpr size_t JIT_POOL_SIZE = 64 * 1024 * 1024; // 64MB
 static constexpr size_t JIT_PAGE_SIZE = 0x4000; // 16KB iOS pages
+
+/* JIT pool capacity, in MB. Five months of crash reports (ml1040/ml1135) root
+ * the recurring "INVALID PAGE / AV EXEC / code-signing SIGKILL" boot deaths in
+ * JIT-pool exhaustion: when the guest's early boot transcribes enough code, the
+ * pool fills, a module's .text is left running from its UN-POOLED file-backed
+ * address (KERN_PROTECTION_FAILURE on instruction fetch), and tvOS 27 kills the
+ * process under CODESIGNING / "Invalid Page" — exactly the 2026-10-06 crash.
+ * The old 64MB default was catastrophically small for a normal game boot. Now
+ * read once at init from MADEIRA_JIT_POOL_MB (default 512) so it can be tuned /
+ * A-B'd without a rebuild. */
+static size_t jit_pool_size_mb(void) {
+    static const size_t DEFAULT_MB = 512;
+    const char *s = getenv("MADEIRA_JIT_POOL_MB");
+    if (s && *s) {
+        char *end = nullptr;
+        long v = strtol(s, &end, 10);
+        if (end != s && v >= 64 && v <= 4096) return (size_t)v;
+    }
+    return DEFAULT_MB;
+}
 
 static void *g_jit_rx_base = nullptr;  // Executable view
 static void *g_jit_rw_base = nullptr;  // Writable view
@@ -120,7 +140,7 @@ static bool is_in_jit_pool(void *addr) {
 static bool jit_pool_init(void) {
     if (g_jit_rx_base) return true; // Already initialized
 
-    size_t size = JIT_POOL_SIZE;
+    size_t size = jit_pool_size_mb() << 20;   // MB -> bytes
     mach_port_t task = mach_task_self();
 
     // 0) Preferred on tvOS/iOS sandbox: MAP_JIT + pthread_jit_write_protect.
