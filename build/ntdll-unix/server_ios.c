@@ -4114,9 +4114,13 @@ void server_init_process_done(void)
     /* Signal the parent process to continue */
     SERVER_START_REQ( init_process_done )
     {
+        { extern void madeira_crash_log(const char *fmt, ...);
+          madeira_crash_log("[wine] init_process_done: before wine_server_call"); }
         req->teb = wine_server_client_ptr( teb );
         req->peb = NtCurrentTeb64() ? NtCurrentTeb64()->Peb : wine_server_client_ptr( peb );
         status = wine_server_call( req );
+        { extern void madeira_crash_log(const char *fmt, ...);
+          madeira_crash_log("[wine] init_process_done: after wine_server_call status=0x%x", status); }
         suspend = reply->suspend;
     }
     SERVER_END_REQ;
