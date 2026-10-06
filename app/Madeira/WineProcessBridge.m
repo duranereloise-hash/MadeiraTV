@@ -877,6 +877,32 @@ static void *madeira_hb_main(void *arg)
                 {
                     hb_pc = arm_thread_state64_get_pc(st);
                     hb_lr = arm_thread_state64_get_lr(st);
+                    /* ml1169: walk the FP chain too. The stable pc (0x1d0144d94
+                     * on GD) is a guest/PE address we can't symbolise here, but
+                     * LR + FP walk gives native callers (dispatcher, loader.c,
+                     * ntdll fns) that dladdr() CAN name. */
+                    uint64_t fp_walk = arm_thread_state64_get_fp(st);
+                    if (fp_walk > 0x1000)
+                    {
+                        char line[700]; int ln = 0;
+                        ln += snprintf(line + ln, sizeof(line) - ln, "[hb-bt]");
+                        for (int f = 0; f < 8 && fp_walk > 0x1000; f++)
+                        {
+                            uint64_t fb[2]; mach_vm_size_t got = 0;
+                            if (mach_vm_read_overwrite(mach_task_self(), (mach_vm_address_t)fp_walk, 16,
+                                                       (mach_vm_address_t)fb, &got) != KERN_SUCCESS || got != 16)
+                                break;
+                            Dl_info di;
+                            if (dladdr((void *)(uintptr_t)fb[1], &di) && di.dli_sname)
+                                ln += snprintf(line + ln, sizeof(line) - ln, " %s+0x%llx",
+                                               di.dli_sname, (unsigned long long)(fb[1] - (uintptr_t)di.dli_saddr));
+                            else
+                                ln += snprintf(line + ln, sizeof(line) - ln, " 0x%llx", (unsigned long long)fb[1]);
+                            if (fb[0] <= fp_walk) break;
+                            fp_walk = fb[0];
+                        }
+                        madeira_crash_log("%s", line);
+                    }
                 }
                 thread_resume(mt);
             }
