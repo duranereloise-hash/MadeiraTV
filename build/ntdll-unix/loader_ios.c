@@ -2894,6 +2894,16 @@ static void start_main_thread(void)
 #define WINE_IOS_LOG(msg)
 #endif
 #ifdef WINE_IOS
+    /* ml1162: mirror each boot phase into crash.log (served as /crash) so a
+     * hang inside start_main_thread() names the exact phase, not just
+     * "entered/returned". Madeira logs "[wine] __wine_main: start_main_thread"
+     * then goes silent, and stderr routing into madeira-log.txt is unreliable;
+     * the os_log line is invisible over HTTP. */
+#define WINE_IOS_PHASE(msg) do { extern void madeira_crash_log(const char *fmt, ...); madeira_crash_log("[wine] start_main_thread: " msg); dprintf(STDERR_FILENO, "[Wine init] " msg "\n"); } while(0)
+#else
+#define WINE_IOS_PHASE(msg)
+#endif
+#ifdef WINE_IOS
     /* Device-run fix: reserve this pseudo-process's guest window BEFORE the
      * first TEB, when the MAIN image is 32-bit.  Only wine_ios_child_main did
      * this before, so a 32-bit MAIN image (`wine hello-x86.exe`) ran with no
@@ -2929,6 +2939,7 @@ static void start_main_thread(void)
     }
 #endif
     WINE_IOS_LOG("virtual_alloc_first_teb...");
+    WINE_IOS_PHASE("virtual_alloc_first_teb");
     TEB *teb = virtual_alloc_first_teb();
     WINE_IOS_LOG("virtual_alloc_first_teb done");
 #ifdef WINE_IOS
@@ -3006,24 +3017,33 @@ static void start_main_thread(void)
     }
 #endif
     WINE_IOS_LOG("signal_init_threading...");
+    WINE_IOS_PHASE("signal_init_threading");
     signal_init_threading();
     WINE_IOS_LOG("dbg_init...");
+    WINE_IOS_PHASE("dbg_init");
     dbg_init();
     WINE_IOS_LOG("server_init_process...");
+    WINE_IOS_PHASE("server_init_process");
     startup_info_size = server_init_process();
     WINE_IOS_LOG("server_init_process done");
     WINE_IOS_LOG("virtual_map_user_shared_data...");
+    WINE_IOS_PHASE("virtual_map_user_shared_data");
     virtual_map_user_shared_data();
     WINE_IOS_LOG("init_cpu_info...");
+    WINE_IOS_PHASE("init_cpu_info");
     init_cpu_info();
     WINE_IOS_LOG("init_files...");
+    WINE_IOS_PHASE("init_files");
     init_files();
     WINE_IOS_LOG("init_startup_info...");
+    WINE_IOS_PHASE("unix_init_startup_info");
     unix_init_startup_info();
     *(ULONG_PTR *)&peb->CloudFileFlags = get_image_address();
     set_load_order_app_name( main_wargv[0] );
     WINE_IOS_LOG("init_thread_stack...");
+    WINE_IOS_PHASE("init_thread_stack");
     init_thread_stack( teb, 0, 0, 0 );
+    WINE_IOS_PHASE("ntcreatekeyedevent");
     NtCreateKeyedEvent( &keyed_event, GENERIC_READ | GENERIC_WRITE, NULL, 0 );
     /* ml756: take FEX's host arena BEFORE any PE module is placed.
      *
@@ -3034,6 +3054,7 @@ static void start_main_thread(void)
      * Wine's VM bookkeeping can record the view; load_ntdll() below is the
      * first PE placement. */
     WINE_IOS_LOG("ios_reserve_fex_arena...");
+    WINE_IOS_PHASE("ios_reserve_fex_arena");
     ios_reserve_fex_arena();
     /* ml997: the guest jumbo holdback runs AFTER the arena, never before.
      * rdr65 held 9216 MB at jit-pool-init and the arena then found nothing in 9
@@ -3042,16 +3063,21 @@ static void start_main_thread(void)
      * small and must win; the holdback takes what is left. */
     {
         extern void ios_jumbo_holdback_init( void );
+        WINE_IOS_PHASE("ios_jumbo_holdback_init");
         ios_jumbo_holdback_init();
     }
 
     WINE_IOS_LOG("load_ntdll...");
+    WINE_IOS_PHASE("load_ntdll");
     load_ntdll();
     WINE_IOS_LOG("load_wow64_ntdll...");
+    WINE_IOS_PHASE("load_wow64_ntdll");
     load_wow64_ntdll( main_image_info.Machine );
     WINE_IOS_LOG("load_apiset_dll...");
+    WINE_IOS_PHASE("load_apiset_dll");
     load_apiset_dll();
     WINE_IOS_LOG("server_init_process_done...");
+    WINE_IOS_PHASE("server_init_process_done");
     server_init_process_done();
 }
 
