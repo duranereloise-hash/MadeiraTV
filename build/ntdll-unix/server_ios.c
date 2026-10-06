@@ -4161,6 +4161,14 @@ void server_init_process_done(void)
                 kern_return_t kr = thread_get_state(wine_mach_thread, ARM_THREAD_STATE64,
                                                     (thread_state_t)&state, &state_count);
                 if (kr == KERN_SUCCESS) {
+                    { extern void madeira_crash_log(const char *fmt, ...);
+                      madeira_crash_log("[watchdog-init-done %ds] PC=0x%llx LR=0x%llx SP=0x%llx FP=0x%llx x0=0x%llx x8=0x%llx",
+                        secs,
+                        (unsigned long long)arm_thread_state64_get_pc(state),
+                        (unsigned long long)arm_thread_state64_get_lr(state),
+                        (unsigned long long)arm_thread_state64_get_sp(state),
+                        (unsigned long long)arm_thread_state64_get_fp(state),
+                        state.__x[0], state.__x[8]); }
                     wine_log_write("[Wine WATCHDOG %ds] PC=0x%llx LR=0x%llx SP=0x%llx FP=0x%llx",
                         secs,
                         (unsigned long long)arm_thread_state64_get_pc(state),
