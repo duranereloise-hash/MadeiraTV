@@ -270,7 +270,28 @@ static bool jit_pool_init(void) {
 // Public: initialize just the JIT pool early (app start). Does not start the
 // full FEXCore engine; that still happens in wine_process_thread.
 extern "C" bool fex_ensure_jit_pool(void) {
-    return jit_pool_init();
+    bool ok = jit_pool_init();
+    if (ok) {
+        /* ml1170: publish the pool addresses to Wine via env, exactly like the
+         * iOS ContentView does (ContentView.swift:2793). Without these,
+         * mprotect_exec() in build/ntdll-unix/virtual_ios.c reads
+         * WINE_IOS_JIT_RX/RW/SIZE = NULL and skips the PE->JIT-pool copy path,
+         * leaving 64-bit PE .text as raw file-backed pages that the code-signing
+         * monitor kills on execution ("Invalid Page", 0x717fd32d18 in every .ips).
+         * Set them from the globals so whichever strategy (MAP_JIT / MeloNX /
+         * debugger) succeeded is the one Wine sees. */
+        {
+            char rx[32], rw[32], sz[32];
+            snprintf(rx, sizeof(rx), "%p", g_jit_rx_base);
+            snprintf(rw, sizeof(rw), "%p", g_jit_rw_base);
+            snprintf(sz, sizeof(sz), "%zu", g_jit_pool_size);
+            setenv("WINE_IOS_JIT_RX", rx, 1);
+            setenv("WINE_IOS_JIT_RW", rw, 1);
+            setenv("WINE_IOS_JIT_SIZE", sz, 1);
+            fex_log("Published JIT pool to Wine env: RX=%s RW=%s size=%s", rx, rw, sz);
+        }
+    }
+    return ok;
 }
 
 // Ask the kernel to mark this process as debugged (CS_DEBUGGED). tvOS has no
