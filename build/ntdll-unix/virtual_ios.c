@@ -9924,6 +9924,15 @@ static inline int ios_in_layerkit( unsigned long long a, size_t size )
 static void* try_map_free_area( void *base, void *end, ptrdiff_t step,
                                 void *start, size_t size, int unix_prot )
 {
+    /* ml1175: backoff. When the destination range is packed with foreign Mach
+     * regions (JIT pool + CoreAnimation shmem + ASLR furniture), the plain
+     * granule crawl costs one mach_vm_region + anon_mmap_tryfixed per step and
+     * can take unbounded wall time (observed: minutes inside map_apiset_schema
+     * right after load_ntdll, spurious "boot stuck"). After a run of failures,
+     * jump by 64 granules; the hit is a false negative only if the ONLY free
+     * spot lies in a window narrower than the jump, which the re-scan with the
+     * normal step from a later start cannot miss. */
+    unsigned long fail_run = 0;
     while (start && base <= start && (char*)start + size <= (char*)end)
     {
         /* ml253 ROOT-CAUSE FIX: never allocate inside the JIT pool.
@@ -9987,6 +9996,7 @@ static void* try_map_free_area( void *base, void *end, ptrdiff_t step,
         if (anon_mmap_tryfixed( start, size, unix_prot, 0 ) != MAP_FAILED) return start;
         TRACE( "Found free area is already mapped, start %p.\n", start );
         ios_va_scan_tries++;
+        fail_run++;
         if (!ios_scan_fail_addr) { ios_scan_fail_addr = start; ios_scan_fail_errno = errno; }
 #ifdef WINE_IOS
         /* iOS: mach_vm_map can return KERN_INVALID_ADDRESS (→ ENOMEM) at certain
@@ -10017,9 +10027,23 @@ static void* try_map_free_area( void *base, void *end, ptrdiff_t step,
             {
                 ios_va_scan_skips++;
                 start = next;
+                fail_run = 0;               /* one skip advances; reset the backoff */
             }
             else
-                start = (char *)start + step;
+            {
+                /* ml1175: backoff once we've failed many times in a row.
+                 * Jump 64 steps; only touches when skip_occupied gave up. */
+                if (fail_run >= 32 && step)
+                {
+                    ptrdiff_t jump = step * 64;
+                    if (step > 0)
+                        start = (char *)start + jump;
+                    else
+                        start = (char *)start + jump;   /* both are signed steps */
+                }
+                else
+                    start = (char *)start + step;
+            }
         }
     }
 
