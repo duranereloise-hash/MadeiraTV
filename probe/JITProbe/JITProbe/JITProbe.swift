@@ -57,6 +57,10 @@ final class JITProbe: NSObject {
         }
         report += "\n== device ==\n" + deviceInfo() + "\n"
 
+        // Give the HTTP server time to bind BEFORE the first (possibly fatal)
+        // test, so a re-opened app serves the surviving partial prefix.
+        Thread.sleep(forTimeInterval: 2.0)
+
         // stash report for HTTP
         lastReport = report
         writeLog(report)

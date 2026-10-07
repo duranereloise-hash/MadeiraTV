@@ -211,12 +211,17 @@ int jitprobe_run_matrix(char *out, size_t outsz) {
     partial("=== start ===\n");
 
     for (int i = 0; i < n; i++) {
+        // Give the HTTP server time to bind before a possibly-fatal test.
+        partialf("--- %s ---\n", modes[i]);
+        partial("  (test begins)\n");
         char line[256];
         int rc = run_one_mode(modes[i]);
         snprintf(line, sizeof(line), "--- %s --- rc=%d\n", names[i], rc);
         add(line);
         partial(line);
         partialf("  desc=%d\n", rc);
+        // If the test did not kill us, pause so the PC can read the partial.
+        usleep(3 * 1000000);   // 3s — readable via :9091 between tests
     }
     add("=== DONE ===\n");
     partial("=== done ===\n");
