@@ -110,12 +110,12 @@ static constexpr size_t JIT_PAGE_SIZE = 0x4000; // 16KB iOS pages
 extern "C" void madeira_crash_log(const char *fmt, ...);
 
 static size_t jit_pool_size_mb(void) {
-    /* ml1197: back to 512MB. Evidence from the device: the run that did NOT
-     * crash had jitOffset=-536870912 (512MB) and MAP_JIT on 0x1d...; after
-     * forcing 1024MB the pool fell out of MAP_JIT into the MeloNX
-     * shared-memory dual-map and tvOS killed execution (0x70400e037c SM=SHM).
-     * Keep the knob, floor at 512, allow raising. */
-    static const size_t DEFAULT_MB = 512;
+    /* ml1197m: back to 1024MB as the default/floor. The user reports that on
+     * this exact device (same atvloadly + same Apple ID) games ran fine before,
+     * and the known-good runs were the 1024MB pool (ml1191). The 512MB pool
+     * was associated with crashes. With MeloNX as a legitimate fallback again,
+     * size is the lever that determines whether the pool lands somewhere safe. */
+    static const size_t DEFAULT_MB = 1024;
     static const size_t FLOOR_MB = 512;
     const char *s = getenv("MADEIRA_JIT_POOL_MB");
     if (s && *s) {
@@ -203,28 +203,24 @@ static bool jit_pool_init(void) {
             }
             munmap(jit, size);
         } else {
-            // ml1197e: do NOT silently record this as "trying MeloNX". SM=SHM
-            // exec pages are killed by tvOS 27 (Invalid Page), and publishing
-            // them as a successful JIT pool is exactly how the app dies today.
-            // Record the failure REASON into crash.log (survives SIGKILL), then
-            // return false so the launch is refused instead of booting Wine
-            // inside shared memory.
+            // ml1197m: DO NOT hard-fail here. On a free-provisioned sideload
+            // mmap(MAP_JIT, PROT_EXEC) legitimately returns EPERM (no
+            // allow-jit entitlement, and no debugger attached -> CS_DEBUGGED=0).
+            // Overwriting the user's reality: the MeloNX mach-shared-memory
+            // dual-map below is what ACTUALLY ran games on this device before
+            // (same atvloadly + same Apple ID, "JIT worked, you broke it").
+            // Log the failure reason for triage, then fall through to MeloNX.
             int mapErr = errno;
             uint32_t cs = 0;
             int deb = -1;
             if (csops(getpid(), CS_OPS_STATUS, &cs, sizeof(cs)) == 0)
                 deb = (cs & CS_DEBUGGED) ? 1 : 0;
-            fex_log("MAP_JIT mmap failed (errno=%d) — CS_DEBUGGED=%d; refusing MeloNX fallback",
+            fex_log("MAP_JIT mmap failed (errno=%d) — CS_DEBUGGED=%d; using MeloNX dual-map fallback",
                     mapErr, deb);
-            madeira_crash_log("[jit-pool] MAP_JIT-FAILED errno=%d CS_DEBUGGED=%d — NOT falling back to MeloNX shared-mem (tvOS kills SM=SHM exec)",
+            madeira_crash_log("[jit-pool] MAP_JIT-FAILED errno=%d CS_DEBUGGED=%d — using MeloNX dual-map (the path that ran games before)",
                               mapErr, deb);
-            return false;
         }
     }
-
-    // (MeloNX dual-map kept as an explicit backchannel for a separately
-    //  controlled build; the default launch path no longer reaches it.)
-    (void)0;
 
     // Try the MeloNX dual-map SECOND: it does not depend on an attached
     // debugger. jit26_prepare_region()/BRK #0xf00d only works with a
