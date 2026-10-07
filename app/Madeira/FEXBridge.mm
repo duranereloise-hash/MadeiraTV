@@ -329,6 +329,32 @@ static bool jit_pool_init(void) {
 // Public: initialize just the JIT pool early (app start). Does not start the
 // full FEXCore engine; that still happens in wine_process_thread.
 extern "C" bool fex_ensure_jit_pool(void) {
+    /* ml1198: if a MeloNX shared-memory pool was created before the external
+     * JIT enabler (LocalDevVPN / JitStreamer) attached, and CS_DEBUGGED is now
+     * 1, RE-CREATE the pool through MAP_JIT. MeloNX pages become executable
+     * only once a debugger is attached (TXM), and the proper MAP_JIT path is
+     * strictly better (no SM=SHM). Detect the MeloNX pool by its distinctive
+     * RX placement in the guest window (0x7000000000..0x8000000000) and tear
+     * it down so jit_pool_init runs the MAP_JIT branch on the next re-arm. */
+    uint32_t cs_flags = 0;
+    int deb = -1;
+    if (csops(getpid(), CS_OPS_STATUS, &cs_flags, sizeof(cs_flags)) == 0)
+        deb = (cs_flags & CS_DEBUGGED) ? 1 : 0;
+    if (g_jit_rx_base && deb == 1) {
+        uintptr_t rx = (uintptr_t)g_jit_rx_base;
+        if (rx >= 0x7000000000ULL && rx < 0x8000000000ULL) {
+            fex_log("ml1198: CS_DEBUGGED now set (debugger attached); tearing down MeloNX pool to retry MAP_JIT (RX=%p)",
+                    g_jit_rx_base);
+            madeira_crash_log("[jit-pool] ml1198 debugger-attach: tearing down MeloNX RX=%p to retry MAP_JIT",
+                              g_jit_rx_base);
+            vm_deallocate(mach_task_self(), (vm_address_t)g_jit_rx_base, g_jit_pool_size);
+            vm_deallocate(mach_task_self(), (vm_address_t)g_jit_rw_base, g_jit_pool_size);
+            g_jit_rx_base = nullptr;
+            g_jit_rw_base = nullptr;
+            g_jit_pool_size = 0;
+            g_jit_pool_offset.store(0);
+        }
+    }
     bool ok = jit_pool_init();
     if (ok) {
         /* ml1170: publish the pool addresses to Wine via env, exactly like the

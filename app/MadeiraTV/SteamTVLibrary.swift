@@ -118,16 +118,24 @@ final class SteamTVLibrary: ObservableObject {
     /// (LocalDevVPN / JitStreamer) attaches a debugger, CS_DEBUGGED gets set
     /// and the MAP_JIT/debugger path starts succeeding — the dot flips green
     /// on its own without restarting the app.
+    ///
+    /// ml1198: re-arm FOREVER (no 200-attempt cap). LocalDevVPN / JitStreamer
+    /// attach happens whenever the user turns it on — could be minutes after
+    /// launch — so as long as the app stays in the foreground we keep polling
+    /// every 3s until the debugger shows up. This makes "turn on JIT in
+    /// LocalDevVPN" a runtime event instead of a "must be enabled before
+    /// launch" requirement.
     private func primeJIT() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.redirectLogToFile()
             self?.jitArmPass(label: "prime")
             var attempts = 0
-            while !(self?.jitStatus.isEnabled ?? false) && attempts < 200 {
+            while !(self?.jitStatus.isEnabled ?? false) {
                 Thread.sleep(forTimeInterval: 3.0)
                 attempts += 1
                 self?.jitArmPass(label: "rearm-\(attempts)")
             }
+            CrashCatcher.write("[jit] enabled after \(attempts) re-arms (LocalDevVPN/debugger attach)")
         }
     }
 
