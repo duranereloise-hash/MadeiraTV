@@ -271,7 +271,7 @@ static bool jit_pool_init(void) {
      * Both are logged via the crash path so a black screen / Invalid Page is
      * distinguishable from a wrong pool without another .ips round-trip. */
     {
-        extern void madeira_crash_log(const char *fmt, ...);
+        extern "C" void madeira_crash_log(const char *fmt, ...);
         uintptr_t rx = (uintptr_t)g_jit_rx_base;
         const char *kind;
         if (rx >= 0x100000000ULL && rx < 0xa000000000ULL)
