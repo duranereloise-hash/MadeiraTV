@@ -7204,7 +7204,7 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                     (unsigned long long)guest_rip, rip_why ? rip_why : "no-translation",
                     (unsigned long long)ea, (unsigned long long)(rerr == KERN_SUCCESS ? es : 0),
                     (unsigned int)bi.protection, (unsigned int)bi.max_protection,
-                    (int)bi.shared, (unsigned int)bi.user_tag, rerr,
+                    (int)bi.shared, 0 /* no user_tag in basic-info on tvOS SDK 18.5 */, rerr,
                     mbase ? "POOL-COPIED" : "NOT-IN-POOL (file-backed probe)");
                 fprintf(stderr, "%s", ml1160_line);
                 /* ml1161: also append to crash.log (CrashCatcher path, published by
