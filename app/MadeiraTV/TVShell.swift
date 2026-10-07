@@ -266,25 +266,3 @@ struct TVOnboardingSignIn: View {
         TVSignInGate()
     }
 }
-
-// MARK: - In-game overlay
-
-/// Full-screen Metal surface + floating HUD over a running game. The bare
-/// CAMetalLayer sits at window index 0 below everything; the HUD is a
-/// translucent, non-focusable overlay so the game keeps focus.
-struct TVInGameOverlay: View {
-    @EnvironmentObject private var hud: TVHUDSettings
-
-    var body: some View {
-        Color.clear
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay(alignment: .topLeading) {
-                if hud.showHUD {
-                    TVHUDOverlay()
-                        .allowsHitTesting(false)
-                }
-            }
-            .onAppear { TVMetalSurface.shared.show() }
-            .onDisappear { TVMetalSurface.shared.hide() }
-    }
-}
