@@ -95,12 +95,18 @@ static constexpr size_t JIT_PAGE_SIZE = 0x4000; // 16KB iOS pages
  * read once at init from MADEIRA_JIT_POOL_MB (default 512) so it can be tuned /
  * A-B'd without a rebuild. */
 static size_t jit_pool_size_mb(void) {
-    static const size_t DEFAULT_MB = 512;
+    /* ml1191: never allow a small pool. A 512MB pool was observed falling out
+     * of the MAP_JIT path into a MeloNX mach-shared-memory dual-map, whose
+     * r-x shared region tvOS refuses to execute (Permission fault / Invalid
+     * Page, pc inside 4.3MB 'shared memory' r-x region). Floor the pool at
+     * 1024MB so the primary MAP_JIT route is always used. */
+    static const size_t DEFAULT_MB = 1024;
+    static const size_t FLOOR_MB = 1024;
     const char *s = getenv("MADEIRA_JIT_POOL_MB");
     if (s && *s) {
         char *end = nullptr;
         long v = strtol(s, &end, 10);
-        if (end != s && v >= 64 && v <= 4096) return (size_t)v;
+        if (end != s && v >= (long)FLOOR_MB && v <= 4096) return (size_t)v;
     }
     return DEFAULT_MB;
 }
