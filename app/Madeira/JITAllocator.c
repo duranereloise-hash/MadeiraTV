@@ -895,14 +895,16 @@ unsigned madeira_early_intruder_tag, madeira_early_intruder_prot;
 
 __attribute__((constructor(101), used)) static void madeira_early_va_claim(void)
 {
-    /* ml1184: opt-out for debugging. The 1GB PROT_NONE placeholder reserved
-     * here (0x140000000..0x180000000) sits inside the window where ntdll's PE
+    /* ml1184: the 1GB PROT_NONE placeholder reserved here
+     * (0x140000000..0x180000000) sits inside the window where ntdll's PE
      * image mapping looks (0x100000000..0x73ffff0000); map_free_area does not
      * see foreign Mach regions as views, so it crawls through the whole block
-     * one granule at a time (7000+ tries) and can miss a fit -> 0xc0000017.
-     * Setting MADEIRA_NO_EARLY_VA_CLAIM=1 skips the reservation entirely. */
-    if (getenv("MADEIRA_NO_EARLY_VA_CLAIM") != NULL)
-        return;
+     * one granule at a time (7000+ tries) and then misses the fit ->
+     * STATUS_NO_MEMORY (0xc0000017) when booting ntdll.dll. This placeholder
+     * was meant for the RX pool / 32-bit image window that the JIT allocator
+     * already handles; disable it completely (it was left on by default and
+     * only ever helped pre-ml1170 layouts). */
+    return;
     const vm_address_t win = 0x140000000ul, winsz = 0x8000000ul;       /* 128MB, see ml1037 */
     vm_address_t a = win;
     vm_size_t sz;
