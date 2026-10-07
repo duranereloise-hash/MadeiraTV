@@ -17266,8 +17266,13 @@ NTSTATUS virtual_map_builtin_module( HANDLE mapping, void **module, SIZE_T *size
     }
     else
     {
+        { extern void madeira_crash_log(const char *fmt, ...);
+          madeira_crash_log("[wine] virtual_map_builtin_module: calling virtual_map_image (%s)",
+                            debugstr_us(&nt_name)); }
         status = virtual_map_image( mapping, module, size, shared_file, limit_low, limit_high, 0,
                                     machine, image_info, &nt_name, TRUE, offset );
+        { extern void madeira_crash_log(const char *fmt, ...);
+          madeira_crash_log("[wine] virtual_map_builtin_module: virtual_map_image done status=0x%x", status); }
         virtual_fill_image_information( image_info, info );
     }
 

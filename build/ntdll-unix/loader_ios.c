@@ -2594,6 +2594,8 @@ static void load_ntdll(void)
     else asprintf( &name, "%s%s/ntdll.dll", dll_dir, pe_dir );
 
     if (is_arm64ec()) machine = main_image_info.Machine;
+    { extern void madeira_crash_log(const char *fmt, ...);
+      madeira_crash_log("[wine] load_ntdll: opening PE file (ntdll.dll machine=%u)", machine); }
     status = open_builtin_pe_file( name, &attr, &module, &size, &info, 0, 0, machine, FALSE, 0 );
     if (status == STATUS_DLL_NOT_FOUND)
     {
