@@ -925,6 +925,18 @@ static void *madeira_hb_main(void *arg)
                           (unsigned long long)madeira_get_present_count(),
                           winios_surface_present_count(),
                           (unsigned long long)hb_pc, (unsigned long long)hb_lr);
+        /* ml1187: if the Wine process is gone, report WHY (session exit
+         * status) so a silent death after init_process_done is visible. */
+        if (!wine_process_is_running())
+        {
+            uint32_t ws = 0;
+            if (wine_crash_exit_status(&ws))
+                madeira_crash_log("[hb-death] wine process exited with NTSTATUS 0x%x (crash)",
+                                  (unsigned)ws);
+            else
+                madeira_crash_log("[hb-death] wine process not running (no crash status)");
+            i = 600;   /* stop after reporting once */
+        }
         i++;
         for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
     }
