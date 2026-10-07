@@ -55,9 +55,10 @@ final class JITProbe: NSObject {
         guard ptr != MAP_FAILED else {
             return "mmap(MAP_JIT) FAILED errno=\(errno) — MAP_JIT blocked\n"
         }
-        defer { munmap(ptr, size) }
+        let execOk = execProbe(UnsafeMutableRawPointer(ptr))
         let addr = UInt(bitPattern: ptr)
-        guard execProbe(ptr) else {
+        munmap(ptr, size)
+        guard execOk else {
             return "mmap(MAP_JIT) OK at 0x\(String(addr, radix: 16)) but EXEC FAILED (SIGSEGV/SIGBUS or no-op) — TXM/AMFI kills it\n"
         }
         return "mmap(MAP_JIT) OK at 0x\(String(addr, radix: 16)) + EXEC OK — JIT WORKS via MAP_JIT!\n"
@@ -76,16 +77,16 @@ final class JITProbe: NSObject {
         }
         defer { mach_port_deallocate(task, entry) }
 
-        var rwAddr: mach_vm_address_t = 0
-        kr = vm_map(task, &rwAddr, size, 0, VM_FLAGS_ANYWHERE, entry, 0, false,
+        var rwAddr: vm_address_t = 0
+        kr = vm_map(task, &rwAddr, vm_size_t(size), 0, VM_FLAGS_ANYWHERE, entry, 0, boolean_t(0),
                     VM_PROT_READ | VM_PROT_WRITE, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_EXECUTE,
                     VM_INHERIT_DEFAULT)
         guard kr == KERN_SUCCESS else {
             return "vm_map RW FAILED kr=\(kr)\n"
         }
 
-        var rxAddr: mach_vm_address_t = 0
-        kr = vm_map(task, &rxAddr, size, 0, VM_FLAGS_ANYWHERE, entry, 0, false,
+        var rxAddr: vm_address_t = 0
+        kr = vm_map(task, &rxAddr, vm_size_t(size), 0, VM_FLAGS_ANYWHERE, entry, 0, boolean_t(0),
                     VM_PROT_READ | VM_PROT_EXECUTE, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_EXECUTE,
                     VM_INHERIT_DEFAULT)
         guard kr == KERN_SUCCESS else {
@@ -127,7 +128,9 @@ final class JITProbe: NSObject {
         let ret: UInt32 = 0xD65F03C0  // ret
         writePtr.storeBytes(of: mov, as: UInt32.self)
         writePtr.advanced(by: 4).storeBytes(of: ret, as: UInt32.self)
-        sys_icache_invalidate(execPtr, 8)
+        // Clear instruction cache for the 8 bytes at execPtr.
+        __builtin___clear_cache(execPtr.assumingMemoryBound(to: UInt8.self),
+                                execPtr.advanced(by: 8).assumingMemoryBound(to: UInt8.self))
 
         // Call through a function pointer; catch faults.
         let fn = unsafeBitCast(execPtr, to: (@convention(c) () -> UInt64).self)
