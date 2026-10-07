@@ -153,14 +153,13 @@ static bool jit_pool_init(void) {
     //    need a debugger.
     {
         fex_log("Trying MAP_JIT pool (%zu MB)", size >> 20);
-        /* ml1195: hint the pool to 0x7e00000000 — the address every stable run
-         * landed on (heartbeat jitOffset ~ -476446343168 = 0x7E01...). The
-         * earlier hint 0x2000000000 made MAP_JIT fail there (kernel won't grant
-         * JIT that high/locally) and silently fell back to the MeloNX
-         * mach-shared-memory dual-map (RW/RX/RW SM=SHM), whose r-x shared
-         * region tvOS refuses to execute (Permission fault, Invalid Page at
-         * 0x7040... SM=SHM). Hinting to the known-good zone keeps MAP_JIT. */
-        void *jit = mmap((void *)0x7e00000000ull, size, PROT_READ | PROT_WRITE | PROT_EXEC,
+        /* ml1196: NO hint. Direct evidence from the device: hinting the pool
+         * (0x2000... or 0x7e...) made MAP_JIT fail and silently fall back to the
+         * MeloNX mach-shared-memory dual-map, whose r-x SM=SHM region tvOS kills
+         * on execution (Permission fault at 0x70400e037c, shared memory 1MB).
+         * mmap(NULL, MAP_JIT) reliably lands on 0x1d... and runs without
+         * crashing (verified over many launches on ml1191). */
+        void *jit = mmap(NULL, size, PROT_READ | PROT_WRITE | PROT_EXEC,
                          MAP_ANON | MAP_PRIVATE | MAP_JIT, -1, 0);
         if (jit != MAP_FAILED) {
             // RW alias for writing generated code.

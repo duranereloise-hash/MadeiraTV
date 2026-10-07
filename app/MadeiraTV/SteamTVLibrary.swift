@@ -65,15 +65,13 @@ final class SteamTVLibrary: ObservableObject {
         return URL(string: "https://cdn.cloudflare.steamstatic.com/steam/apps/\(app.appID)/library_hero.jpg")
     }
 
-    /// Launch mode gate. With the ntdll NO_MEMORY fix and the 1024MB MAP_JIT pool
-/// (both stable now), the desktop session (explorer.exe shell) is the
-/// battle-tested path that gives the guest a window station + foreground
-/// window so D3D11/DXMT can create a swapchain. Direct-EXE stays available
-/// via MADEIRA_TV_DIRECT_EXE=1 for dev test tools.
+    /// Launch mode gate. Direct-EXE (bare) is the default — it is the configuration
+/// that runs without crashing (verified: pool 1024MB + MAP_JIT no-hint).
+/// Desktop session optional via MADEIRA_TV_DESKTOP=1.
     static var useDesktopSession: Bool {
-        guard let v = getenv("MADEIRA_TV_DIRECT_EXE") else { return true }
+        guard let v = getenv("MADEIRA_TV_DESKTOP") else { return false }
         let s = String(cString: v).lowercased()
-        return !["1", "true", "yes", "on"].contains(s)
+        return ["1", "true", "yes", "on"].contains(s)
     }
 
     /// Write C:\steam-launch.bat into the wine prefix (drive_c). CRLF required.
