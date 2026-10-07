@@ -151,8 +151,8 @@ enum RemoteConsole {
             if wineserver_is_running() != 0 { wineserver_stop() }
             usleep(300_000)
             // SteamTVLibrary.prefix is MainActor-isolated; grab it on the main queue.
-            let pfx = DispatchQueue.main.sync { SteamTVLibrary.shared }
-            _ = wineserver_start(pfx.prefix.path)
+            let pfix = DispatchQueue.main.sync { return SteamTVLibrary.prefix }
+            _ = wineserver_start(pfix.path)
 
         case "rearm-jit":
             CrashCatcher.write("[panel] rearm-jit")
