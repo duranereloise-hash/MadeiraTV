@@ -144,18 +144,27 @@ final class JITProbe: NSObject {
         writePtr.advanced(by: 4).storeBytes(of: ret, as: UInt32.self)
         clearCache(execPtr, 8)
 
-        // Call through a function pointer; catch faults.
+        // Call through a function pointer; catch faults with a static flag.
+        probeFaulted = false
+        signal(SIGSEGV, probeSignalHandler)
+        signal(SIGBUS, probeSignalHandler)
+        let oldSEGV = signal(SIGSEGV, probeSignalHandler)
+        let oldBUS = signal(SIGBUS, probeSignalHandler)
+        _ = (oldSEGV, oldBUS)
         let fn = unsafeBitCast(execPtr, to: (@convention(c) () -> UInt64).self)
-        var crash = false
-        signal(SIGSEGV) { _ in crash = true }
-        signal(SIGBUS) { _ in crash = true }
         var result: UInt64 = 0
-        if !crash {
+        if !probeFaulted {
             result = fn()
         }
         signal(SIGSEGV, SIG_DFL)
         signal(SIGBUS, SIG_DFL)
-        return !crash && result == 42
+        return !probeFaulted && result == 42
+    }
+
+    private static var probeFaulted = false
+
+    private static let probeSignalHandler: @convention(c) (Int32) -> Void = { _ in
+        JITProbe.probeFaulted = true
     }
 
     // MARK: - Helpers
