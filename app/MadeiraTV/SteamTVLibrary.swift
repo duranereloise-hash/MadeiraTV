@@ -457,6 +457,9 @@ _ = mkdir(current, 0o777)
                 // there so the marker survives the tvOS SIGKILL and is served
                 // over HTTP as /crash).
                 setenv("MADEIRA_CRASH_LOG", CrashCatcher.logURL.path, 1)
+                // Apply any remote-console env overrides before Wine starts.
+                EnvOverrides.shared.integrateIntoLaunch()
+                LaunchJournal.shared.begin(appID: app.appID, appName: app.name)
                 // ml1167: seed the virtual monitor BEFORE wineserver/Wine start,
                 // exactly like the iOS front end does for desktop sessions
                 // (ContentView.swift sets MADEIRA_SCREEN_W/H + winios_display_mode_changed
