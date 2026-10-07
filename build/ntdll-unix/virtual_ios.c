@@ -10077,10 +10077,10 @@ static void *map_free_area( void *base, void *end, size_t size, int top_down, in
         /* ml1183: name the failure so 0xc0000017 (STATUS_NO_MEMORY) during
          * ntdll image mapping is explained: which window, how big, how hard
          * we tried, and how much foreign furniture exists. */
-        extern unsigned long long ios_jit_rx_base_global, ios_jit_rw_base_global;
+        extern void *ios_jit_rx_base_global, *ios_jit_rw_base_global;
         extern size_t ios_jit_pool_size_global;
-        unsigned long long rx = (unsigned long long)ios_jit_rx_base_global;
-        unsigned long long rw = (unsigned long long)ios_jit_rw_base_global;
+        unsigned long long rx = (unsigned long long)(uintptr_t)ios_jit_rx_base_global;
+        unsigned long long rw = (unsigned long long)(uintptr_t)ios_jit_rw_base_global;
         size_t ps = ios_jit_pool_size_global;
         dprintf( 2, "[va-no-space] ml1183 size=0x%lx base=%p end=%p top_down=%d tries=%lu skips=%lu "
                     "views=%lu jitRX=0x%llx jitRW=0x%llx jitSize=0x%zx layerkit=0x%llx..0x%llx\n",
