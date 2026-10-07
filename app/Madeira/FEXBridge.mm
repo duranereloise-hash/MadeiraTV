@@ -153,12 +153,14 @@ static bool jit_pool_init(void) {
     //    need a debugger.
     {
         fex_log("Trying MAP_JIT pool (%zu MB)", size >> 20);
-        /* ml1194: hint the pool HIGH (128GB). mmap(NULL) lets the kernel pick,
-         * and at 1024MB it can land inside the first 2GB, filling the low
-         * window where Wine maps small PE allocations — then map_free_area can
-         * not find even 16KB there (va-no-space 0x10000..0x80000000) and boot
-         * aborts in add_dynamic_environment. Hinting high keeps low 2GB free. */
-        void *jit = mmap((void *)0x2000000000ull, size, PROT_READ | PROT_WRITE | PROT_EXEC,
+        /* ml1195: hint the pool to 0x7e00000000 — the address every stable run
+         * landed on (heartbeat jitOffset ~ -476446343168 = 0x7E01...). The
+         * earlier hint 0x2000000000 made MAP_JIT fail there (kernel won't grant
+         * JIT that high/locally) and silently fell back to the MeloNX
+         * mach-shared-memory dual-map (RW/RX/RW SM=SHM), whose r-x shared
+         * region tvOS refuses to execute (Permission fault, Invalid Page at
+         * 0x7040... SM=SHM). Hinting to the known-good zone keeps MAP_JIT. */
+        void *jit = mmap((void *)0x7e00000000ull, size, PROT_READ | PROT_WRITE | PROT_EXEC,
                          MAP_ANON | MAP_PRIVATE | MAP_JIT, -1, 0);
         if (jit != MAP_FAILED) {
             // RW alias for writing generated code.
