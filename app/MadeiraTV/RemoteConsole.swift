@@ -28,7 +28,6 @@ enum RemoteConsole {
 
     // MARK: - /status
 
-    @MainActor
     static func statusJSON() -> String {
         let off = fex_get_jit_write_offset()
         var mem = UInt64(0)
@@ -45,11 +44,7 @@ enum RemoteConsole {
             "wineRunning": wine_process_is_running() != 0,
             "wsMainEntered": g_ws_main_entered != 0,
             "wsInMainloop": g_ws_in_mainloop != 0,
-            "sessionActive": SteamTVLibrary.shared.sessionActive,
-            "launchingID": SteamTVLibrary.shared.launchingID.map { NSNumber(value: $0) } ?? NSNull(),
-            "gameCount": SteamTVLibrary.shared.games.count,
             "availableMemoryBytes": mem,
-            "diagnostics": SteamTVLibrary.shared.diagnostics ?? NSNull(),
             "crashTail": crashTail,
             "envOverrides": EnvOverrides.shared.dict(),
         ]
