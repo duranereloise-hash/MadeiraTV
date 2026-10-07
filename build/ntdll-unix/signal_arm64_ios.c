@@ -7185,11 +7185,12 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                 char ml1160_line[512];
                 snprintf(ml1160_line, sizeof(ml1160_line),
                     "[JIT-EXEC-FAULT] pc=0x%llx fault=0x%llx pool_mod=0x%llx..0x%llx "
-                    "region=0x%llx..0x%llx prot=0x%x max=0x%x rerr=%d %s ml1160\n",
+                    "region=0x%llx..0x%llx prot=0x%x max=0x%x shar=%d tag=0x%x rerr=%d %s ml1190\n",
                     (unsigned long long)arm_thread_state64_get_pc(*state), fv,
                     mbase, mbase ? mbase + msize : 0ull,
                     (unsigned long long)ea, (unsigned long long)(rerr == KERN_SUCCESS ? es : 0),
-                    (unsigned int)bi.protection, (unsigned int)bi.max_protection, rerr,
+                    (unsigned int)bi.protection, (unsigned int)bi.max_protection,
+                    (int)bi.shared, (unsigned int)bi.user_tag, rerr,
                     mbase ? "POOL-COPIED" : "NOT-IN-POOL (file-backed probe)");
                 fprintf(stderr, "%s", ml1160_line);
                 /* ml1161: also append to crash.log (CrashCatcher path, published by
