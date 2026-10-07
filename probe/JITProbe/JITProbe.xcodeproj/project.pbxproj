@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		100000000000000000000001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000001 /* AppDelegate.swift */; };
 		100000000000000000000002 /* JITProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000002 /* JITProbe.swift */; };
+		100000000000000000000004 /* JITProbeCore.c in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000004 /* JITProbeCore.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		200000000000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		200000000000000000000002 /* JITProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JITProbe.swift; sourceTree = "<group>"; };
+		200000000000000000000004 /* JITProbeCore.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = JITProbeCore.c; sourceTree = "<group>"; };
 		200000000000000000000003 /* JITProbe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JITProbe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -41,6 +43,7 @@
 			children = (
 				200000000000000000000001 /* AppDelegate.swift */,
 				200000000000000000000002 /* JITProbe.swift */,
+				200000000000000000000004 /* JITProbeCore.c */,
 			);
 			path = JITProbe;
 			sourceTree = "<group>";
@@ -118,6 +121,7 @@
 			files = (
 				100000000000000000000001 /* AppDelegate.swift in Sources */,
 				100000000000000000000002 /* JITProbe.swift in Sources */,
+				100000000000000000000004 /* JITProbeCore.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

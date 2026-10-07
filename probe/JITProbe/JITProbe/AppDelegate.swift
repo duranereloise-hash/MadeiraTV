@@ -7,7 +7,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // JIT probe runs on a background thread so the UI can render the result.
         DispatchQueue.global(qos: .userInitiated).async {
             JITProbe.run()
         }
@@ -18,18 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
             let lbl = UILabel()
             lbl.text = "JITProbe running..."
             lbl.textColor = .white
             lbl.textAlignment = .center
             lbl.numberOfLines = 0
-            lbl.frame = vc.view.bounds
+            lbl.font = UIFont.monospacedSystemFont(ofSize: 18, weight: .regular)
+            lbl.frame = vc.view.bounds.insetBy(dx: 20, dy: 40)
             vc.view.addSubview(lbl)
             JITProbe.onUpdate = { text in
-                DispatchQueue.main.async {
-                    lbl.text = text
-                }
+                DispatchQueue.main.async { lbl.text = text }
             }
         }
         return true
