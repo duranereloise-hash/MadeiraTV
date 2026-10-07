@@ -226,26 +226,38 @@ static bool jit_pool_init(void) {
     // debugger. jit26_prepare_region()/BRK #0xf00d only works with a
     // StikDebug debugger attached; on a bare sideloaded tvOS install the
     // debugger path returned NULL and the JIT pool never came up.
+    // ml1199: when CS_DEBUGGED is set (debugger attached), SKIP MeloNX
+    // entirely and go straight to the debugger-allocated path — MeloNX
+    // shared-memory pages are not TXM-compatible, but the debugger CAN
+    // allocate legitimate executable memory (JIT26PrepareRegion via BRK).
     {
-        fex_log("Trying MeloNX dual-map for the JIT pool (%zu MB)", size >> 20);
-        JITRegion *region = jit_region_create(size);
-        if (region) {
-            void *rx = jit_region_rx_ptr(region);
-            void *rw = jit_region_rw_ptr(region);
-            if (rx && rw) {
-                g_jit_rx_base = rx;
-                g_jit_rw_base = rw;
-                g_jit_pool_size = size;
-                int64_t write_offset = reinterpret_cast<intptr_t>(rw) - reinterpret_cast<intptr_t>(rx);
-                FEXCore::DualMap::WriteOffset = write_offset;
-                fex_log("MeloNX JIT pool: RX=%p RW=%p size=%zu WriteOffset=%lld",
-                        g_jit_rx_base, g_jit_rw_base, g_jit_pool_size, (long long)write_offset);
-                return true;
-            }
-            fex_log("MeloNX region returned null views (rx=%p rw=%p)", rx, rw);
-            jit_region_destroy(region);
+        uint32_t cs_flags = 0;
+        int deb = -1;
+        if (csops(getpid(), CS_OPS_STATUS, &cs_flags, sizeof(cs_flags)) == 0)
+            deb = (cs_flags & CS_DEBUGGED) ? 1 : 0;
+        if (deb == 1) {
+            fex_log("ml1199: CS_DEBUGGED set — skipping MeloNX, using debugger-allocated JIT pool");
         } else {
-            fex_log("MeloNX jit_region_create failed; falling back to debugger path");
+            fex_log("Trying MeloNX dual-map for the JIT pool (%zu MB)", size >> 20);
+            JITRegion *region = jit_region_create(size);
+            if (region) {
+                void *rx = jit_region_rx_ptr(region);
+                void *rw = jit_region_rw_ptr(region);
+                if (rx && rw) {
+                    g_jit_rx_base = rx;
+                    g_jit_rw_base = rw;
+                    g_jit_pool_size = size;
+                    int64_t write_offset = reinterpret_cast<intptr_t>(rw) - reinterpret_cast<intptr_t>(rx);
+                    FEXCore::DualMap::WriteOffset = write_offset;
+                    fex_log("MeloNX JIT pool: RX=%p RW=%p size=%zu WriteOffset=%lld",
+                            g_jit_rx_base, g_jit_rw_base, g_jit_pool_size, (long long)write_offset);
+                    return true;
+                }
+                fex_log("MeloNX region returned null views (rx=%p rw=%p)", rx, rw);
+                jit_region_destroy(region);
+            } else {
+                fex_log("MeloNX jit_region_create failed; falling back to debugger path");
+            }
         }
     }
 
