@@ -895,33 +895,19 @@ unsigned madeira_early_intruder_tag, madeira_early_intruder_prot;
 
 __attribute__((constructor(101), used)) static void madeira_early_va_claim(void)
 {
-    /* ml1184: the 1GB PROT_NONE placeholder reserved here
-     * (0x140000000..0x180000000) sits inside the window where ntdll's PE
-     * image mapping looks (0x100000000..0x73ffff0000); map_free_area does not
-     * see foreign Mach regions as views, so it crawls through the whole block
-     * one granule at a time (7000+ tries) and then misses the fit ->
-     * STATUS_NO_MEMORY (0xc0000017) when booting ntdll.dll. This placeholder
-     * was meant for the RX pool / 32-bit image window that the JIT allocator
-     * already handles; disable it completely (it was left on by default and
-     * only ever helped pre-ml1170 layouts). */
-    return;
+    /* ml1192: reserve ONLY the 128MB 32-bit image window (0x140000000), not
+     * the 1GB pool block. The big PROT_NONE block inside the ntdll mapping
+     * window caused map_free_area to crawl and miss fits (0xc0000017); the
+     * small window alone keeps the i386 image placement stable without
+     * crowding the low ntdll window. */
     const vm_address_t win = 0x140000000ul, winsz = 0x8000000ul;       /* 128MB, see ml1037 */
     vm_address_t a = win;
-    vm_size_t sz;
 
     if (vm_allocate(mach_task_self(), &a, winsz, VM_FLAGS_FIXED) == KERN_SUCCESS && a == win) {
         vm_protect(mach_task_self(), a, winsz, 0, VM_PROT_NONE);
         madeira_early_window_base = win; madeira_early_window_size = winsz;
     }
-    /* Largest no-overwrite run starting at the window's end, 16MB granularity. */
-    for (sz = 1024ul << 20; sz >= (256ul << 20); sz -= (16ul << 20)) {
-        a = win + winsz;
-        if (vm_allocate(mach_task_self(), &a, sz, VM_FLAGS_FIXED) == KERN_SUCCESS && a == win + winsz) {
-            vm_protect(mach_task_self(), a, sz, 0, VM_PROT_NONE);
-            madeira_early_pool_base = a; madeira_early_pool_size = sz;
-            break;
-        }
-    }
+    /* ml1192: skip the large pool reservation (was up to 1GB). */
     /* ml1135: NAME what blocked it. ph-rdr90 got no placeholder because a ~31MB
      * mapping already sat at ~0x157d00000 before this constructor ran, leaving
      * 253MB above the window; the pool fell back to a 432MB hole below it and FEX
