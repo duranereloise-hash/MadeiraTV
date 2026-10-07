@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Madeira Converter Exception: see LICENSE-EXCEPTION.md
 //
 // tvOS game detail: full-width hero, big Play/Install action, metadata, launch
@@ -31,7 +31,7 @@ struct TVGameDetailView: View {
             } else {
                 VStack(spacing: TVSpacing.s16) {
                     ProgressView()
-                    Text("Loading game…")
+                    Text("Loading gameвЂ¦")
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
@@ -43,11 +43,11 @@ struct TVGameDetailView: View {
         } message: {
             Text(launchError ?? "")
         }
-        .confirmationDialog("Remove “\(game?.name ?? "")” from this device?",
+        .confirmationDialog("Remove вЂњ\(game?.name ?? "")вЂќ from this device?",
                             isPresented: $confirmRemove, titleVisibility: .visible) {
             Button("Remove", role: .destructive) {
                 #warning("requires SteamTVLibrary.remove(appID:)")
-                // steam.remove(appID: appID) — model does not expose it yet.
+                // steam.remove(appID: appID) вЂ” model does not expose it yet.
             }
         } message: {
             Text("This frees disk space. You can reinstall it from your library at any time.")
@@ -108,11 +108,11 @@ struct TVGameDetailView: View {
 
     // MARK: Primary action
 
-    private func actionRow(_ game: SteamAppInfo) -> some View {
+private func actionRow(_ game: SteamAppInfo) -> some View {
         HStack(spacing: TVSpacing.s16) {
             primaryAction(game)
             refreshButton
-            removeButton(game)
+            removeButton
             Spacer()
         }
     }
@@ -138,13 +138,13 @@ struct TVGameDetailView: View {
                 }
             } label: {
                 if steam.launchingID == game.appID {
-                    HStack { ProgressView(); Text("Starting…") }
+                    HStack { ProgressView(); Text("StartingвЂ¦") }
                 } else {
                     Label("Play", systemImage: "play.fill")
                 }
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            
         } else {
             Button {
                 steam.install(game)
@@ -152,7 +152,7 @@ struct TVGameDetailView: View {
                 Label("Install", systemImage: "arrow.down.circle")
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            
         }
     }
 
@@ -163,19 +163,18 @@ struct TVGameDetailView: View {
             Label("Refresh", systemImage: "arrow.clockwise")
         }
         .buttonStyle(.bordered)
-        .controlSize(.large)
+        
     }
 
-    @ViewBuilder
+@ViewBuilder
     private var removeButton: some View {
-        if steam.isInstalled(game) && steam.progress(appID) == nil {
+        if let game, steam.isInstalled(game), steam.progress(appID) == nil {
             Button(role: .destructive) {
                 confirmRemove = true
             } label: {
                 Label("Remove", systemImage: "trash")
             }
             .buttonStyle(.bordered)
-            .controlSize(.large)
         }
     }
 

@@ -224,15 +224,10 @@ struct TVGlassCard<Content: View>: View {
 
     var body: some View {
         Group {
-            if #available(tvOS 26.0, *) {
-                content()
-                    .glassEffect()
-                    .allowsHitTesting(false)
-                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            } else {
-                content()
-                    .liquidGlassBackground(cornerRadius: cornerRadius)
-            }
+            // `.glassEffect` (tvOS 26) isn't visible to the tvOS 18.5 SDK we
+            // build against, so use the LiquidGlass approximation everywhere.
+            content()
+                .liquidGlassBackground(cornerRadius: cornerRadius)
         }
         .accessibilityElement(children: .contain)
     }
@@ -244,13 +239,8 @@ extension View {
     /// accent one card at a time.
     func tvGlassBackdrop(cornerRadius: CGFloat = 24, focused: Bool = false) -> some View {
         background {
-            if #available(tvOS 26.0, *) {
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .glassEffect()
-            } else {
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(focused ? Color.accentColor.opacity(0.22) : Color.clear)
-            }
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                .liquidGlassBackground(cornerRadius: cornerRadius)
         }
         .compositingGroup()
         .shadow(color: focused ? .black.opacity(0.5) : .black.opacity(0.22),

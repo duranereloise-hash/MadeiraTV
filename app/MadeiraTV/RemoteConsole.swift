@@ -119,18 +119,20 @@ enum RemoteConsole {
 
         switch action {
         case "launch":
-            guard let appID, let app = findApp(appID) else {
-                CrashCatcher.write("[panel] launch: app \(appID ?? 0) not found")
-                return
-            }
-            if let env, !env.isEmpty {
-                var merged = EnvOverrides.shared.current
-                for (k, v) in env { merged[k] = "\(v)" }
-                EnvOverrides.shared.save(merged)
-            }
-            CrashCatcher.write("[panel] launch requested app=\(appID)")
+            // games lives on the MainActor; hop before touching it.
             DispatchQueue.main.async {
+                guard let appID, let app = Self.findApp(appID) else {
+                    CrashCatcher.write("[panel] launch: app \(appID ?? 0) not found")
+                    return
+                }
+                if let env, !env.isEmpty {
+                    var merged = EnvOverrides.shared.current
+                    for (k, v) in env { merged[k] = "\(v)" }
+                    EnvOverrides.shared.save(merged)
+                }
+                CrashCatcher.write("[panel] launch requested app=\(appID)")
                 EnvOverrides.shared.integrateIntoLaunch()
+                let lib = SteamTVLibrary.shared
                 lib.launch(app) { message in
                     LaunchJournal.shared.record(appID: appID, appName: app.name,
                                                 result: message ?? "ok",
@@ -141,7 +143,7 @@ enum RemoteConsole {
 
         case "stop":
             CrashCatcher.write("[panel] stop requested")
-            DispatchQueue.main.async { lib.stopGame() }
+            DispatchQueue.main.async { SteamTVLibrary.shared.stopGame() }
 
         case "restart-wineserver":
             CrashCatcher.write("[panel] restart-wineserver")
@@ -180,6 +182,7 @@ enum RemoteConsole {
         }
     }
 
+    @MainActor
     private static func findApp(_ id: UInt32) -> SteamAppInfo? {
         SteamTVLibrary.shared.games.first { $0.appID == id }
     }

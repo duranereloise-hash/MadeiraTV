@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Madeira Converter Exception: see LICENSE-EXCEPTION.md
 //
 // tvOS Home: hero banner for the last-installed / last-played game, a
@@ -13,6 +13,7 @@ import SwiftUI
 enum TVSpacing {
     static let s12: CGFloat = 12
     static let s16: CGFloat = 16
+    static let s20: CGFloat = 20
     static let s24: CGFloat = 24
     static let s32: CGFloat = 32
     static let s48: CGFloat = 48
@@ -106,7 +107,7 @@ struct HomeScreen: View {
         if steam.loading && steam.games.isEmpty {
             VStack(spacing: TVSpacing.s16) {
                 ProgressView()
-                Text("Loading library…")
+                Text("Loading libraryвЂ¦")
                     .font(.headline)
             }
             .frame(maxWidth: .infinity)
@@ -241,7 +242,7 @@ struct TVHeroBanner: View {
                         Label("Details", systemImage: "info.circle")
                     }
                     .buttonStyle(.bordered)
-                    .controlSize(.large)
+                    
                 }
             }
             .padding(.horizontal, TVSpacing.s48)
@@ -256,7 +257,7 @@ struct TVHeroBanner: View {
     }
 
     private var heroSubtitle: String {
-        if steam.progress(game.appID) != nil { return "Downloading…" }
+        if steam.progress(game.appID) != nil { return "DownloadingвЂ¦" }
         if steam.isInstalled(game) { return "Installed" }
         return "Not installed"
     }
@@ -268,30 +269,30 @@ struct TVHeroBanner: View {
                 Label(progressText(progress), systemImage: "xmark.circle")
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            
         } else if steam.isInstalled(game) {
             Button { steam.launch(game) { _ in } } label: {
                 if steam.launchingID == game.appID {
-                    HStack { ProgressView(); Text("Starting…") }
+                    HStack { ProgressView(); Text("StartingвЂ¦") }
                 } else {
                     Label("Play", systemImage: "play.fill")
                 }
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            
         } else {
             Button { steam.install(game) } label: {
                 Label("Install", systemImage: "arrow.down.circle")
             }
             .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            
         }
     }
 
     private func progressText(_ p: SteamDownloadProgress) -> String {
         switch p.phase {
-        case .preparing: return "Connecting…"
-        case .finishing: return "Finalizing…"
+        case .preparing: return "ConnectingвЂ¦"
+        case .finishing: return "FinalizingвЂ¦"
         case .downloading:
             return "\(Int((p.fraction * 100).rounded()))%"
         }
@@ -364,7 +365,7 @@ struct TVPosterCard: View {
     @ViewBuilder
     private var statusLine: some View {
         if steam.progress(game.appID) != nil {
-            Text("Downloading…")
+            Text("DownloadingвЂ¦")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         } else if steam.isInstalled(game) {
@@ -434,12 +435,12 @@ struct TVProgressOverlay: View {
 
     private var text: String {
         switch progress.phase {
-        case .preparing: return "Connecting to Steam…"
-        case .finishing: return "Finalizing…"
+        case .preparing: return "Connecting to SteamвЂ¦"
+        case .finishing: return "FinalizingвЂ¦"
         case .downloading:
             let pct = Int((progress.fraction * 100).rounded())
             if progress.bytesPerSecond > 0 {
-                return "\(pct)% · \(String(format: "%.1f MB/s", progress.bytesPerSecond / 1_048_576))"
+                return "\(pct)% В· \(String(format: "%.1f MB/s", progress.bytesPerSecond / 1_048_576))"
             }
             return "\(pct)%"
         }
@@ -477,7 +478,7 @@ struct JITDot: View {
         switch steam.jitStatus {
         case .enabled: return "JIT OK"
         case .disabled: return "JIT OFF"
-        case .unknown: return "JIT …"
+        case .unknown: return "JIT вЂ¦"
         }
     }
 

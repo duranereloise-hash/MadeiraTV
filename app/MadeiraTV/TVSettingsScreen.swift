@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Madeira Converter Exception: see LICENSE-EXCEPTION.md
 //
 // tvOS Settings: account, display (HUD + quiet), performance (JIT pool),
@@ -20,7 +20,7 @@ struct TVSettingsScreen: View {
             wineSection
             aboutSection
         }
-        .listStyle(.insetGrouped)
+        .listStyle(.plain)
         .navigationTitle("Settings")
         .focusSection()
         .background(Color.black.ignoresSafeArea())
@@ -72,7 +72,7 @@ struct TVSettingsScreen: View {
         Section {
             Toggle("Show FPS / status HUD over games", isOn: $hud.showHUD)
             Toggle("Monospace HUD font", isOn: $hud.hudMonospace)
-            Toggle("Quiet focus effects", isOn: quietFocus)
+            Toggle("Quiet focus effects", isOn: $quietFocus)
         } header: {
             Text("Display")
         }
@@ -108,7 +108,7 @@ struct TVSettingsScreen: View {
 
     private var diagnosticsSection: some View {
         Section {
-            Toggle("Verbose logging", isOn: verboseLogging)
+            Toggle("Verbose logging", isOn: $verboseLogging)
                 #warning("requires SteamTVLibrary.setVerboseLogging(_:) to take effect at next launch")
             TVLogPanel()
         } header: {
@@ -310,12 +310,13 @@ struct TVLogPanel: View {
         }
     }
 
-    private func copyNetworkLink() {
+private func copyNetworkLink() {
         if let ip = TVLogServer.localIP() {
-            UIPasteboard.general.string = "http://\(ip):\(TVLogServer.port.rawValue)/all"
-            LogStore.shared.log("[settings] copied log URL to clipboard", level: .success)
+            // tvOS has no UIPasteboard; surface the URL through the log instead.
+            LogStore.shared.log("[settings] logs live at http://\(ip):\(TVLogServer.port.rawValue)/all", level: .success)
         } else {
             LogStore.shared.log("[settings] no LAN IP available", level: .warning)
         }
     }
 }
+

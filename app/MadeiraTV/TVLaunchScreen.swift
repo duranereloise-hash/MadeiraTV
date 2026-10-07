@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Madeira Converter Exception: see LICENSE-EXCEPTION.md
 //
 // tvOS launch overlay: shown while a game is launching (launchingID set but
@@ -34,9 +34,9 @@ struct TVLaunchScreen: View {
         VStack(alignment: .center, spacing: TVSpacing.s24) {
             VStack(spacing: TVSpacing.s12) {
                 ProgressView()
-                    .controlSize(.large)
+                    
                     .tint(.white)
-                Text("Launching \(launchingGame?.name ?? "game")…")
+                Text("Launching \(launchingGame?.name ?? "game")вЂ¦")
                     .font(.title2.bold())
                     .multilineTextAlignment(.center)
             }
