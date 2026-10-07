@@ -94,6 +94,10 @@ static constexpr size_t JIT_PAGE_SIZE = 0x4000; // 16KB iOS pages
  * The old 64MB default was catastrophically small for a normal game boot. Now
  * read once at init from MADEIRA_JIT_POOL_MB (default 512) so it can be tuned /
  * A-B'd without a rebuild. */
+
+// Defined in WineProcessBridge.m (C); visible to this C++ TU.
+extern "C" void madeira_crash_log(const char *fmt, ...);
+
 static size_t jit_pool_size_mb(void) {
     /* ml1197: back to 512MB. Evidence from the device: the run that did NOT
      * crash had jitOffset=-536870912 (512MB) and MAP_JIT on 0x1d...; after
@@ -271,9 +275,8 @@ static bool jit_pool_init(void) {
      * Both are logged via the crash path so a black screen / Invalid Page is
      * distinguishable from a wrong pool without another .ips round-trip. */
     {
-        extern "C" void madeira_crash_log(const char *fmt, ...);
-        uintptr_t rx = (uintptr_t)g_jit_rx_base;
         const char *kind;
+        uintptr_t rx = (uintptr_t)g_jit_rx_base;
         if (rx >= 0x100000000ULL && rx < 0xa000000000ULL)
             kind = "MAP_JIT(low-mid)";
         else if (rx >= 0x7000000000ULL && rx < 0x8000000000ULL)
