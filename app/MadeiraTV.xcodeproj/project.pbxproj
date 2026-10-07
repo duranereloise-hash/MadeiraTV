@@ -71,6 +71,16 @@
 		A82B12D0E55B15ACB9F2515B /* arm64ec-windows in Resources */ = {isa = PBXBuildFile; fileRef = AC366F939E8C559FAAAFF7FF /* arm64ec-windows */; };
 		AADB41C064BA359E9AF9AE48 /* nls in Resources */ = {isa = PBXBuildFile; fileRef = AAA3E2A7B77875889ADF5125 /* nls */; };
 		AF845E89805EF5027A8DDA6D /* prefix-template.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = A12811A0766A85CC9AB99681 /* prefix-template.tar.gz */; };
+		4AFA714379864681B5605D923410C949 /* TVShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3D1BB208D45BC93EE603B7D5DE00E /* TVShell.swift */; };
+		BC2712861DF148FCBE9FDEBE7D58017C /* TVHomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C720635C6647A6B6935DC89029B364 /* TVHomeViews.swift */; };
+		53B966B2B20C45B08C788EAB8A96BB7D /* TVLibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D34F77BC314894BDD86918C1F31512 /* TVLibraryViews.swift */; };
+		CA5CE083541E4208B13102FE714697CF /* TVGameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A167E2B19A4FBCB95B6A4508787293 /* TVGameDetail.swift */; };
+		A3A4A75B61844EDF9CC899B86EBF8B76 /* TVSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A1F6AC04B04B968C73C19D04692C8F /* TVSettingsScreen.swift */; };
+		8EFB48E608C041D4AA6529378756BB3C /* TVLaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D84A9C5994C4D0C9142FCD8DDC35680 /* TVLaunchScreen.swift */; };
+		9D9330E5BF4B493E9929FD48B393A9AA /* RemoteConsole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9B10694BF24B8AB47F50B0E4C09381 /* RemoteConsole.swift */; };
+		D2FA3082B2BE4B1D80233D660A087695 /* RemotePanelHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1064ABC8F304FEFA3B6EFC5097FAB84 /* RemotePanelHTML.swift */; };
+		88AD7C1E42D5439B885EB60D6A12B7A4 /* EnvOverrides.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1F4273C8074A11B35D787C530FB09C /* EnvOverrides.swift */; };
+		E4D9A0D05A74406192C9348D738C85F5 /* LaunchJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E31A79486A445F9B50E592C8BFE1438 /* LaunchJournal.swift */; };
 /* End PBXBuildFile section */
 		A6B00A04A571859A3B8C10B1 /* Winios.m in Sources */ = {isa = PBXBuildFile; fileRef = A65E088659F8354D8B50FCA6 /* Winios.m */; };
 		AA984EA37F52E50D68130CDF /* WiniosCursor.c in Sources */ = {isa = PBXBuildFile; fileRef = A4BEB375F1776554DA38A938 /* WiniosCursor.c */; };
@@ -155,6 +165,16 @@
 		A0066421DA0D95455B98A32C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavcodec.a"; path = "Madeira/libavcodec.a"; sourceTree = "<group>"; };
 		A8C550AA0668857F6B00033B /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libswresample.a"; path = "Madeira/libswresample.a"; sourceTree = "<group>"; };
 		A9C1867FC92E3566FB23F7F9 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libavutil.a"; path = "Madeira/libavutil.a"; sourceTree = "<group>"; };
+		21B3D1BB208D45BC93EE603B7D5DE00E /* TVShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVShell.swift"; sourceTree = "<group>"; };
+		86C720635C6647A6B6935DC89029B364 /* TVHomeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVHomeViews.swift"; sourceTree = "<group>"; };
+		49D34F77BC314894BDD86918C1F31512 /* TVLibraryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVLibraryViews.swift"; sourceTree = "<group>"; };
+		98A167E2B19A4FBCB95B6A4508787293 /* TVGameDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVGameDetail.swift"; sourceTree = "<group>"; };
+		40A1F6AC04B04B968C73C19D04692C8F /* TVSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVSettingsScreen.swift"; sourceTree = "<group>"; };
+		6D84A9C5994C4D0C9142FCD8DDC35680 /* TVLaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TVLaunchScreen.swift"; sourceTree = "<group>"; };
+		7C9B10694BF24B8AB47F50B0E4C09381 /* RemoteConsole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConsole.swift"; sourceTree = "<group>"; };
+		B1064ABC8F304FEFA3B6EFC5097FAB84 /* RemotePanelHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemotePanelHTML.swift"; sourceTree = "<group>"; };
+		8B1F4273C8074A11B35D787C530FB09C /* EnvOverrides.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvOverrides.swift"; sourceTree = "<group>"; };
+		9E31A79486A445F9B50E592C8BFE1438 /* LaunchJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LaunchJournal.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 		A65E088659F8354D8B50FCA6 /* Winios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "Winios.m"; path = "Winios/Winios.m"; sourceTree = "<group>"; };
 		A4BEB375F1776554DA38A938 /* WiniosCursor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "WiniosCursor.c"; path = "Winios/WiniosCursor.c"; sourceTree = "<group>"; };
@@ -271,6 +291,16 @@
 		A20D8A23823735DDAB11BBA8 /* MadeiraTV */ = {
 			isa = PBXGroup;
 			children = (
+				9E31A79486A445F9B50E592C8BFE1438 /* LaunchJournal.swift */,
+				8B1F4273C8074A11B35D787C530FB09C /* EnvOverrides.swift */,
+				B1064ABC8F304FEFA3B6EFC5097FAB84 /* RemotePanelHTML.swift */,
+				7C9B10694BF24B8AB47F50B0E4C09381 /* RemoteConsole.swift */,
+				6D84A9C5994C4D0C9142FCD8DDC35680 /* TVLaunchScreen.swift */,
+				40A1F6AC04B04B968C73C19D04692C8F /* TVSettingsScreen.swift */,
+				98A167E2B19A4FBCB95B6A4508787293 /* TVGameDetail.swift */,
+				49D34F77BC314894BDD86918C1F31512 /* TVLibraryViews.swift */,
+				86C720635C6647A6B6935DC89029B364 /* TVHomeViews.swift */,
+				21B3D1BB208D45BC93EE603B7D5DE00E /* TVShell.swift */,
 				AABB5B7087F7A58A1BDC587E /* MadeiraTVApp.swift */,
 				AAACD3DADEF6950309A10409 /* TVSessionModel.swift */,
 				AD2B3CD5B485D59709FE87AA /* LogStore.swift */,
@@ -367,6 +397,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4D9A0D05A74406192C9348D738C85F5 /* LaunchJournal.swift in Sources */,
+				88AD7C1E42D5439B885EB60D6A12B7A4 /* EnvOverrides.swift in Sources */,
+				D2FA3082B2BE4B1D80233D660A087695 /* RemotePanelHTML.swift in Sources */,
+				9D9330E5BF4B493E9929FD48B393A9AA /* RemoteConsole.swift in Sources */,
+				8EFB48E608C041D4AA6529378756BB3C /* TVLaunchScreen.swift in Sources */,
+				A3A4A75B61844EDF9CC899B86EBF8B76 /* TVSettingsScreen.swift in Sources */,
+				CA5CE083541E4208B13102FE714697CF /* TVGameDetail.swift in Sources */,
+				53B966B2B20C45B08C788EAB8A96BB7D /* TVLibraryViews.swift in Sources */,
+				BC2712861DF148FCBE9FDEBE7D58017C /* TVHomeViews.swift in Sources */,
+				4AFA714379864681B5605D923410C949 /* TVShell.swift in Sources */,
 				AC8712ADD340D5333B270881 /* SteamAuthAPI.swift in Sources */,
 				A3B781DB655FA5A80A04EA93 /* SteamCredentialAuth.swift in Sources */,
 				AD6F4B2C56BBE502096D3918 /* SteamTokenStore.swift in Sources */,
