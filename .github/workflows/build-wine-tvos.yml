@@ -21,6 +21,70 @@ jobs:
             https://github.com/duranereloise-hash/wine.git wine 2>&1 | tail -3
           git -C wine log --oneline -1
 
+      - name: Cache wine build trees + tvOS toolchains
+        # ml1179: restore wine's configure-once trees and the toolchain outputs
+        # so an unchanged-wine run skips configure / widl-gen / toolchain build.
+        # Keyed on the wine fork HEAD + the MadeiraTV C-source hashes.
+        uses: actions/cache@v4
+        with:
+          path: |
+            wine/build-macos
+            wine/build-arm64ec
+            toolchains/gnutls-tvos
+            toolchains/ffmpeg-tvos
+            toolchains/freetype-tvos
+          key: wine-tvos-${{ hashFiles('wine/.git/HEAD') }}-${{ hashFiles('build/ntdll-unix/**', 'build/wineserver/**', 'build/win32u-unix/**', 'build/wine-pe/**') }}
+          restore-keys: |
+            wine-tvos-${{ hashFiles('wine/.git/HEAD') }}-
+            wine-tvos-
+
+      - name: Set up ccache
+        # ml1179: intercept `xcrun -sdk <iphoneos|appletvos> clang` with ccache so
+        # recompiling the ~100 unix objects after a 1-file change is near-zero.
+        env:
+          CCACHE_BASEDIR: ${{ github.workspace }}
+          CCACHE_DIR: ${{ github.workspace }}/.ccache
+        run: |
+          set -e
+          brew install ccache 2>&1 | tail -3 || true
+          mkdir -p "$GITHUB_WORKSPACE/.ccache/shims"
+          # Shim xcrun (rewrites --sdk iphoneos->appletvos too so one pool is shared).
+          cat > "$GITHUB_WORKSPACE/.ccache/shims/xcrun" <<'EOF'
+          #!/bin/bash
+          NEW=()
+          PREV=""
+          for a in "$@"; do
+            if [ "$PREV" = "--sdk" ] && [ "$a" = "iphoneos" ]; then NEW+=("appletvos"); else NEW+=("$a"); fi
+            PREV="$a"
+          done
+          if [[ " $* " == *" clang "* || " $* " == *clang++* || " $* " == *"--find clang"* ]]; then
+            exec ccache /usr/bin/xcrun "${NEW[@]}"
+          fi
+          exec /usr/bin/xcrun "${NEW[@]}"
+          EOF
+          # Bare compiler shims for any direct invocation.
+          for t in clang clang++ cc c++; do
+            cat > "$GITHUB_WORKSPACE/.ccache/shims/$t" <<EOT
+          #!/bin/bash
+          SDK=\$(xcrun --sdk appletvos --show-sdk-path 2>/dev/null || xcrun --sdk iphoneos --show-sdk-path)
+          exec ccache \$(which clang) -isysroot "\$SDK" "\$@"
+          EOT
+          done
+          chmod +x "$GITHUB_WORKSPACE/.ccache/shims/"*
+          echo "$GITHUB_WORKSPACE/.ccache/shims" >> $GITHUB_PATH
+          export CCACHE_BASEDIR="$GITHUB_WORKSPACE"
+          export CCACHE_DIR="$GITHUB_WORKSPACE/.ccache"
+          ccache --max-size=2G
+          ccache -z
+
+      - name: Cache ccache
+        uses: actions/cache@v4
+        with:
+          path: .ccache
+          key: wine-ccache-${{ hashFiles('wine/.git/HEAD') }}-${{ hashFiles('build/ntdll-unix/**', 'build/wineserver/**', 'build/win32u-unix/**', 'build/wine-pe/**') }}
+          restore-keys: |
+            wine-ccache-
+
       - name: Show environment
         run: |
           xcodebuild -version

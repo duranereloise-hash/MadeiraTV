@@ -2,6 +2,17 @@
 
 on:
   workflow_dispatch:
+    inputs:
+      artefact_run:
+        description: 'Pin to a specific successful run id of this workflow (blank = latest successful)'
+        required: false
+        type: string
+  # ml1179: swift-only lane — a push touching only the app UI re-links the IPA
+  # against the last-good component artifacts (~2 min) instead of rebuilding Wine.
+  push:
+    paths:
+      - 'app/**'
+      - '.github/workflows/build-ipa-tvos.yml'
 
 jobs:
   link-ipa:
@@ -33,10 +44,25 @@ jobs:
 
           fetch_artifact() { # workflow_file  artifact_name  out_dir
             wf="$1"; want="$2"; out="$3"
-            run_id=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/workflows/$wf/runs?status=success&per_page=20" \
-              --jq ".workflow_runs[] | select(.conclusion == \"success\") | .id" | head -1)
-            [ -n "$run_id" ] || { echo "no successful run for $wf"; return 1; }
-            echo "== $wf run=$run_id =="
+            PIN="${{ github.event.inputs.artefact_run }}"
+            if [ -n "$PIN" ]; then
+              run_id="$PIN"
+              meta=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" \
+                --jq '{wf: .workflow_id, ok: (.conclusion == "success"), url: .html_url}')
+              this_wf=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/build-ipa-tvos.yml" --jq '.id')
+              if [ "$(echo "$meta" | jq -r .wf)" != "$this_wf" ] || [ "$(echo "$meta" | jq -r .ok)" != "true" ]; then
+                echo "artefact_run=$PIN is not a successful run of build-ipa-tvos.yml"; return 1
+              fi
+              echo "== pinned $wf run=$run_id =="
+            else
+              # Latest successful run of the component workflow, sorted by
+              # updated_at (a recently re-run workflow must win over an older
+              # first-shard run).
+              run_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf/runs?status=success&per_page=100" \
+                --jq '[.workflow_runs[] | select(.conclusion=="success" and .status=="completed")] | sort_by(.updated_at) | reverse | .[0].id')
+              [ -n "$run_id" ] || { echo "no successful run for $wf"; return 1; }
+              echo "== $wf run=$run_id =="
+            fi
             arts=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts" --jq ".artifacts[] | select(.name==\"$want\") | .id" | head -1)
             [ -n "$arts" ] || { echo "no artifact $want in $wf"; return 1; }
             mkdir -p "$out"
