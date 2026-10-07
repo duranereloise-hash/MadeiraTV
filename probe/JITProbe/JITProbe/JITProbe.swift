@@ -1,7 +1,5 @@
 import Foundation
 import Darwin
-import MachO
-import MachO.arm
 
 /// Minimal self-contained JIT probe for tvOS 27 / free-provisioning.
 /// Tests in order:
