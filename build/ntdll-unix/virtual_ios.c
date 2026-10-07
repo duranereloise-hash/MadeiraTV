@@ -10072,6 +10072,26 @@ static void *map_free_area( void *base, void *end, size_t size, int top_down, in
                     "guest views may now enter CoreAnimation's range\n", (unsigned long)size, ios_layerkit_lo, ios_layerkit_hi );
         r = map_free_area_inner( base, end, size, top_down, unix_prot, align_mask );
     }
+    if (!r)
+    {
+        /* ml1183: name the failure so 0xc0000017 (STATUS_NO_MEMORY) during
+         * ntdll image mapping is explained: which window, how big, how hard
+         * we tried, and how much foreign furniture exists. */
+        extern unsigned long long ios_jit_rx_base_global, ios_jit_rw_base_global;
+        extern size_t ios_jit_pool_size_global;
+        unsigned long long rx = (unsigned long long)ios_jit_rx_base_global;
+        unsigned long long rw = (unsigned long long)ios_jit_rw_base_global;
+        size_t ps = ios_jit_pool_size_global;
+        dprintf( 2, "[va-no-space] ml1183 size=0x%lx base=%p end=%p top_down=%d tries=%lu skips=%lu "
+                    "views=%lu jitRX=0x%llx jitRW=0x%llx jitSize=0x%zx layerkit=0x%llx..0x%llx\n",
+                 (unsigned long)size, base, end, top_down,
+                 (unsigned long)ios_va_scan_tries, (unsigned long)ios_va_scan_skips,
+                 (unsigned long)ios_scan_views, rx, rw, ps, ios_layerkit_lo, ios_layerkit_hi );
+        { extern void madeira_crash_log(const char *fmt, ...);
+          madeira_crash_log("[va-no-space] ml1183 size=0x%lx base=%p end=%p tries=%lu skips=%lu",
+                            (unsigned long)size, base, end,
+                            (unsigned long)ios_va_scan_tries, (unsigned long)ios_va_scan_skips); }
+    }
     return r;
 }
 static void *map_free_area_inner( void *base, void *end, size_t size, int top_down, int unix_prot, size_t align_mask )
