@@ -1,0 +1,50 @@
+name: Build JITProbe (tvOS probe)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  jitprobe:
+    name: Build minimal JIT probe .app/.ipa for tvOS
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build JITProbe.app
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project probe/JITProbe/JITProbe.xcodeproj \
+            -scheme JITProbe \
+            -configuration Debug \
+            -destination 'generic/platform=tvOS' \
+            -derivedDataPath probe/build \
+            build \
+            CODE_SIGNING_ALLOWED=NO | tee probe/build-jitprobe.log
+          echo "=== rc=${PIPESTATUS[0]} ==="
+
+      - name: Package IPA
+        if: always()
+        run: |
+          APP="probe/build/Build/Products/Debug-appletvos/JITProbe.app"
+          if [ -d "$APP" ]; then
+            mkdir -p probe/build/Payload
+            cp -R "$APP" probe/build/Payload/
+            (cd probe/build && zip -qr JITProbe.ipa Payload)
+            ls -la probe/build/JITProbe.ipa
+          else
+            echo "app not built"
+            find probe/build -name "*.app" 2>/dev/null | head
+          fi
+
+      - name: Upload IPA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JITProbe-ipa
+          path: |
+            probe/build/JITProbe.ipa
+            probe/build-jitprobe.log
+          if-no-files-found: warn
