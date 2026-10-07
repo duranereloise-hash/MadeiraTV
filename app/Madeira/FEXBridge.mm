@@ -353,42 +353,19 @@ extern "C" bool fex_ensure_jit_pool(void) {
     return ok;
 }
 
-// Ask the kernel to mark this process as debugged (CS_DEBUGGED). On
-// iOS/tvOS-family this is exactly what JIT enablers (JitStreamer/LocalDevVPN/
-// StikDebug) set: a valid get-task-allow signature allows ptrace(PT_TRACE_ME)
-// to flip the CS_DEBUGGED code-signing flag, which is what actually unlocks
-// MAP_JIT's executable mapping. Without it mmap(MAP_JIT, PROT_EXEC) fails and
-// jit_pool_init used to fall back to the MeloNX shared-memory dual-map whose
-// r-x SM=SHM pages tvOS 27 kills on execution (Invalid Page / 0x70400e037c).
-//
-// The tvOS SDK ships no ptrace() and marks the syscall() wrapper unavailable,
-// so we invoke SYS_ptrace directly with inline assembly (x16 = syscall number
-// 26 on arm64, x0.. = args). This is the same raw-syscall trick JIT emulators
-// on iOS use; it bypasses the *header* restriction, not the kernel's own
-// get-task-allow check.
+// Report the CS_DEBUGGED status. Contrary to our earlier attempt, DO NOT
+// issue a raw ptrace(PT_TRACE_ME) syscall: on tvOS 27 the kernel responds to
+// an unexpected ptrace by putting the process in a state where subsequent
+// MAP_JIT allocations start failing (EPERM), even when the signature carries
+// get-task-allow. ml1191 ran fine with this exact function returning -1 (no
+// side effect) and with MAP_JIT working — proving the atvloadly signature
+// DOES allow MAP_JIT when we simply try it. So: read-only, side-effect-free.
 extern "C" int madeira_self_ptrace(void) {
-    // 0) If a debugger already set the flag, we are done.
     uint32_t flags = 0;
     if (csops(getpid(), CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
-        if (flags & CS_DEBUGGED) return 1;
+        return (flags & CS_DEBUGGED) ? 1 : 0;
     }
-    // 1) ptrace(PT_TRACE_ME) = syscall(26, 0, 0, 0, 0). 0 = PT_TRACE_ME.
-#if defined(__arm64__) && defined(__APPLE__)
-    __asm__ __volatile__(
-        "mov x16, #26\n"        // SYS_ptrace
-        "mov x0, #0\n"          // PT_TRACE_ME
-        "mov x1, xzr\n"
-        "mov x2, xzr\n"
-        "mov x3, xzr\n"
-        "svc #0x80\n"
-        ::: "x0", "x1", "x2", "x3", "x16", "memory");
-#endif
-    // 2) Re-read; the flag should be set now if get-task-allow is present.
-    if (csops(getpid(), CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
-        if (flags & CS_DEBUGGED) return 1;
-        return 0;  // readable, but JIT not granted (dist/profile without task)
-    }
-    return -1;  // csops itself failed (sandbox denies even reading)
+    return -1;  // csops failed (sandbox) — indistinguishable from "not debugged"
 }
 
 // ---------------------------------------------------------------------------
