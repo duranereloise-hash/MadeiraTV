@@ -360,6 +360,9 @@ extern "C" bool fex_ensure_jit_pool(void) {
 #if defined(__arm64__) && defined(__APPLE__)
 extern "C" long syscall(long number, ...);
 #endif
+#ifndef SYS_ptrace
+#define SYS_ptrace 26
+#endif
 #define MADEIRA_PT_TRACE_ME 0
 #define MADEIRA_CS_OPS_STATUS 0
 #define MADEIRA_CS_DEBUGGED 0x10000000
