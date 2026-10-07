@@ -83,13 +83,6 @@ static int add(const char *s) {
     return 0;
 }
 
-static int snout(const char *f, int v) {
-    char buf[512];
-    int w = snprintf(buf, sizeof(buf), f, v);
-    if (w < 0 || (size_t)w >= sizeof(buf)) return 1;
-    return add(buf);
-}
-
 static void open_partial(const char *path) {
     g_partial_fd = open(path, O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
 }
@@ -207,12 +200,17 @@ int jitprobe_run_matrix(char *out, size_t outsz) {
     g_out = out; g_outsz = outsz; g_used = 0;
 
     add("=== JITProbe v2 matrix (sequential; partial-log survives death) ===\n");
-    snout("%s %d\n", getpid());
+    {
+        char hdr[64];
+        snprintf(hdr, sizeof(hdr), "pid %d\n", getpid());
+        add(hdr);
+        partial(hdr);
+    }
     partial("=== start ===\n");
 
     for (int i = 0; i < n; i++) {
         // Give the HTTP server time to bind before a possibly-fatal test.
-        partialf("--- %s ---\n", modes[i]);
+        partialf("--- begin mode=%d ---\n", modes[i]);
         partial("  (test begins)\n");
         char line[256];
         int rc = run_one_mode(modes[i]);
