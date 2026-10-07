@@ -969,11 +969,6 @@ static void *madeira_hb_main(void *arg)
     }
     return NULL;
 }
-        i++;
-        for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
-    }
-    return NULL;
-}
 
 static void *wine_process_thread(void *arg) {
     @autoreleasepool {
