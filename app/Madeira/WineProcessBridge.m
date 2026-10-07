@@ -922,21 +922,53 @@ static void *madeira_hb_main(void *arg)
         madeira_crash_log("[hb] host=1 wine=%d server=%d dxmt=%llu winios=%llu pc=0x%llx lr=0x%llx",
                           wine_process_is_running(),
                           wineserver_is_running(),
-                          (unsigned long long)madeira_get_present_count(),
+(unsigned long long)madeira_get_present_count(),
                           winios_surface_present_count(),
                           (unsigned long long)hb_pc, (unsigned long long)hb_lr);
-        /* ml1187: if the Wine process is gone, report WHY (session exit
-         * status) so a silent death after init_process_done is visible. */
-        if (!wine_process_is_running())
+        /* ml1188: every 5th tick, SUSPEND the main thread once and read the
+         * FEX frame (x28) + State.rip to get a trustworthy guest RIP + block
+         * begin; translate host_pc -> guest via ios_native_rip_from_hostpc.
+         * This names the loop the guest is stuck in (dxmt=0, pc stable). */
+        if ((i % 5) == 0 && mainp)
         {
-            uint32_t ws = 0;
-            if (wine_crash_exit_status(&ws))
-                madeira_crash_log("[hb-death] wine process exited with NTSTATUS 0x%x (crash)",
-                                  (unsigned)ws);
-            else
-                madeira_crash_log("[hb-death] wine process not running (no crash status)");
-            i = 600;   /* stop after reporting once */
+            mach_port_t mt = pthread_mach_thread_np(mainp);
+            arm_thread_state64_t st;
+            mach_msg_type_number_t cnt = ARM_THREAD_STATE64_COUNT;
+            if (thread_suspend(mt) == KERN_SUCCESS)
+            {
+                if (thread_get_state(mt, ARM_THREAD_STATE64, (thread_state_t)&st, &cnt) == KERN_SUCCESS)
+                {
+                    uint64_t x28 = 0, srip = 0, bb = 0;
+                    mach_vm_size_t g = 0;
+                    uint64_t hostpc = arm_thread_state64_get_pc(st);
+                    if (st.__x[28] >= 0x100000000ULL)
+                    {
+                        x28 = st.__x[28];
+                        if (mach_vm_read_overwrite(mach_task_self(), (mach_vm_address_t)(x28 + 0x18), 8,
+                                                   (mach_vm_address_t)&srip, &g) == KERN_SUCCESS && g == 8)
+                        {
+                            /* first member of the JIT block is the InlineJITBlockHeader */
+                            uint64_t header = 0;
+                            if (mach_vm_read_overwrite(mach_task_self(), (mach_vm_address_t)x28, 8,
+                                                       (mach_vm_address_t)&header, &g) == KERN_SUCCESS && g == 8)
+                                bb = header;   /* usually BlockBegin == frame start */
+                            extern uint64_t ios_native_rip_from_hostpc(uint64_t, uint64_t, const char **);
+                            const char *why = "?";
+                            uint64_t gip = ios_native_rip_from_hostpc(bb ? bb : x28, hostpc, &why);
+                            madeira_crash_log("[hb-guest2] frame=0x%llx stateRIP=0x%llx hostPC=0x%llx guest=0x%llx why=%s",
+                                              (unsigned long long)x28, (unsigned long long)srip,
+                                              (unsigned long long)hostpc, (unsigned long long)gip, why);
+                        }
+                    }
+                }
+                thread_resume(mt);
+            }
         }
+        i++;
+        for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
+    }
+    return NULL;
+}
         i++;
         for (int s = 0; s < 10; s++) usleep(100000);  // 1s total
     }
