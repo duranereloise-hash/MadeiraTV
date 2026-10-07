@@ -21,6 +21,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <mach/mach.h>
+#include <dlfcn.h>
 
 #ifndef MAP_JIT
 #define MAP_JIT 0x800
@@ -30,6 +31,28 @@
 #define EXEC_WRONGRES   1
 #define MAP_FAIL        2
 #define INTERNAL_ERR    3
+
+typedef void (*icache_fn)(char *start, size_t len);
+
+static void icache_flush(char *p, size_t len) {
+    // sys_icache_invalidate lives in libSystem; dlsym to avoid a direct
+    // dependency on the compiler-rt builtin (___clear_cache isn't linked).
+    static icache_fn fn = NULL;
+    if (!fn) {
+        void *h = dlopen(NULL, RTLD_LAZY);
+        if (h) {
+            fn = (icache_fn)dlsym(h, "sys_icache_invalidate");
+        }
+    }
+    if (fn) fn(p, len);
+    // Also flush dcache (PIPT on ARM, cheap if no-op).
+    static icache_fn dfn = NULL;
+    if (!dfn) {
+        void *h = dlopen(NULL, RTLD_LAZY);
+        if (h) dfn = (icache_fn)dlsym(h, "sys_dcache_flush");
+    }
+    if (dfn) dfn(p, len);
+}
 
 // ---- report + partial-log infrastructure -------------------------------
 static char *g_out = NULL;
@@ -75,7 +98,7 @@ static void open_partial(const char *path) {
 static void write_bytes(volatile uint32_t *p) {
     p[0] = 0xD2800540;  // mov x0, #42
     p[1] = 0xD65F03C0;  // ret
-    __builtin___clear_cache((char*)p, (char*)p + 8);
+    icache_flush((char*)p, 8);
 }
 
 static int run_one_mode(int mode) {
@@ -166,7 +189,7 @@ static int run_one_mode(int mode) {
     }
 
     if (mode != 2 && mode != 5) write_bytes((volatile uint32_t*)mem);
-    __builtin___clear_cache((char*)exec, (char*)exec + 8);
+    icache_flush((char*)exec, 8);
     typedef uint64_t (*fn_t)(void);
     fn_t fn = (fn_t)(uintptr_t)exec;
     uint64_t r = fn();
