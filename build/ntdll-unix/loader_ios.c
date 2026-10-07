@@ -2604,8 +2604,14 @@ static void load_ntdll(void)
     if (status == STATUS_IMAGE_NOT_AT_BASE) status = virtual_relocate_module( module );
     if (status) fatal_error( "failed to load %s error %x\n", name, status );
     free( name );
+    { extern void madeira_crash_log(const char *fmt, ...);
+      madeira_crash_log("[wine] load_ntdll: mapped ok, calling load_ntdll_functions"); }
     load_ntdll_functions( module );
+    { extern void madeira_crash_log(const char *fmt, ...);
+      madeira_crash_log("[wine] load_ntdll: load_ntdll_functions done"); }
     if (is_arm64ec()) redirect_ntdll_functions( module );
+    { extern void madeira_crash_log(const char *fmt, ...);
+      madeira_crash_log("[wine] load_ntdll: redirect done"); }
 }
 
 
