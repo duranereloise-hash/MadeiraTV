@@ -473,15 +473,13 @@ _ = mkdir(current, 0o777)
                 setenv("MADEIRA_SCREEN_H", "\(screenH)", 1)
                 winios_display_mode_changed(screenW, screenH)
                 // wineserver_start is idempotent: returns 0 if already running.
-                // ml1174: a wineserver left over from a previous game/session
-                // keeps its mapped module views (and JIT-pool copies) alive, and
-                // a second boot has occasionally wedged load_ntdll. Restart it
-                // clean every launch so each boot starts from a fresh server
-                // state (no stale ntdll views).
-                if wineserver_is_running() != 0 {
-                    CrashCatcher.write("[launch] bg: wineserver_stop (fresh launch)")
-                    wineserver_stop()
-                }
+                // ml1186: do NOT stop/recreate the wineserver on every launch.
+                // restarting it calls init_registry() again, which appends to a
+                // static save_branch table (wine server/registry.c) — repeated
+                // restarts overflow it and abort() in load_init_registry_from_file
+                // (signal 6, "5 seconds after launch"). Keep the server alive and
+                // reuse it across launches; only an explicit panel/stop action
+                // recreates it.
                 CrashCatcher.write("[launch] bg: wineserver_start")
                 let ws = wineserver_start(prefix)
                 if ws != 0 {
