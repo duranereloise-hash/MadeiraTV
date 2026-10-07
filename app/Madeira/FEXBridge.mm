@@ -44,7 +44,7 @@
 #ifndef CS_DEBUGGED
 #define CS_DEBUGGED 0x10000000
 #endif
-extern int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
+extern "C" int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
 
 #include <atomic>
 #include <csetjmp>
