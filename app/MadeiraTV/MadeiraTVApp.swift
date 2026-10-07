@@ -7,9 +7,13 @@ struct MadeiraTVApp: App {
     @StateObject private var steam = SteamTVLibrary.shared
 
     init() {
-        #if DEBUG
+        // ml1197f: keep the signal/exception handler in Release too — a tvOS
+        // CODESIGNING SIGKILL happens outside any #if DEBUG check window, and
+        // without the handler the last lines before a crash are never written.
+        // Also snapshot any pre-existing crash.log so the tail from the run
+        // that died survives the next install/relaunch.
+        CrashCatcher.backupIfPresent()
         CrashCatcher.install()
-        #endif
     }
 
     var body: some Scene {
@@ -36,6 +40,7 @@ enum CrashCatcher {
     }()
 
     static func install() {
+        CrashCatcher.write("[boot] MadeiraTV started pid=\(getpid())")
         NSSetUncaughtExceptionHandler { exception in
             let desc = "\(exception.name) \(exception.reason ?? "")"
             CrashCatcher.write("[NSException] \(desc)")
@@ -46,6 +51,20 @@ enum CrashCatcher {
         for s in sigs {
             signal(s, crashSignalHandler)
         }
+    }
+
+    /// Copy crash.log → crash-<timestamp>.log.bak so the tail of the previous
+    /// (crashed) run is never lost when Caches gets cleared or the app resumes.
+    static func backupIfPresent() {
+        let fm = FileManager.default
+        guard fm.fileExists(atPath: logURL.path) else { return }
+        let stamp = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .medium)
+            .replacingOccurrences(of: "/", with: "-")
+            .replacingOccurrences(of: ":", with: "-")
+        let back = logURL.deletingLastPathComponent()
+            .appendingPathComponent("crash-\(stamp).log.bak")
+        try? fm.copyItem(at: logURL, to: back)
+        _ = back  // keep path for a log line if needed
     }
 
     static func write(_ msg: String) {

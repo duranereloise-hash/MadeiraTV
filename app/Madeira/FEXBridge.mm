@@ -192,9 +192,28 @@ static bool jit_pool_init(void) {
             }
             munmap(jit, size);
         } else {
-            fex_log("MAP_JIT mmap failed (errno=%d) — sandbox may reject; trying MeloNX", errno);
+            // ml1197e: do NOT silently record this as "trying MeloNX". SM=SHM
+            // exec pages are killed by tvOS 27 (Invalid Page), and publishing
+            // them as a successful JIT pool is exactly how the app dies today.
+            // Record the failure REASON into crash.log (survives SIGKILL), then
+            // return false so the launch is refused instead of booting Wine
+            // inside shared memory.
+            int mapErr = errno;
+            uint32_t cs = 0;
+            int deb = -1;
+            if (csops(getpid(), MADEIRA_CS_OPS_STATUS, &cs, sizeof(cs)) == 0)
+                deb = (cs & MADEIRA_CS_DEBUGGED) ? 1 : 0;
+            fex_log("MAP_JIT mmap failed (errno=%d) — CS_DEBUGGED=%d; refusing MeloNX fallback",
+                    mapErr, deb);
+            madeira_crash_log("[jit-pool] MAP_JIT-FAILED errno=%d CS_DEBUGGED=%d — NOT falling back to MeloNX shared-mem (tvOS kills SM=SHM exec)",
+                              mapErr, deb);
+            return false;
         }
     }
+
+    // (MeloNX dual-map kept as an explicit backchannel for a separately
+    //  controlled build; the default launch path no longer reaches it.)
+    (void)0;
 
     // Try the MeloNX dual-map SECOND: it does not depend on an attached
     // debugger. jit26_prepare_region()/BRK #0xf00d only works with a
@@ -327,11 +346,46 @@ extern "C" bool fex_ensure_jit_pool(void) {
     return ok;
 }
 
-// Ask the kernel to mark this process as debugged (CS_DEBUGGED). tvOS has no
-// ptrace(PT_TRACE_ME) header; on iOS-family it's what an external JIT enabler
-// (JitStreamer/localdevvpn) does for us. Here we just report unsupported.
+// Ask the kernel to mark this process as debugged (CS_DEBUGGED). On
+// iOS/tvOS-family it's exactly what external JIT enablers
+// (JitStreamer/LocalDevVPN/StikDebug) do for us: ptrace(PT_TRACE_ME) with a
+// valid get-task-allow signature flips the CS_DEBUGGED code-signing flag,
+// which is what actually unlocks MAP_JIT's executable mapping. Without it,
+// mmap(MAP_JIT, PROT_EXEC) fails and jit_pool_init silently falls back to the
+// MeloNX shared-memory dual-map whose r-x SM=SHM pages tvOS 27 kills on
+// execution (Invalid Page / 0x70400e037c). <sys/ptrace.h> is not part of the
+// tvOS SDK, so declare the syscall-wrapper by hand (same trick the rest of
+// this file uses for csops in Winios.m / JITAllocator.c).
+#include <sys/syscall.h>
+#if defined(__arm64__) && defined(__APPLE__)
+extern "C" long syscall(long number, ...);
+#endif
+#define MADEIRA_PT_TRACE_ME 0
+#define MADEIRA_CS_OPS_STATUS 0
+#define MADEIRA_CS_DEBUGGED 0x10000000
+extern "C" int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
 extern "C" int madeira_self_ptrace(void) {
-    return -1;  // ptrace not available on tvOS; JIT relies on MeloNX pool
+    // 1) Try csops to set CS_DEBUGGED directly (works on dev-signed get-task-allow bins).
+    uint32_t flags = 0;
+    if (csops(getpid(), MADEIRA_CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
+        if (flags & MADEIRA_CS_DEBUGGED) return 1;  // already debugged
+    }
+    // 2) ptrace(PT_TRACE_ME): classic self-arm. Fails closed (returns -1) on
+    //    sandboxed/free-provisioned ignores, matching previous behaviour.
+#if defined(__arm64__) && defined(__APPLE__)
+    long r = syscall(SYS_ptrace, MADEIRA_PT_TRACE_ME, 0, 0, 0);
+    if (r == 0) {
+        return 1;
+    }
+    // 3) Re-read csops after a transient failure: some OS versions require the
+    //    syscall to land before the flag is observable.
+    if (csops(getpid(), MADEIRA_CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
+        if (flags & MADEIRA_CS_DEBUGGED) return 1;
+    }
+    return -1;
+#else
+    return -1;  // unsupported outside arm64 Apple
+#endif
 }
 
 // ---------------------------------------------------------------------------

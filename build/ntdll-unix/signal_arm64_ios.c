@@ -7175,6 +7175,18 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                                                                       unsigned long long *);
                 log_addrs[log_n++] = fv;
                 unsigned long long msize = 0, mbase = ios_jit_module_base_for_va(fv, &msize);
+                /* ml1197g: also reverse-translate the NATIVE pc to a GUEST rip so
+                 * the crash names what the guest was executing (x86 image base +
+                 * offset), which is the thing FEX executes on behalf of the guest.
+                 * ios_native_rip_from_hostpc is defined later in this same file;
+                 * it may return 0 when the pc is not in a translated block. */
+                uint64_t guest_rip = 0;
+                const char *rip_why = NULL;
+                extern uint64_t ios_native_rip_from_hostpc(uint64_t, uint64_t, const char **);
+                uint64_t host_pc = (uint64_t)arm_thread_state64_get_pc(*state);
+                uint64_t block_begin = host_pc & ~(uint64_t)0xFFF;
+                if (mbase) block_begin = mbase;   /* scope the lookup to the module */
+                guest_rip = ios_native_rip_from_hostpc(block_begin, host_pc, &rip_why);
                 mach_vm_address_t ea = (mach_vm_address_t)fv;
                 mach_vm_size_t    es = 0;
                 vm_region_basic_info_data_64_t bi; memset(&bi, 0, sizeof(bi));
@@ -7185,9 +7197,11 @@ static int ios_mach_deliver_guest_exception_inner( thread_t thread, arm_thread_s
                 char ml1160_line[512];
                 snprintf(ml1160_line, sizeof(ml1160_line),
                     "[JIT-EXEC-FAULT] pc=0x%llx fault=0x%llx pool_mod=0x%llx..0x%llx "
+                    "guest_rip=0x%llx(%s) "
                     "region=0x%llx..0x%llx prot=0x%x max=0x%x shar=%d tag=0x%x rerr=%d %s ml1190\n",
                     (unsigned long long)arm_thread_state64_get_pc(*state), fv,
                     mbase, mbase ? mbase + msize : 0ull,
+                    (unsigned long long)guest_rip, rip_why ? rip_why : "no-translation",
                     (unsigned long long)ea, (unsigned long long)(rerr == KERN_SUCCESS ? es : 0),
                     (unsigned int)bi.protection, (unsigned int)bi.max_protection,
                     (int)bi.shared, (unsigned int)bi.user_tag, rerr,

@@ -65,13 +65,17 @@ final class SteamTVLibrary: ObservableObject {
         return URL(string: "https://cdn.cloudflare.steamstatic.com/steam/apps/\(app.appID)/library_hero.jpg")
     }
 
-    /// Launch mode gate. Direct-EXE (bare) is the default — it is the configuration
-/// that runs without crashing (verified: pool 1024MB + MAP_JIT no-hint).
-/// Desktop session optional via MADEIRA_TV_DESKTOP=1.
+    /// Launch mode gate. A bare EXE in game mode has no window station /
+    /// foreground window, so the guest parks in a pre-D3D11 wait
+    /// (GetMessage/MsgWaitForMultipleObjects) and DXMT never creates a swapchain
+    /// (heartbeat dxmt=0 forever). The Desktop session (explorer.exe →
+    /// C:\steam-launch.bat) gives the guest a window station and foreground, so
+    /// it is the default. MADEIRA_TV_DESKTOP=0 forces the old bare direct-exe
+    /// path (no compositor — kept only for A/B diagnostics).
     static var useDesktopSession: Bool {
-        guard let v = getenv("MADEIRA_TV_DESKTOP") else { return false }
+        guard let v = getenv("MADEIRA_TV_DESKTOP") else { return true }
         let s = String(cString: v).lowercased()
-        return ["1", "true", "yes", "on"].contains(s)
+        return !["0", "false", "no", "off"].contains(s)
     }
 
     /// Write C:\steam-launch.bat into the wine prefix (drive_c). CRLF required.
