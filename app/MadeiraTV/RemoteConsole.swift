@@ -28,6 +28,7 @@ enum RemoteConsole {
 
     // MARK: - /status
 
+    @MainActor
     static func statusJSON() -> String {
         let off = fex_get_jit_write_offset()
         var mem = UInt64(0)
@@ -149,7 +150,9 @@ enum RemoteConsole {
             CrashCatcher.write("[panel] restart-wineserver")
             if wineserver_is_running() != 0 { wineserver_stop() }
             usleep(300_000)
-            _ = wineserver_start(SteamTVLibrary.prefix.path)
+            // SteamTVLibrary.prefix is MainActor-isolated; grab it on the main queue.
+            let pfx = DispatchQueue.main.sync { SteamTVLibrary.shared }
+            _ = wineserver_start(pfx.prefix.path)
 
         case "rearm-jit":
             CrashCatcher.write("[panel] rearm-jit")

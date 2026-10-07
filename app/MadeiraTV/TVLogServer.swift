@@ -120,7 +120,9 @@ enum TVLogServer {
         if method == "POST" && path == "/action" {
             (status, contentType, payload) = RemoteConsole.handleAction(body: body)
         } else if method == "GET" {
-            (status, contentType, payload) = route(path)
+            // Routes that read SteamTVLibrary MainActor state (e.g. /status)
+            // must run on the main thread; file reads are cheap.
+            (status, contentType, payload) = DispatchQueue.main.sync { route(path) }
         } else {
             (status, contentType, payload) = ("404 Not Found", "text/plain", "not found")
         }
