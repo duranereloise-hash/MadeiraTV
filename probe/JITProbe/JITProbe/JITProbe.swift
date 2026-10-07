@@ -25,6 +25,12 @@ final class JITProbe: NSObject {
         let pp = (partialPath.path as NSString).fileSystemRepresentation
         jitprobe_open_partial(pp)
 
+        // Start the HTTP server FIRST so the partial log is readable even if
+        // the process dies on the very first test. Each request re-reads the
+        // file, so a re-opened app serves the surviving prefix.
+        partialURL = partialPath
+        startHTTPServer()
+
         var report = "JITProbe v2 — matrix, \(Date())\n"
         let flags = jitprobe_compile_flags()
         let cs = flags < 0 ? -1 : Int(flags)
@@ -61,6 +67,7 @@ final class JITProbe: NSObject {
 
     private static var lastReport = ""
     private static var serverUp = false
+    private static var partialURL: URL?
 
     private static func deviceInfo() -> String {
         var size = 0
@@ -104,7 +111,11 @@ final class JITProbe: NSObject {
             while true {
                 let c = accept(fd, nil, nil)
                 if c < 0 { continue }
-                let body = lastReport
+                // Serve: live partial log + last completed report buffer.
+                var body = lastReport
+                if let p = partialURL, let pr = try? String(contentsOf: p, encoding: .utf8), !pr.isEmpty {
+                    body = "=== LIVE PARTIAL LOG ===\n\(pr)\n=== BUFFER ===\n\(body)"
+                }
                 let resp = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: \(body.utf8.count)\r\nConnection: close\r\n\r\n\(body)"
                 _ = resp.withCString { write(c, $0, resp.utf8.count) }
                 close(c)
