@@ -55,7 +55,7 @@ final class JITProbe: NSObject {
         guard ptr != MAP_FAILED else {
             return "mmap(MAP_JIT) FAILED errno=\(errno) — MAP_JIT blocked\n"
         }
-        let execOk = execProbe(UnsafeMutableRawPointer(ptr))
+        let execOk = execProbe(UnsafeMutableRawPointer(ptr)!)
         let addr = UInt(bitPattern: ptr)
         munmap(ptr, size)
         guard execOk else {
@@ -115,6 +115,20 @@ final class JITProbe: NSObject {
 
     // MARK: - Exec probe
 
+    /// Flush icache via sys_icache_invalidate loaded through dlsym.
+    private static func clearCache(_ execPtr: UnsafeMutableRawPointer, _ len: Int) {
+        typealias ICacheFn = @convention(c) (UnsafeMutableRawPointer, Int) -> Void
+        if let sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), "sys_icache_invalidate") {
+            let fn = unsafeBitCast(sym, to: ICacheFn.self)
+            fn(execPtr, len)
+        }
+        // Also flush dcache for safety.
+        if let sym = dlsym(UnsafeMutableRawPointer(bitPattern: -2), "sys_dcache_flush") {
+            let fn = unsafeBitCast(sym, to: ICacheFn.self)
+            fn(execPtr, len)
+        }
+    }
+
     /// Writes a tiny ARM64 function: `ret` (0xD65F03C0) into `writePtr`,
     /// executes it via `execPtr`, returns true if it ran.
     private static func execProbe(_ ptr: UnsafeMutableRawPointer) -> Bool {
@@ -128,9 +142,7 @@ final class JITProbe: NSObject {
         let ret: UInt32 = 0xD65F03C0  // ret
         writePtr.storeBytes(of: mov, as: UInt32.self)
         writePtr.advanced(by: 4).storeBytes(of: ret, as: UInt32.self)
-        // Clear instruction cache for the 8 bytes at execPtr.
-        __builtin___clear_cache(execPtr.assumingMemoryBound(to: UInt8.self),
-                                execPtr.advanced(by: 8).assumingMemoryBound(to: UInt8.self))
+        clearCache(execPtr, 8)
 
         // Call through a function pointer; catch faults.
         let fn = unsafeBitCast(execPtr, to: (@convention(c) () -> UInt64).self)
