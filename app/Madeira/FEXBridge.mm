@@ -110,8 +110,6 @@ static size_t jit_pool_size_mb(void) {
     }
     return DEFAULT_MB;
 }
-    return DEFAULT_MB;
-}
 
 static void *g_jit_rx_base = nullptr;  // Executable view
 static void *g_jit_rw_base = nullptr;  // Writable view
