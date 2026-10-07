@@ -35,6 +35,17 @@
 #define MAP_JIT 0x800
 #endif
 
+// csops syscall constants (not in tvOS public SDK). CS_DEBUGGED is the flag
+// JIT enablers (StikDebug / JitStreamer) ride on; reading it here tells us
+// whether MAP_JIT allocation is legal for this process.
+#ifndef CS_OPS_STATUS
+#define CS_OPS_STATUS 0
+#endif
+#ifndef CS_DEBUGGED
+#define CS_DEBUGGED 0x10000000
+#endif
+extern int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
+
 #include <atomic>
 #include <csetjmp>
 #include <cstdio>
@@ -201,8 +212,8 @@ static bool jit_pool_init(void) {
             int mapErr = errno;
             uint32_t cs = 0;
             int deb = -1;
-            if (csops(getpid(), MADEIRA_CS_OPS_STATUS, &cs, sizeof(cs)) == 0)
-                deb = (cs & MADEIRA_CS_DEBUGGED) ? 1 : 0;
+            if (csops(getpid(), CS_OPS_STATUS, &cs, sizeof(cs)) == 0)
+                deb = (cs & CS_DEBUGGED) ? 1 : 0;
             fex_log("MAP_JIT mmap failed (errno=%d) — CS_DEBUGGED=%d; refusing MeloNX fallback",
                     mapErr, deb);
             madeira_crash_log("[jit-pool] MAP_JIT-FAILED errno=%d CS_DEBUGGED=%d — NOT falling back to MeloNX shared-mem (tvOS kills SM=SHM exec)",
@@ -346,49 +357,23 @@ extern "C" bool fex_ensure_jit_pool(void) {
     return ok;
 }
 
-// Ask the kernel to mark this process as debugged (CS_DEBUGGED). On
-// iOS/tvOS-family it's exactly what external JIT enablers
-// (JitStreamer/LocalDevVPN/StikDebug) do for us: ptrace(PT_TRACE_ME) with a
-// valid get-task-allow signature flips the CS_DEBUGGED code-signing flag,
-// which is what actually unlocks MAP_JIT's executable mapping. Without it,
-// mmap(MAP_JIT, PROT_EXEC) fails and jit_pool_init silently falls back to the
-// MeloNX shared-memory dual-map whose r-x SM=SHM pages tvOS 27 kills on
-// execution (Invalid Page / 0x70400e037c). <sys/ptrace.h> is not part of the
-// tvOS SDK, so declare the syscall-wrapper by hand (same trick the rest of
-// this file uses for csops in Winios.m / JITAllocator.c).
-#include <sys/syscall.h>
-#if defined(__arm64__) && defined(__APPLE__)
-extern "C" long syscall(long number, ...);
-#endif
-#ifndef SYS_ptrace
-#define SYS_ptrace 26
-#endif
-#define MADEIRA_PT_TRACE_ME 0
-#define MADEIRA_CS_OPS_STATUS 0
-#define MADEIRA_CS_DEBUGGED 0x10000000
-extern "C" int csops(pid_t pid, unsigned int ops, void *useraddr, size_t usersize);
+// Ask the kernel to expose CS_DEBUGGED status. On iOS/tvOS-family this is
+// exactly what external JIT enablers (JitStreamer/LocalDevVPN/StikDebug) set:
+// a valid get-task-allow signature lets csops read the CS_DEBUGGED code-
+// signing flag, which is what actually unlocks MAP_JIT's executable mapping.
+// Without it mmap(MAP_JIT, PROT_EXEC) fails and jit_pool_init used to fall
+// back to the MeloNX shared-memory dual-map whose r-x SM=SHM pages tvOS 27
+// kills on execution (Invalid Page / 0x70400e037c). The tvOS SDK blocks the
+// syscall() wrapper (unistd.h marks it unavailable) and ships no ptrace(), so
+// we rely on csops only — reading the flag the OS already set; free-provision
+// without a debugger simply reports "not debugged" (return -1), which is a
+// correct, signal-safe outcome.
 extern "C" int madeira_self_ptrace(void) {
-    // 1) Try csops to set CS_DEBUGGED directly (works on dev-signed get-task-allow bins).
     uint32_t flags = 0;
-    if (csops(getpid(), MADEIRA_CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
-        if (flags & MADEIRA_CS_DEBUGGED) return 1;  // already debugged
+    if (csops(getpid(), CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
+        return (flags & CS_DEBUGGED) ? 1 : 0;
     }
-    // 2) ptrace(PT_TRACE_ME): classic self-arm. Fails closed (returns -1) on
-    //    sandboxed/free-provisioned ignores, matching previous behaviour.
-#if defined(__arm64__) && defined(__APPLE__)
-    long r = syscall(SYS_ptrace, MADEIRA_PT_TRACE_ME, 0, 0, 0);
-    if (r == 0) {
-        return 1;
-    }
-    // 3) Re-read csops after a transient failure: some OS versions require the
-    //    syscall to land before the flag is observable.
-    if (csops(getpid(), MADEIRA_CS_OPS_STATUS, &flags, sizeof(flags)) == 0) {
-        if (flags & MADEIRA_CS_DEBUGGED) return 1;
-    }
-    return -1;
-#else
-    return -1;  // unsupported outside arm64 Apple
-#endif
+    return -1;  // csops failed (no get-task-allow / sandbox)
 }
 
 // ---------------------------------------------------------------------------
