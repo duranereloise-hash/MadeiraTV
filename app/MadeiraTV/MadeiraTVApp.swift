@@ -14,8 +14,8 @@ struct MadeiraTVApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TVHomeView()
-                .environmentObject(steam)
+            TVRootView()
+                .installSharedEnvironment()
                 .onAppear {
                     GameControllerNotificationObserver.shared.start()
                     steam.start()

@@ -83,4 +83,9 @@ final class TVMetalSurface: UIView {
     func hide() {
         removeFromSuperview()
     }
+
+    /// Re-attach the surface when entering a game session (pairs with hide()).
+    func show() {
+        attachToKeyWindow()
+    }
 }
