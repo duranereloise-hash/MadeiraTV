@@ -95,17 +95,21 @@ static constexpr size_t JIT_PAGE_SIZE = 0x4000; // 16KB iOS pages
  * read once at init from MADEIRA_JIT_POOL_MB (default 512) so it can be tuned /
  * A-B'd without a rebuild. */
 static size_t jit_pool_size_mb(void) {
-    /* ml1193: keep the pool at 1024MB — that build does not crash (512 fell
-     * into MeloNX shared-memory which tvOS rejects; 768 untested).
-     * Floor stays 1024; env may raise it up to 4096. */
-    static const size_t DEFAULT_MB = 1024;
-    static const size_t FLOOR_MB = 1024;
+    /* ml1197: back to 512MB. Evidence from the device: the run that did NOT
+     * crash had jitOffset=-536870912 (512MB) and MAP_JIT on 0x1d...; after
+     * forcing 1024MB the pool fell out of MAP_JIT into the MeloNX
+     * shared-memory dual-map and tvOS killed execution (0x70400e037c SM=SHM).
+     * Keep the knob, floor at 512, allow raising. */
+    static const size_t DEFAULT_MB = 512;
+    static const size_t FLOOR_MB = 512;
     const char *s = getenv("MADEIRA_JIT_POOL_MB");
     if (s && *s) {
         char *end = nullptr;
         long v = strtol(s, &end, 10);
         if (end != s && v >= (long)FLOOR_MB && v <= 4096) return (size_t)v;
     }
+    return DEFAULT_MB;
+}
     return DEFAULT_MB;
 }
 
@@ -263,6 +267,24 @@ static bool jit_pool_init(void) {
 
     fex_log("JIT pool initialized: RX=%p, RW=%p, size=%zu, WriteOffset=%lld",
             g_jit_rx_base, g_jit_rw_base, g_jit_pool_size, (long long)write_offset);
+    /* ml1197b: name the pool source for triage. MAP_JIT (kernel-granted exec,
+     * safe on tvOS) lands RX mid/low; the MeloNX mach-shared-memory dual-map
+     * (whose r-x SM=SHM tvOS kills on execution) has a distinctive layout.
+     * Both are logged via the crash path so a black screen / Invalid Page is
+     * distinguishable from a wrong pool without another .ips round-trip. */
+    {
+        extern void madeira_crash_log(const char *fmt, ...);
+        uintptr_t rx = (uintptr_t)g_jit_rx_base;
+        const char *kind;
+        if (rx >= 0x100000000ULL && rx < 0xa000000000ULL)
+            kind = "MAP_JIT(low-mid)";
+        else if (rx >= 0x7000000000ULL && rx < 0x8000000000ULL)
+            kind = "shared-1GB? (MeloNX / MAP_JIT split)";
+        else
+            kind = "other";
+        madeira_crash_log("[jit-pool] RX=%p RW=%p size=%zu kind=%s", g_jit_rx_base, g_jit_rw_base,
+                          g_jit_pool_size, kind);
+    }
 
     // Quick coherence test
     uint32_t test_val = 0xCAFEBABE;
