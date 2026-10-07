@@ -65,16 +65,15 @@ final class SteamTVLibrary: ObservableObject {
         return URL(string: "https://cdn.cloudflare.steamstatic.com/steam/apps/\(app.appID)/library_hero.jpg")
     }
 
-    /// ml1177: launch mode gate. Default OFF → we EXPLICITLY enable the desktop
-    /// session; set MADEIRA_TV_DIRECT_EXE=1 (env, before app start) to go back
-    /// to the old bare-EXE game mode for developer tests (cube-x64 etc.).
-    /// The desktop session (explorer.exe shell) is the verified-good path for
-    /// real Steam titles on iOS; a bare EXE parks in a pre-D3D11 wait and never
-    /// creates a DXMT swapchain (black screen, dxmt=0).
+    /// Launch mode gate. The desktop session (explorer.exe shell) gives a
+    /// window station for real Steam titles, but on tvOS it also adds a cmd
+    /// indirection; with the ntdll NO_MEMORY fix (ml1184b) the bare-EXE path
+    /// boots reliably and DXMT's game-mode layer (g_layer) is the surface real
+    /// games use. Default is now DIRECT (MADEIRA_TV_DESKTOP=1 opts back in).
     static var useDesktopSession: Bool {
-        guard let v = getenv("MADEIRA_TV_DIRECT_EXE") else { return true }
+        guard let v = getenv("MADEIRA_TV_DESKTOP") else { return false }
         let s = String(cString: v).lowercased()
-        return !["1", "true", "yes", "on"].contains(s)
+        return ["1", "true", "yes", "on"].contains(s)
     }
 
     /// Write C:\steam-launch.bat into the wine prefix (drive_c). CRLF required.
